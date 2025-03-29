@@ -24,7 +24,7 @@
         }
 
         body {
-            font-family: 'Comic Sans MS', cursive, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -125,6 +125,7 @@
             margin-top: 0;
             font-size: 2.5em;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            font-weight: 600;
         }
 
         .header-buttons {
@@ -140,6 +141,7 @@
             font-weight: bold;
             color: var(--primary-purple);
             text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.1);
+            font-family: 'Courier New', monospace;
         }
 
         .input-group {
@@ -157,6 +159,7 @@
             border: 2px solid var(--primary-purple);
             border-radius: 10px;
             outline: none;
+            font-family: 'Courier New', monospace;
         }
 
         .buttons {
@@ -328,21 +331,22 @@
         .work-mode { background-color: var(--work-bg); color: var(--work-text); }
         .break-mode { background-color: var(--break-bg); color: var(--break-text); }
 
+        /* Updated tab container to top right */
         .tab-container {
             position: fixed;
-            bottom: 20px;
+            top: 20px;
             right: 20px;
             display: flex;
-            flex-direction: column;
-            gap: 15px;
+            flex-direction: row;
+            gap: 10px;
             z-index: 100;
         }
 
         .tab {
             background-color: var(--accent-purple);
             color: white;
-            width: 50px;
-            height: 50px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
             display: flex;
             justify-content: center;
@@ -350,14 +354,14 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             cursor: pointer;
             transition: all 0.3s;
-            font-size: 1.5em;
+            font-size: 1.2em;
         }
 
         .tab:hover { transform: scale(1.1); }
 
         .panel {
             position: absolute;
-            bottom: 70px;
+            top: 60px;
             right: 0;
             width: 350px;
             background-color: white;
@@ -365,7 +369,7 @@
             padding: 15px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
             display: none;
-            max-height: 60vh;
+            max-height: 80vh;
             overflow-y: auto;
         }
 
@@ -451,6 +455,7 @@
             vertical-align: middle;
         }
 
+        /* Updated donate button */
         .donate-btn {
             position: fixed;
             bottom: 20px;
@@ -468,6 +473,9 @@
             text-decoration: none;
             font-size: 1em;
             font-family: inherit;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .donate-btn:hover {
@@ -650,6 +658,65 @@
             opacity: 0;
         }
 
+        /* Productivity report styles */
+        .report-header {
+            text-align: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary-purple);
+        }
+
+        .report-title {
+            font-size: 1.5em;
+            color: var(--primary-purple);
+            margin-bottom: 5px;
+        }
+
+        .report-date {
+            color: #666;
+            font-style: italic;
+        }
+
+        .report-section {
+            margin-bottom: 20px;
+        }
+
+        .report-section-title {
+            font-size: 1.2em;
+            color: var(--primary-purple);
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 5px;
+            margin-bottom: 10px;
+        }
+
+        .report-metric {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .report-metric-label {
+            font-weight: bold;
+        }
+
+        .report-metric-value {
+            font-weight: bold;
+            color: var(--primary-green);
+        }
+
+        .report-achievement {
+            margin-bottom: 10px;
+            padding-left: 15px;
+            position: relative;
+        }
+
+        .report-achievement:before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: var(--primary-purple);
+        }
+
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 4px; }
         ::-webkit-scrollbar-thumb { background: #c1c1c1; border-radius: 4px; }
@@ -732,9 +799,10 @@
     <a href="https://www.paypal.com/donate?business=YOUR_PAYPAL_EMAIL&item_name=Support+Pomodoro+Timer+Creator" 
        class="donate-btn" 
        target="_blank">
-       Support Creator
+       ☕ Buy Creator a Coffee
     </a>
 
+    <!-- Updated tab container moved to top right -->
     <div class="tab-container">
         <div class="tab" id="infoTabBtn">ℹ️</div>
         <div class="panel info-panel" id="infoPanel">
@@ -762,85 +830,86 @@
         </div>
 
         <div class="tab" id="noiseTabBtn">🎵</div>
-        <div class="panel" id="noisePanel">
-            <h3 style="margin-top: 0; color: var(--accent-purple);">Background Sounds</h3>
-            <div class="noise-controls">
-                <button class="noise-play-btn" id="noisePlayBtn">⏸️</button>
-                <span id="nowPlaying">No sound selected</span>
-            </div>
-            <div class="noise-option">
-                <input type="radio" id="noise1" name="backgroundNoise" value="rain">
-                <label for="noise1">Rainfall</label>
-            </div>
-            <div class="noise-option">
-                <input type="radio" id="noise2" name="backgroundNoise" value="forest">
-                <label for="noise2">Forest Sounds</label>
-            </div>
-            <div class="noise-option">
-                <input type="radio" id="noise3" name="backgroundNoise" value="waves">
-                <label for="noise3">Ocean Waves</label>
-            </div>
-            <div class="noise-option">
-                <input type="radio" id="noise4" name="backgroundNoise" value="birds">
-                <label for="noise4">Bird Songs</label>
-            </div>
-            <div class="noise-option">
-                <input type="radio" id="noise5" name="backgroundNoise" value="whitenoise">
-                <label for="noise5">White Noise</label>
-            </div>
-            <div class="noise-option">
-                <input type="radio" id="noise6" name="backgroundNoise" value="coffee">
-                <label for="noise6">Coffee Shop</label>
-            </div>
-            <div class="noise-option">
-                <input type="radio" id="noise7" name="backgroundNoise" value="none" checked>
-                <label for="noise7">None</label>
-            </div>
-            <input type="range" min="0" max="1" step="0.1" value="0.5" class="volume-control" id="volumeControl">
-            <div style="text-align: center; margin-top: 5px; font-size: 0.8em;">Volume</div>
-        </div>
-
         <div class="tab" id="lofiTabBtn">🎧</div>
-        <div class="panel" id="lofiPanel">
-            <h3 style="margin-top: 0; color: var(--accent-purple);">LoFi Channels</h3>
-            <a href="https://www.youtube.com/watch?v=jfKfPfyJRdk" target="_blank" class="lofi-channel">
-                <img src="https://i.ytimg.com/vi/jfKfPfyJRdk/hqdefault.jpg" alt="LoFi Girl">
-                LoFi Girl
-            </a>
-            <a href="https://www.youtube.com/watch?v=rUxyKA_-grg" target="_blank" class="lofi-channel">
-                <img src="https://i.ytimg.com/vi/rUxyKA_-grg/hqdefault.jpg" alt="Chillhop">
-                Chillhop Music
-            </a>
-            <a href="https://www.youtube.com/watch?v=DWcJFNfaw9c" target="_blank" class="lofi-channel">
-                <img src="https://i.ytimg.com/vi/DWcJFNfaw9c/hqdefault.jpg" alt="College Music">
-                College Music
-            </a>
-            <a href="https://www.youtube.com/watch?v=4xDzrJKXOOY" target="_blank" class="lofi-channel">
-                <img src="https://i.ytimg.com/vi/4xDzrJKXOOY/hqdefault.jpg" alt="Ambient Worlds">
-                Ambient Worlds
-            </a>
-            <a href="https://www.youtube.com/watch?v=7NOSDKb0HlU" target="_blank" class="lofi-channel">
-                <img src="https://i.ytimg.com/vi/7NOSDKb0HlU/hqdefault.jpg" alt="Chill Cow">
-                Chill Cow
-            </a>
-        </div>
-
         <div class="tab" id="historyTabBtn">📊</div>
-        <div class="panel history-panel" id="historyPanel">
-            <h3 style="margin-top: 0; color: var(--accent-purple);">Session History</h3>
-            <div class="history-controls">
-                <button id="exportHistory" class="export-btn">Export Report</button>
-                <button id="clearHistory" class="clear-history-btn">Clear History</button>
-            </div>
-            <div id="historyList"></div>
-        </div>
-
-        <!-- New Rewards Tab -->
         <div class="tab" id="rewardsTabBtn">🏆</div>
-        <div class="panel rewards-panel" id="rewardsPanel">
-            <h3 style="margin-top: 0; color: var(--accent-purple);">Your Rewards</h3>
-            <div id="rewardsList"></div>
+    </div>
+
+    <!-- Panels (positioned relative to tab container) -->
+    <div class="panel" id="noisePanel">
+        <h3 style="margin-top: 0; color: var(--accent-purple);">Background Sounds</h3>
+        <div class="noise-controls">
+            <button class="noise-play-btn" id="noisePlayBtn">⏸️</button>
+            <span id="nowPlaying">No sound selected</span>
         </div>
+        <div class="noise-option">
+            <input type="radio" id="noise1" name="backgroundNoise" value="rain">
+            <label for="noise1">Rainfall</label>
+        </div>
+        <div class="noise-option">
+            <input type="radio" id="noise2" name="backgroundNoise" value="forest">
+            <label for="noise2">Forest Sounds</label>
+        </div>
+        <div class="noise-option">
+            <input type="radio" id="noise3" name="backgroundNoise" value="waves">
+            <label for="noise3">Ocean Waves</label>
+        </div>
+        <div class="noise-option">
+            <input type="radio" id="noise4" name="backgroundNoise" value="birds">
+            <label for="noise4">Bird Songs</label>
+        </div>
+        <div class="noise-option">
+            <input type="radio" id="noise5" name="backgroundNoise" value="whitenoise">
+            <label for="noise5">White Noise</label>
+        </div>
+        <div class="noise-option">
+            <input type="radio" id="noise6" name="backgroundNoise" value="coffee">
+            <label for="noise6">Coffee Shop</label>
+        </div>
+        <div class="noise-option">
+            <input type="radio" id="noise7" name="backgroundNoise" value="none" checked>
+            <label for="noise7">None</label>
+        </div>
+        <input type="range" min="0" max="1" step="0.1" value="0.5" class="volume-control" id="volumeControl">
+        <div style="text-align: center; margin-top: 5px; font-size: 0.8em;">Volume</div>
+    </div>
+
+    <div class="panel" id="lofiPanel">
+        <h3 style="margin-top: 0; color: var(--accent-purple);">LoFi Channels</h3>
+        <a href="https://www.youtube.com/watch?v=jfKfPfyJRdk" target="_blank" class="lofi-channel">
+            <img src="https://i.ytimg.com/vi/jfKfPfyJRdk/hqdefault.jpg" alt="LoFi Girl">
+            LoFi Girl
+        </a>
+        <a href="https://www.youtube.com/watch?v=rUxyKA_-grg" target="_blank" class="lofi-channel">
+            <img src="https://i.ytimg.com/vi/rUxyKA_-grg/hqdefault.jpg" alt="Chillhop">
+            Chillhop Music
+        </a>
+        <a href="https://www.youtube.com/watch?v=DWcJFNfaw9c" target="_blank" class="lofi-channel">
+            <img src="https://i.ytimg.com/vi/DWcJFNfaw9c/hqdefault.jpg" alt="College Music">
+            College Music
+        </a>
+        <a href="https://www.youtube.com/watch?v=4xDzrJKXOOY" target="_blank" class="lofi-channel">
+            <img src="https://i.ytimg.com/vi/4xDzrJKXOOY/hqdefault.jpg" alt="Ambient Worlds">
+            Ambient Worlds
+        </a>
+        <a href="https://www.youtube.com/watch?v=7NOSDKb0HlU" target="_blank" class="lofi-channel">
+            <img src="https://i.ytimg.com/vi/7NOSDKb0HlU/hqdefault.jpg" alt="Chill Cow">
+            Chill Cow
+        </a>
+    </div>
+
+    <div class="panel history-panel" id="historyPanel">
+        <h3 style="margin-top: 0; color: var(--accent-purple);">Session History</h3>
+        <div class="history-controls">
+            <button id="exportHistory" class="export-btn">Export Report</button>
+            <button id="clearHistory" class="clear-history-btn">Clear History</button>
+        </div>
+        <div id="historyList"></div>
+    </div>
+
+    <div class="panel rewards-panel" id="rewardsPanel">
+        <h3 style="margin-top: 0; color: var(--accent-purple);">Your Rewards</h3>
+        <div id="rewardsList"></div>
     </div>
 
     <!-- Confetti Container -->
@@ -1585,42 +1654,99 @@
                     return;
                 }
                 
-                let reportText = 'Pomodoro Session Report\n\n';
-                reportText += `Generated on: ${new Date().toLocaleString()}\n\n`;
-                reportText += '==================================\n\n';
+                // Calculate summary statistics
+                const workSessions = STATE.sessionHistory.filter(s => s.type === 'work');
+                const breakSessions = STATE.sessionHistory.filter(s => s.type === 'break');
                 
-                // Summary
-                const totalWork = STATE.sessionHistory
-                    .filter(s => s.type === 'work')
-                    .reduce((sum, session) => sum + session.duration, 0);
+                const totalWorkTime = workSessions.reduce((sum, session) => sum + session.duration, 0);
+                const totalBreakTime = breakSessions.reduce((sum, session) => sum + session.duration, 0);
                 
-                const totalBreak = STATE.sessionHistory
-                    .filter(s => s.type === 'break')
-                    .reduce((sum, session) => sum + session.duration, 0);
+                const avgWorkSession = workSessions.length > 0 ? 
+                    Math.round(totalWorkTime / workSessions.length) : 0;
+                const avgBreakSession = breakSessions.length > 0 ? 
+                    Math.round(totalBreakTime / breakSessions.length) : 0;
                 
-                reportText += `Total Work Time: ${trackingActions.formatTime(totalWork)}\n`;
-                reportText += `Total Break Time: ${trackingActions.formatTime(totalBreak)}\n\n`;
-                reportText += '==================================\n\n';
-                
-                // Detailed sessions
-                reportText += 'Session Details:\n\n';
-                
+                // Find most productive day
+                const sessionsByDay = {};
                 STATE.sessionHistory.forEach(session => {
-                    const date = new Date(session.timestamp);
-                    reportText += `Type: ${session.type.charAt(0).toUpperCase() + session.type.slice(1)}\n`;
-                    reportText += `Date: ${date.toLocaleDateString()}\n`;
-                    reportText += `Time: ${date.toLocaleTimeString()}\n`;
-                    reportText += `Duration: ${trackingActions.formatTime(session.duration)}\n`;
-                    reportText += `Notes: ${session.notes || 'None'}\n`;
-                    reportText += '----------------------------------\n';
+                    const date = new Date(session.timestamp).toLocaleDateString();
+                    if (!sessionsByDay[date]) {
+                        sessionsByDay[date] = { work: 0, break: 0 };
+                    }
+                    if (session.type === 'work') {
+                        sessionsByDay[date].work += session.duration;
+                    } else {
+                        sessionsByDay[date].break += session.duration;
+                    }
                 });
                 
+                let mostProductiveDay = { date: '', workTime: 0 };
+                for (const date in sessionsByDay) {
+                    if (sessionsByDay[date].work > mostProductiveDay.workTime) {
+                        mostProductiveDay = { date, workTime: sessionsByDay[date].work };
+                    }
+                }
+                
+                // Generate report HTML
+                let reportHTML = `
+                    <div class="report-header">
+                        <div class="report-title">Productivity Performance Report</div>
+                        <div class="report-date">Generated on ${new Date().toLocaleDateString()}</div>
+                    </div>
+                    
+                    <div class="report-section">
+                        <div class="report-section-title">Summary Overview</div>
+                        <div class="report-metric">
+                            <span class="report-metric-label">Total Work Time:</span>
+                            <span class="report-metric-value">${trackingActions.formatTime(totalWorkTime)}</span>
+                        </div>
+                        <div class="report-metric">
+                            <span class="report-metric-label">Total Break Time:</span>
+                            <span class="report-metric-value">${trackingActions.formatTime(totalBreakTime)}</span>
+                        </div>
+                        <div class="report-metric">
+                            <span class="report-metric-label">Work Sessions Completed:</span>
+                            <span class="report-metric-value">${workSessions.length}</span>
+                        </div>
+                        <div class="report-metric">
+                            <span class="report-metric-label">Average Work Session:</span>
+                            <span class="report-metric-value">${trackingActions.formatTime(avgWorkSession)}</span>
+                        </div>
+                        <div class="report-metric">
+                            <span class="report-metric-label">Average Break Session:</span>
+                            <span class="report-metric-value">${trackingActions.formatTime(avgBreakSession)}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="report-section">
+                        <div class="report-section-title">Key Achievements</div>
+                        <div class="report-achievement">Completed ${workSessions.length} focused work sessions</div>
+                        <div class="report-achievement">Maintained focus for ${trackingActions.formatTime(totalWorkTime)} total time</div>
+                        ${mostProductiveDay.date ? `
+                            <div class="report-achievement">Most productive day: ${mostProductiveDay.date} (${trackingActions.formatTime(mostProductiveDay.workTime)} of focused work)</div>
+                        ` : ''}
+                    </div>
+                    
+                    <div class="report-section">
+                        <div class="report-section-title">Performance Insights</div>
+                        <div class="report-achievement">Work/Break Ratio: ${Math.round(totalWorkTime / (totalWorkTime + totalBreakTime) * 100)}% work, ${Math.round(totalBreakTime / (totalWorkTime + totalBreakTime) * 100)}% break</div>
+                        <div class="report-achievement">Average sessions per day: ${workSessions.length > 0 ? Math.round(workSessions.length / Object.keys(sessionsByDay).length) : 0}</div>
+                    </div>
+                    
+                    <div class="report-section">
+                        <div class="report-section-title">Recommendations</div>
+                        <div class="report-achievement">Consider adjusting work session length based on task complexity</div>
+                        <div class="report-achievement">Ensure breaks are truly restorative - step away from work completely</div>
+                        <div class="report-achievement">Track task completion in notes to measure effectiveness</div>
+                    </div>
+                `;
+                
                 // Create a blob and download it
-                const blob = new Blob([reportText], { type: 'text/plain' });
+                const blob = new Blob([reportHTML], { type: 'text/html' });
                 const url = URL.createObjectURL(blob);
                 const a = document.createElement('a');
                 a.href = url;
-                a.download = `pomodoro-report-${new Date().toISOString().slice(0, 10)}.txt`;
+                a.download = `productivity-report-${new Date().toISOString().slice(0, 10)}.html`;
                 document.body.appendChild(a);
                 a.click();
                 document.body.removeChild(a);
