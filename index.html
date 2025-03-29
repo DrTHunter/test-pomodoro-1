@@ -394,7 +394,35 @@
         .work-mode { background-color: var(--work-bg); color: var(--work-text); }
         .break-mode { background-color: var(--break-bg); color: var(--break-text); }
 
-        /* Tab container at bottom right */
+        /* Left side tab container */
+        .left-tab-container {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            z-index: 100;
+        }
+
+        .left-tab {
+            background-color: var(--accent-purple);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1.5em;
+        }
+
+        .left-tab:hover { transform: scale(1.1); }
+
+        /* Right side tab container */
         .tab-container {
             position: fixed;
             bottom: 20px;
@@ -424,9 +452,6 @@
 
         .panel {
             position: fixed;
-            bottom: 90px;
-            right: 20px;
-            width: 350px;
             background-color: white;
             border-radius: 15px;
             padding: 15px;
@@ -440,6 +465,9 @@
         .panel.show { display: block; }
 
         .info-panel {
+            top: 90px;
+            left: 20px;
+            width: 350px;
             max-height: 400px;
         }
 
@@ -461,15 +489,11 @@
         }
 
         .productivity-panel {
-            position: fixed;
-            top: 20px;
+            top: 90px;
             left: 20px;
-            width: 300px;
-            background-color: white;
-            border-radius: 15px;
-            padding: 15px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-            z-index: 100;
+            width: 350px;
+            max-height: 400px;
+            display: none;
         }
 
         .productivity-panel h3 {
@@ -588,6 +612,8 @@
         }
 
         .history-panel {
+            bottom: 90px;
+            right: 20px;
             width: 350px;
         }
 
@@ -682,6 +708,8 @@
         }
 
         .rewards-panel {
+            bottom: 90px;
+            right: 20px;
             width: 350px;
         }
 
@@ -769,6 +797,12 @@
         <img class="animal-gif" id="leftAnimalGif" src="assets/working-dog-animation.gif" alt="Working animal">
     </div>
 
+    <!-- Left side tabs -->
+    <div class="left-tab-container">
+        <div class="left-tab" id="infoTabBtn">ℹ️</div>
+        <div class="left-tab" id="productivityTabBtn">📈</div>
+    </div>
+
     <div class="container">
         <h1>Pomodoro Timer</h1>
         
@@ -842,7 +876,7 @@
     </div>
 
     <!-- Productivity Info Panel -->
-    <div class="productivity-panel" id="productivityPanel">
+    <div class="panel productivity-panel" id="productivityPanel">
         <button class="close-panel-btn" id="closeProductivityPanel">×</button>
         <h3>Why Track Productivity?</h3>
         <p>Tracking your work time and accomplishments provides concrete data to demonstrate your value to your organization.</p>
@@ -875,14 +909,13 @@
 
     <!-- Tab container at bottom right -->
     <div class="tab-container">
-        <div class="tab" id="infoTabBtn">ℹ️</div>
         <div class="tab" id="noiseTabBtn">🎵</div>
         <div class="tab" id="lofiTabBtn">🎧</div>
         <div class="tab" id="historyTabBtn">📊</div>
         <div class="tab" id="rewardsTabBtn">🏆</div>
     </div>
 
-    <!-- Panels (positioned above the timer) -->
+    <!-- Panels -->
     <div class="panel info-panel" id="infoPanel">
         <h3>About Pomodoro Technique</h3>
         <p>The Pomodoro Technique is a time management method developed by Francesco Cirillo in the late 1980s.</p>
@@ -894,12 +927,12 @@
             <li>Work focused until the timer rings</li>
             <li>Take a <strong>5-minute break</strong></li>
             <li>After 4 work sessions, take a <strong>30-minute break</strong></li>
-            <li><strong>Change tasks</strong> after each Pomodoro to maintain productivity</li>
+            <li><strong>Change tasks periodically</strong> to ensure too much time isn't spent on one thing</li>
         </ol>
         
         <h4>Key Productivity Tips:</h4>
         <ul>
-            <li>Switch tasks every 25 minutes to maintain fresh focus</li>
+            <li>Switch tasks periodically to maintain fresh focus</li>
             <li>Use work notes to track different tasks</li>
             <li>During breaks, completely disengage from work</li>
             <li>Adjust timer lengths based on task complexity</li>
@@ -1046,6 +1079,7 @@
             rightAnimalGif: document.getElementById('rightAnimalGif'),
             productivityPanel: document.getElementById('productivityPanel'),
             closeProductivityPanel: document.getElementById('closeProductivityPanel'),
+            productivityTabBtn: document.getElementById('productivityTabBtn'),
             body: document.body
         };
 
@@ -1147,7 +1181,8 @@
                 }
             ],
             completedSessions: 0,
-            breakGif: 'assets/break-animation.gif' // You can change this to your own GIF filename
+            breakGif: 'assets/break-animation.gif', // You can change this to your own GIF filename
+            lastTrackingUpdate: 0
         };
 
         // ========== Timer Functions ==========
@@ -1163,6 +1198,7 @@
                     
                     STATE.isRunning = true;
                     STATE.sessionStartTime = new Date();
+                    STATE.lastTrackingUpdate = Date.now();
                     
                     DOM.body.classList.remove('work-mode', 'break-mode');
                     DOM.body.classList.add(STATE.isWorkMode ? 'work-mode' : 'break-mode');
@@ -1184,6 +1220,20 @@
                         const progressPercent = 100 - (STATE.totalSeconds / STATE.initialSeconds * 100);
                         DOM.timerProgress.style.background = `conic-gradient(var(--primary-blue) ${progressPercent}%, transparent ${progressPercent}%)`;
                         
+                        // Update tracking time in real-time
+                        const now = Date.now();
+                        const elapsedSeconds = Math.floor((now - STATE.lastTrackingUpdate) / 1000);
+                        
+                        if (elapsedSeconds >= 1) {
+                            if (STATE.isWorkMode) {
+                                STATE.totalWorkSeconds += elapsedSeconds;
+                            } else {
+                                STATE.totalBreakSeconds += elapsedSeconds;
+                            }
+                            STATE.lastTrackingUpdate = now;
+                            trackingActions.updateDisplay();
+                        }
+                        
                         if (STATE.totalSeconds <= 0) {
                             clearInterval(STATE.timer);
                             STATE.isRunning = false;
@@ -1191,7 +1241,7 @@
                             celebrationActions.triggerCelebration();
                             
                             const sessionEndTime = new Date();
-                            const sessionDuration = Math.floor((STATE.sessionStartTime - sessionEndTime) / 1000) * -1;
+                            const sessionDuration = Math.floor((sessionEndTime - STATE.sessionStartTime) / 1000);
                             
                             if (STATE.isWorkMode) {
                                 STATE.totalWorkSeconds += sessionDuration;
@@ -1828,7 +1878,7 @@
         // ========== Sound Control Functions ==========
         const soundActions = {
             togglePanel(panel) {
-                const panels = [DOM.infoPanel, DOM.noisePanel, DOM.lofiPanel, DOM.historyPanel, DOM.rewardsPanel];
+                const panels = [DOM.infoPanel, DOM.noisePanel, DOM.lofiPanel, DOM.historyPanel, DOM.rewardsPanel, DOM.productivityPanel];
                 panels.forEach(p => {
                     if (p === panel) {
                         p.classList.toggle('show');
@@ -1939,13 +1989,18 @@
                 soundActions.togglePanel(DOM.rewardsPanel);
             });
 
+            DOM.productivityTabBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                soundActions.togglePanel(DOM.productivityPanel);
+            });
+
             DOM.closeProductivityPanel.addEventListener('click', () => {
-                DOM.productivityPanel.style.display = 'none';
+                DOM.productivityPanel.classList.remove('show');
             });
 
             document.addEventListener('click', (e) => {
-                const panels = [DOM.infoPanel, DOM.noisePanel, DOM.lofiPanel, DOM.historyPanel, DOM.rewardsPanel];
-                const tabs = [DOM.infoTabBtn, DOM.noiseTabBtn, DOM.lofiTabBtn, DOM.historyTabBtn, DOM.rewardsTabBtn];
+                const panels = [DOM.infoPanel, DOM.noisePanel, DOM.lofiPanel, DOM.historyPanel, DOM.rewardsPanel, DOM.productivityPanel];
+                const tabs = [DOM.infoTabBtn, DOM.noiseTabBtn, DOM.lofiTabBtn, DOM.historyTabBtn, DOM.rewardsTabBtn, DOM.productivityTabBtn];
                 
                 if (!panels.some(panel => panel.contains(e.target)) && 
                     !tabs.includes(e.target)) {
