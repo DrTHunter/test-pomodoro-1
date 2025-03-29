@@ -1,0 +1,1074 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pomodoro Timer</title>
+    <style>
+        /* === Base Styles === */
+        :root {
+            --primary-pink: #e91e63;
+            --primary-green: #4caf50;
+            --primary-purple: #9c27b0;
+            --primary-blue: #2196f3;
+            --primary-orange: #ff9800;
+            --accent-purple: #673ab7;
+            --background-gradient-1: #ffebee;
+            --background-gradient-2: #e8f5e9;
+            --background-gradient-3: #e3f2fd;
+            --background-gradient-4: #f3e5f5;
+        }
+
+        body {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            color: #333;
+            overflow-x: hidden;
+            background: linear-gradient(-45deg, 
+                var(--background-gradient-1),
+                var(--background-gradient-2),
+                var(--background-gradient-3),
+                var(--background-gradient-4));
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .animal-side {
+            position: fixed;
+            top: 45%;
+            transform: translateY(-50%);
+            width: 100px;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .animal-left { 
+            left: 10px;
+            animation: floatLeft 15s ease-in-out infinite alternate;
+        }
+
+        .animal-right { 
+            right: 10px;
+            animation: floatRight 15s ease-in-out infinite alternate;
+        }
+
+        .animal-gif {
+            width: 80px;
+            height: auto;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1));
+            animation: float 4s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(3deg); }
+        }
+
+        @keyframes floatLeft {
+            0% { transform: translateY(-50%) translateX(0); }
+            100% { transform: translateY(-50%) translateX(20px); }
+        }
+
+        @keyframes floatRight {
+            0% { transform: translateY(-50%) translateX(0); }
+            100% { transform: translateY(-50%) translateX(-20px); }
+        }
+
+        .container {
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            max-width: 800px;
+            width: 90%;
+            backdrop-filter: blur(5px);
+            position: relative;
+            z-index: 2;
+        }
+
+        h1 {
+            color: var(--primary-pink);
+            margin-top: 0;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .timer-display {
+            font-size: 5em;
+            margin: 20px 0;
+            font-weight: bold;
+            color: var(--primary-purple);
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .input-group {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        input {
+            width: 80px;
+            padding: 10px;
+            font-size: 1.2em;
+            text-align: center;
+            border: 2px solid var(--primary-purple);
+            border-radius: 10px;
+            outline: none;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        button {
+            padding: 12px 25px;
+            font-size: 1.1em;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        #start { background-color: var(--primary-green); color: white; }
+        #stop { background-color: #f44336; color: white; }
+        #reset { background-color: var(--primary-blue); color: white; }
+
+        .quick-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .quick-btn {
+            padding: 10px 15px;
+            background-color: var(--primary-orange);
+            color: white;
+        }
+
+        .mode-btn {
+            padding: 10px 20px;
+            font-size: 1em;
+        }
+
+        #setWorkMode { background-color: var(--primary-pink); color: white; }
+        #setBreakMode { background-color: var(--primary-green); color: white; }
+
+        .tracking {
+            margin-top: 30px;
+            background-color: rgba(255, 255, 255, 0.7);
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 15px;
+        }
+
+        .stat-box {
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 10px;
+            border-radius: 8px;
+            min-width: 100px;
+        }
+
+        .notes-container {
+            display: flex;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .notes-column {
+            flex: 1;
+            background-color: rgba(255, 255, 255, 0.7);
+            padding: 15px;
+            border-radius: 10px;
+            min-height: 200px;
+        }
+
+        .notes-column h3 {
+            margin-top: 0;
+            color: white;
+            padding: 8px;
+            border-radius: 5px;
+        }
+
+        #workNotesColumn h3 { background-color: var(--primary-pink); }
+        #breakNotesColumn h3 { background-color: var(--primary-green); }
+
+        textarea {
+            width: 100%;
+            height: 80px;
+            padding: 10px;
+            border-radius: 8px;
+            border: 2px solid var(--primary-purple);
+            resize: vertical;
+            font-family: inherit;
+            margin-bottom: 10px;
+        }
+
+        .note-list {
+            text-align: left;
+            max-height: 300px;
+            overflow-y: auto;
+            padding: 10px;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 8px;
+        }
+
+        .note-item {
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            background-color: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        .work-note { border-left: 4px solid var(--primary-pink); }
+        .break-note { border-left: 4px solid var(--primary-green); }
+
+        .note-time {
+            font-weight: bold;
+            font-size: 0.9em;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .note-text { margin: 5px 0; }
+
+        .note-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 5px;
+            margin-top: 5px;
+        }
+
+        .note-action-btn {
+            padding: 3px 8px;
+            font-size: 0.8em;
+            border-radius: 4px;
+            background-color: #f5f5f5;
+            border: 1px solid #ddd;
+        }
+
+        .note-action-btn:hover { background-color: #e0e0e0; }
+
+        .copy-notes-btn {
+            background-color: var(--primary-purple);
+            color: white;
+            margin-top: 10px;
+            width: 100%;
+        }
+
+        .mode-indicator {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+            font-weight: bold;
+            padding: 8px 15px;
+            border-radius: 50px;
+            display: inline-block;
+        }
+
+        .work-mode { background-color: #ffebee; color: var(--primary-pink); }
+        .break-mode { background-color: #e8f5e9; color: var(--primary-green); }
+
+        .tab-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            z-index: 100;
+        }
+
+        .tab {
+            background-color: var(--accent-purple);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1.5em;
+        }
+
+        .tab:hover { transform: scale(1.1); }
+
+        .panel {
+            position: absolute;
+            bottom: 70px;
+            right: 0;
+            width: 250px;
+            background-color: white;
+            border-radius: 15px;
+            padding: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            display: none;
+        }
+
+        .panel.show { display: block; }
+
+        .info-panel {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .info-panel h3 {
+            color: var(--accent-purple);
+            margin-top: 0;
+        }
+
+        .info-panel p {
+            text-align: left;
+            margin-bottom: 10px;
+            font-size: 0.9em;
+        }
+
+        .info-panel ul {
+            text-align: left;
+            padding-left: 20px;
+            margin-bottom: 15px;
+        }
+
+        .noise-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .noise-play-btn {
+            background-color: var(--accent-purple);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+
+        .noise-option {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .noise-option:hover { background-color: #f5f5f5; }
+        .noise-option.active { background-color: #e1bee7; }
+
+        .noise-option input {
+            margin-right: 10px;
+            width: auto;
+        }
+
+        .noise-option label { flex: 1; cursor: pointer; }
+
+        .volume-control { width: 100%; margin-top: 10px; }
+
+        .lofi-channel {
+            display: block;
+            padding: 10px;
+            margin-bottom: 8px;
+            border-radius: 8px;
+            background-color: #f5f5f5;
+            color: #333;
+            text-decoration: none;
+            transition: background-color 0.2s;
+        }
+
+        .lofi-channel:hover { background-color: #e0e0e0; }
+
+        .lofi-channel img {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+
+        .donate-btn {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background-color: #ff5722;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            z-index: 100;
+            transition: all 0.3s;
+            text-decoration: none;
+            font-size: 1em;
+            font-family: inherit;
+        }
+
+        .donate-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+            background-color: #ff7043;
+        }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb { background: #c1c1c1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #a8a8a8; }
+    </style>
+</head>
+<body>
+    <div class="animal-side animal-left">
+        <img class="animal-gif" src="assets/working-dog-animation.gif" alt="Working dog">
+    </div>
+
+    <div class="container">
+        <h1>Pomodoro Timer</h1>
+        
+        <div class="header-buttons">
+            <button class="mode-btn" id="setWorkMode">Set Work Mode</button>
+            <button class="mode-btn" id="setBreakMode">Set Break Mode</button>
+        </div>
+        
+        <div class="mode-indicator" id="modeIndicator">Work Time</div>
+        
+        <div class="timer-display" id="timer">25:00</div>
+        
+        <div class="input-group">
+            <input type="number" id="minutes" min="0" max="60" value="25" placeholder="Min">
+            <span style="font-size: 2em; margin: 0 5px;">:</span>
+            <input type="number" id="seconds" min="0" max="59" value="0" placeholder="Sec">
+        </div>
+        
+        <div class="buttons">
+            <button id="start">Start</button>
+            <button id="stop">Stop</button>
+            <button id="reset">Reset</button>
+        </div>
+        
+        <div class="quick-buttons">
+            <button class="quick-btn" id="work25">Work (25:00)</button>
+            <button class="quick-btn" id="break5">Break (5:00)</button>
+            <button class="quick-btn" id="break30">Long Break (30:00)</button>
+        </div>
+        
+        <div class="tracking">
+            <h2>Tracking</h2>
+            
+            <div class="stats">
+                <div class="stat-box">
+                    <div>Work Time:</div>
+                    <div id="totalWork">00:00:00</div>
+                </div>
+                <div class="stat-box">
+                    <div>Break Time:</div>
+                    <div id="totalBreak">00:00:00</div>
+                </div>
+            </div>
+            
+            <div class="notes-container">
+                <div class="notes-column" id="workNotesColumn">
+                    <h3>Work Notes</h3>
+                    <textarea id="noteInput" placeholder="What are you working on?"></textarea>
+                    <button id="saveNote" class="quick-btn">Save Work Note</button>
+                    <button id="copyWorkNotes" class="copy-notes-btn">Copy Work Notes</button>
+                    <div class="note-list" id="workNoteList"></div>
+                </div>
+                
+                <div class="notes-column" id="breakNotesColumn">
+                    <h3>Break Notes</h3>
+                    <textarea id="breakNoteInput" placeholder="How are you relaxing?"></textarea>
+                    <button id="saveBreakNote" class="quick-btn">Save Break Note</button>
+                    <button id="copyBreakNotes" class="copy-notes-btn">Copy Break Notes</button>
+                    <div class="note-list" id="breakNoteList"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="animal-side animal-right">
+        <img class="animal-gif" src="assets/working-dog-animation.gif" alt="Working dog">
+    </div>
+
+    <a href="https://www.paypal.com/donate?business=YOUR_PAYPAL_EMAIL&item_name=Support+Pomodoro+Timer+Creator" 
+       class="donate-btn" 
+       target="_blank">
+       Support Creator
+    </a>
+
+    <div class="tab-container">
+        <div class="tab" id="infoTabBtn">ℹ️</div>
+        <div class="panel info-panel" id="infoPanel">
+            <h3>About Pomodoro Technique</h3>
+            <p>The Pomodoro Technique is a time management method developed by Francesco Cirillo in the late 1980s.</p>
+            
+            <h4>How to Use This Timer:</h4>
+            <ol>
+                <li><strong>Choose a task</strong> to focus on</li>
+                <li><strong>Start the 25-minute timer</strong> (work session)</li>
+                <li>Work focused until the timer rings</li>
+                <li>Take a <strong>5-minute break</strong></li>
+                <li>After 4 work sessions, take a <strong>30-minute break</strong></li>
+                <li><strong>Change tasks</strong> after each Pomodoro to maintain productivity</li>
+            </ol>
+            
+            <h4>Key Productivity Tips:</h4>
+            <ul>
+                <li>Switch tasks every 25 minutes to maintain fresh focus</li>
+                <li>Use work notes to track different tasks</li>
+                <li>During breaks, completely disengage from work</li>
+                <li>Adjust timer lengths based on task complexity</li>
+                <li>Use the 5-minute breaks to stretch and refresh</li>
+            </ul>
+        </div>
+
+        <div class="tab" id="noiseTabBtn">🎵</div>
+        <div class="panel" id="noisePanel">
+            <h3 style="margin-top: 0; color: var(--accent-purple);">Background Sounds</h3>
+            <div class="noise-controls">
+                <button class="noise-play-btn" id="noisePlayBtn">⏸️</button>
+                <span id="nowPlaying">No sound selected</span>
+            </div>
+            <div class="noise-option">
+                <input type="radio" id="noise1" name="backgroundNoise" value="rain">
+                <label for="noise1">Rainfall</label>
+            </div>
+            <div class="noise-option">
+                <input type="radio" id="noise2" name="backgroundNoise" value="forest">
+                <label for="noise2">Forest Sounds</label>
+            </div>
+            <div class="noise-option">
+                <input type="radio" id="noise3" name="backgroundNoise" value="waves">
+                <label for="noise3">Ocean Waves</label>
+            </div>
+            <div class="noise-option">
+                <input type="radio" id="noise4" name="backgroundNoise" value="birds">
+                <label for="noise4">Bird Songs</label>
+            </div>
+            <div class="noise-option">
+                <input type="radio" id="noise5" name="backgroundNoise" value="whitenoise">
+                <label for="noise5">White Noise</label>
+            </div>
+            <div class="noise-option">
+                <input type="radio" id="noise6" name="backgroundNoise" value="coffee">
+                <label for="noise6">Coffee Shop</label>
+            </div>
+            <div class="noise-option">
+                <input type="radio" id="noise7" name="backgroundNoise" value="none" checked>
+                <label for="noise7">None</label>
+            </div>
+            <input type="range" min="0" max="1" step="0.1" value="0.5" class="volume-control" id="volumeControl">
+            <div style="text-align: center; margin-top: 5px; font-size: 0.8em;">Volume</div>
+        </div>
+
+        <div class="tab" id="lofiTabBtn">🎧</div>
+        <div class="panel" id="lofiPanel">
+            <h3 style="margin-top: 0; color: var(--accent-purple);">LoFi Channels</h3>
+            <a href="https://www.youtube.com/watch?v=jfKfPfyJRdk" target="_blank" class="lofi-channel">
+                <img src="https://i.ytimg.com/vi/jfKfPfyJRdk/hqdefault.jpg" alt="LoFi Girl">
+                LoFi Girl
+            </a>
+            <a href="https://www.youtube.com/watch?v=rUxyKA_-grg" target="_blank" class="lofi-channel">
+                <img src="https://i.ytimg.com/vi/rUxyKA_-grg/hqdefault.jpg" alt="Chillhop">
+                Chillhop Music
+            </a>
+            <a href="https://www.youtube.com/watch?v=DWcJFNfaw9c" target="_blank" class="lofi-channel">
+                <img src="https://i.ytimg.com/vi/DWcJFNfaw9c/hqdefault.jpg" alt="College Music">
+                College Music
+            </a>
+            <a href="https://www.youtube.com/watch?v=4xDzrJKXOOY" target="_blank" class="lofi-channel">
+                <img src="https://i.ytimg.com/vi/4xDzrJKXOOY/hqdefault.jpg" alt="Ambient Worlds">
+                Ambient Worlds
+            </a>
+            <a href="https://www.youtube.com/watch?v=7NOSDKb0HlU" target="_blank" class="lofi-channel">
+                <img src="https://i.ytimg.com/vi/7NOSDKb0HlU/hqdefault.jpg" alt="Chill Cow">
+                Chill Cow
+            </a>
+        </div>
+    </div>
+
+    <audio id="alarmSound" src="https://assets.mixkit.co/sfx/preview/mixkit-alarm-digital-clock-beep-989.mp3" preload="auto"></audio>
+    <audio id="rainSound" loop src="https://assets.mixkit.co/sfx/preview/mixkit-rain-ambience-1193.mp3" preload="auto"></audio>
+    <audio id="forestSound" loop src="https://assets.mixkit.co/sfx/preview/mixkit-forest-ambience-1683.mp3" preload="auto"></audio>
+    <audio id="wavesSound" loop src="https://assets.mixkit.co/sfx/preview/mixkit-waves-coming-to-shore-1934.mp3" preload="auto"></audio>
+    <audio id="birdsSound" loop src="https://assets.mixkit.co/sfx/preview/mixkit-birds-chirping-near-the-river-2466.mp3" preload="auto"></audio>
+    <audio id="whiteNoiseSound" loop src="https://assets.mixkit.co/sfx/preview/mixkit-wind-ambience-594.mp3" preload="auto"></audio>
+    <audio id="coffeeSound" loop src="https://assets.mixkit.co/sfx/preview/mixkit-busy-coffee-shop-1655.mp3" preload="auto"></audio>
+    <script>
+        // ========== DOM Elements ==========
+        const DOM = {
+            timer: document.getElementById('timer'),
+            minutesInput: document.getElementById('minutes'),
+            secondsInput: document.getElementById('seconds'),
+            startButton: document.getElementById('start'),
+            stopButton: document.getElementById('stop'),
+            resetButton: document.getElementById('reset'),
+            work25Button: document.getElementById('work25'),
+            break5Button: document.getElementById('break5'),
+            break30Button: document.getElementById('break30'),
+            setWorkModeButton: document.getElementById('setWorkMode'),
+            setBreakModeButton: document.getElementById('setBreakMode'),
+            totalWorkDisplay: document.getElementById('totalWork'),
+            totalBreakDisplay: document.getElementById('totalBreak'),
+            noteInput: document.getElementById('noteInput'),
+            breakNoteInput: document.getElementById('breakNoteInput'),
+            saveNoteButton: document.getElementById('saveNote'),
+            saveBreakNoteButton: document.getElementById('saveBreakNote'),
+            copyWorkNotesButton: document.getElementById('copyWorkNotes'),
+            copyBreakNotesButton: document.getElementById('copyBreakNotes'),
+            workNoteList: document.getElementById('workNoteList'),
+            breakNoteList: document.getElementById('breakNoteList'),
+            alarmSound: document.getElementById('alarmSound'),
+            modeIndicator: document.getElementById('modeIndicator'),
+            noiseTabBtn: document.getElementById('noiseTabBtn'),
+            noisePanel: document.getElementById('noisePanel'),
+            noisePlayBtn: document.getElementById('noisePlayBtn'),
+            nowPlaying: document.getElementById('nowPlaying'),
+            volumeControl: document.getElementById('volumeControl'),
+            rainSound: document.getElementById('rainSound'),
+            forestSound: document.getElementById('forestSound'),
+            wavesSound: document.getElementById('wavesSound'),
+            birdsSound: document.getElementById('birdsSound'),
+            whiteNoiseSound: document.getElementById('whiteNoiseSound'),
+            coffeeSound: document.getElementById('coffeeSound'),
+            noiseOptions: document.querySelectorAll('.noise-option input'),
+            lofiTabBtn: document.getElementById('lofiTabBtn'),
+            lofiPanel: document.getElementById('lofiPanel'),
+            infoTabBtn: document.getElementById('infoTabBtn'),
+            infoPanel: document.getElementById('infoPanel')
+        };
+
+        // ========== State Management ==========
+        const STATE = {
+            timer: null,
+            isRunning: false,
+            isWorkMode: true,
+            totalSeconds: 25 * 60,
+            totalWorkSeconds: 0,
+            totalBreakSeconds: 0,
+            sessionStartTime: null,
+            currentNoise: null,
+            currentVolume: 0.5,
+            isNoisePlaying: false,
+            currentNoiseType: 'none',
+            noiseNames: {
+                'rain': 'Rainfall',
+                'forest': 'Forest Sounds',
+                'waves': 'Ocean Waves',
+                'birds': 'Bird Songs',
+                'whitenoise': 'White Noise',
+                'coffee': 'Coffee Shop',
+                'none': 'No sound selected'
+            }
+        };
+
+        // ========== Timer Functions ==========
+        const timerActions = {
+            start() {
+                if (!STATE.isRunning) {
+                    const minutes = parseInt(DOM.minutesInput.value) || 0;
+                    const seconds = parseInt(DOM.secondsInput.value) || 0;
+                    STATE.totalSeconds = minutes * 60 + seconds;
+                    
+                    if (STATE.totalSeconds <= 0) return;
+                    
+                    STATE.isRunning = true;
+                    STATE.sessionStartTime = new Date();
+                    
+                    STATE.timer = setInterval(() => {
+                        STATE.totalSeconds--;
+                        timerActions.updateDisplay();
+                        
+                        if (STATE.totalSeconds <= 0) {
+                            clearInterval(STATE.timer);
+                            STATE.isRunning = false;
+                            DOM.alarmSound.play();
+                            
+                            if (STATE.isWorkMode) {
+                                STATE.totalWorkSeconds += (25 * 60) - STATE.totalSeconds;
+                            } else {
+                                STATE.totalBreakSeconds += (timerActions.isBreakShort() ? 5 * 60 : 30 * 60) - STATE.totalSeconds;
+                            }
+                            trackingActions.updateDisplay();
+                            
+                            STATE.isWorkMode = !STATE.isWorkMode;
+                            timerActions.updateModeIndicator();
+                            
+                            if (STATE.isWorkMode) {
+                                timerActions.setQuickTime(25, 0, true);
+                            } else {
+                                const lastBreakWasShort = localStorage.getItem('lastBreakWasShort') === 'true';
+                                if (lastBreakWasShort) {
+                                    timerActions.setQuickTime(30, 0, false);
+                                    localStorage.setItem('lastBreakWasShort', 'false');
+                                } else {
+                                    timerActions.setQuickTime(5, 0, false);
+                                    localStorage.setItem('lastBreakWasShort', 'true');
+                                }
+                            }
+                        }
+                    }, 1000);
+                }
+            },
+
+            stop() {
+                if (STATE.isRunning) {
+                    clearInterval(STATE.timer);
+                    STATE.isRunning = false;
+                    
+                    const sessionEndTime = new Date();
+                    const sessionDuration = Math.floor((sessionEndTime - STATE.sessionStartTime) / 1000);
+                    
+                    if (STATE.isWorkMode) {
+                        STATE.totalWorkSeconds += sessionDuration;
+                    } else {
+                        STATE.totalBreakSeconds += sessionDuration;
+                    }
+                    trackingActions.updateDisplay();
+                }
+            },
+
+            reset() {
+                timerActions.stop();
+                const minutes = parseInt(DOM.minutesInput.value) || 0;
+                const seconds = parseInt(DOM.secondsInput.value) || 0;
+                STATE.totalSeconds = minutes * 60 + seconds;
+                timerActions.updateDisplay();
+            },
+
+            updateDisplay() {
+                const minutes = Math.floor(STATE.totalSeconds / 60);
+                const seconds = STATE.totalSeconds % 60;
+                DOM.timer.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                
+                if (STATE.totalSeconds <= 60) {
+                    DOM.timer.style.color = '#f44336';
+                } else if (STATE.totalSeconds <= 300) {
+                    DOM.timer.style.color = '#ff9800';
+                } else {
+                    DOM.timer.style.color = STATE.isWorkMode ? 'var(--primary-pink)' : 'var(--primary-green)';
+                }
+            },
+
+            setQuickTime(minutes, seconds, workMode) {
+                timerActions.stop();
+                DOM.minutesInput.value = minutes;
+                DOM.secondsInput.value = seconds;
+                STATE.totalSeconds = minutes * 60 + seconds;
+                STATE.isWorkMode = workMode;
+                timerActions.updateDisplay();
+                timerActions.updateModeIndicator();
+            },
+
+            setMode(workMode) {
+                STATE.isWorkMode = workMode;
+                timerActions.updateModeIndicator();
+            },
+
+            isBreakShort() {
+                return DOM.minutesInput.value === '5' && DOM.secondsInput.value === '0';
+            },
+
+            updateModeIndicator() {
+                if (STATE.isWorkMode) {
+                    DOM.modeIndicator.textContent = "Work Time";
+                    DOM.modeIndicator.className = "mode-indicator work-mode";
+                } else {
+                    DOM.modeIndicator.textContent = "Break Time";
+                    DOM.modeIndicator.className = "mode-indicator break-mode";
+                }
+            }
+        };
+
+        // ========== Tracking Functions ==========
+        const trackingActions = {
+            updateDisplay() {
+                DOM.totalWorkDisplay.textContent = trackingActions.formatTime(STATE.totalWorkSeconds);
+                DOM.totalBreakDisplay.textContent = trackingActions.formatTime(STATE.totalBreakSeconds);
+            },
+
+            formatTime(totalSeconds) {
+                const hours = Math.floor(totalSeconds / 3600);
+                const minutes = Math.floor((totalSeconds % 3600) / 60);
+                const seconds = totalSeconds % 60;
+                return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            }
+        };
+
+        // ========== Notes Functions ==========
+        const noteActions = {
+            saveNote(isWorkNote) {
+                const inputElement = isWorkNote ? DOM.noteInput : DOM.breakNoteInput;
+                const noteText = inputElement.value.trim();
+                
+                if (noteText) {
+                    const now = new Date();
+                    const timeString = now.toLocaleTimeString();
+                    const dateString = now.toLocaleDateString();
+                    
+                    const noteItem = document.createElement('div');
+                    noteItem.className = `note-item ${isWorkNote ? 'work-note' : 'break-note'}`;
+                    
+                    noteItem.innerHTML = `
+                        <div class="note-time">${dateString} ${timeString}</div>
+                        <div class="note-text">${noteText}</div>
+                        <div class="note-actions">
+                            <button class="note-action-btn" onclick="noteActions.deleteNote(this, ${isWorkNote})">Delete</button>
+                        </div>
+                    `;
+                    
+                    const targetList = isWorkNote ? DOM.workNoteList : DOM.breakNoteList;
+                    targetList.insertBefore(noteItem, targetList.firstChild);
+                    inputElement.value = '';
+                    
+                    noteActions.saveToStorage();
+                }
+            },
+
+            deleteNote(button, isWorkNote) {
+                const noteItem = button.closest('.note-item');
+                noteItem.remove();
+                noteActions.saveToStorage();
+            },
+
+            saveToStorage() {
+                const workNotes = [];
+                const breakNotes = [];
+                
+                document.querySelectorAll('#workNoteList .note-item').forEach(item => {
+                    workNotes.push(item.innerHTML);
+                });
+                
+                document.querySelectorAll('#breakNoteList .note-item').forEach(item => {
+                    breakNotes.push(item.innerHTML);
+                });
+                
+                localStorage.setItem('workNotes', JSON.stringify(workNotes));
+                localStorage.setItem('breakNotes', JSON.stringify(breakNotes));
+            },
+
+            loadFromStorage() {
+                const savedWorkNotes = localStorage.getItem('workNotes');
+                if (savedWorkNotes) {
+                    const notes = JSON.parse(savedWorkNotes);
+                    notes.forEach(note => {
+                        const noteItem = document.createElement('div');
+                        noteItem.className = 'note-item work-note';
+                        noteItem.innerHTML = note;
+                        DOM.workNoteList.appendChild(noteItem);
+                    });
+                }
+                
+                const savedBreakNotes = localStorage.getItem('breakNotes');
+                if (savedBreakNotes) {
+                    const notes = JSON.parse(savedBreakNotes);
+                    notes.forEach(note => {
+                        const noteItem = document.createElement('div');
+                        noteItem.className = 'note-item break-note';
+                        noteItem.innerHTML = note;
+                        DOM.breakNoteList.appendChild(noteItem);
+                    });
+                }
+                
+                STATE.totalWorkSeconds = parseInt(localStorage.getItem('totalWorkSeconds')) || 0;
+                STATE.totalBreakSeconds = parseInt(localStorage.getItem('totalBreakSeconds')) || 0;
+                trackingActions.updateDisplay();
+            },
+
+            copyToClipboard(isWorkNotes) {
+                const targetList = isWorkNotes ? DOM.workNoteList : DOM.breakNoteList;
+                let notesText = '';
+                
+                targetList.querySelectorAll('.note-item').forEach(item => {
+                    const time = item.querySelector('.note-time').textContent;
+                    const text = item.querySelector('.note-text').textContent;
+                    notesText += `${time}: ${text}\n\n`;
+                });
+                
+                navigator.clipboard.writeText(notesText.trim()).then(() => {
+                    alert(`${isWorkNotes ? 'Work' : 'Break'} notes copied to clipboard!`);
+                }).catch(err => {
+                    console.error('Failed to copy notes: ', err);
+                });
+            }
+        };
+
+        // ========== Sound Control Functions ==========
+        const soundActions = {
+            togglePanel(panel) {
+                const panels = [DOM.infoPanel, DOM.noisePanel, DOM.lofiPanel];
+                panels.forEach(p => {
+                    if (p === panel) {
+                        p.classList.toggle('show');
+                    } else {
+                        p.classList.remove('show');
+                    }
+                });
+            },
+            
+            toggleNoisePlayback() {
+                if (STATE.currentNoiseType === 'none') return;
+                
+                if (STATE.isNoisePlaying) {
+                    STATE.currentNoise.pause();
+                    DOM.noisePlayBtn.textContent = '▶️';
+                    STATE.isNoisePlaying = false;
+                } else {
+                    STATE.currentNoise.play();
+                    DOM.noisePlayBtn.textContent = '⏸️';
+                    STATE.isNoisePlaying = true;
+                }
+            },
+            
+            changeBackgroundNoise(e) {
+                if (STATE.currentNoise) {
+                    STATE.currentNoise.pause();
+                    STATE.currentNoise.currentTime = 0;
+                }
+                
+                const selectedNoise = e.target.value;
+                STATE.currentNoiseType = selectedNoise;
+                
+                if (selectedNoise !== 'none') {
+                    STATE.currentNoise = document.getElementById(`${selectedNoise}Sound`);
+                    STATE.currentNoise.volume = STATE.currentVolume;
+                    STATE.currentNoise.play();
+                    STATE.isNoisePlaying = true;
+                    DOM.noisePlayBtn.textContent = '⏸️';
+                    DOM.nowPlaying.textContent = `Now playing: ${STATE.noiseNames[selectedNoise]}`;
+                } else {
+                    STATE.currentNoise = null;
+                    STATE.isNoisePlaying = false;
+                    DOM.noisePlayBtn.textContent = '▶️';
+                    DOM.nowPlaying.textContent = STATE.noiseNames['none'];
+                }
+                
+                document.querySelectorAll('.noise-option').forEach(option => {
+                    option.classList.remove('active');
+                });
+                e.target.closest('.noise-option').classList.add('active');
+            },
+            
+            updateVolume() {
+                STATE.currentVolume = parseFloat(DOM.volumeControl.value);
+                if (STATE.currentNoise) {
+                    STATE.currentNoise.volume = STATE.currentVolume;
+                }
+            }
+        };
+
+        // ========== Event Listeners ==========
+        function setupEventListeners() {
+            // Timer controls
+            DOM.startButton.addEventListener('click', timerActions.start);
+            DOM.stopButton.addEventListener('click', timerActions.stop);
+            DOM.resetButton.addEventListener('click', timerActions.reset);
+            DOM.work25Button.addEventListener('click', () => timerActions.setQuickTime(25, 0, true));
+            DOM.break5Button.addEventListener('click', () => timerActions.setQuickTime(5, 0, false));
+            DOM.break30Button.addEventListener('click', () => timerActions.setQuickTime(30, 0, false));
+            DOM.setWorkModeButton.addEventListener('click', () => timerActions.setMode(true));
+            DOM.setBreakModeButton.addEventListener('click', () => timerActions.setMode(false));
+            
+            // Notes controls
+            DOM.saveNoteButton.addEventListener('click', () => noteActions.saveNote(true));
+            DOM.saveBreakNoteButton.addEventListener('click', () => noteActions.saveNote(false));
+            DOM.copyWorkNotesButton.addEventListener('click', () => noteActions.copyToClipboard(true));
+            DOM.copyBreakNotesButton.addEventListener('click', () => noteActions.copyToClipboard(false));
+            
+            // Sound controls
+            DOM.noiseTabBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                soundActions.togglePanel(DOM.noisePanel);
+            });
+            DOM.noisePlayBtn.addEventListener('click', soundActions.toggleNoisePlayback);
+            DOM.volumeControl.addEventListener('input', soundActions.updateVolume);
+            DOM.noiseOptions.forEach(option => {
+                option.addEventListener('change', soundActions.changeBackgroundNoise);
+            });
+            
+            // Lofi tab
+            DOM.lofiTabBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                soundActions.togglePanel(DOM.lofiPanel);
+            });
+
+            // Info tab
+            DOM.infoTabBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                soundActions.togglePanel(DOM.infoPanel);
+            });
+
+            // Close panels when clicking outside
+            document.addEventListener('click', (e) => {
+                const panels = [DOM.infoPanel, DOM.noisePanel, DOM.lofiPanel];
+                const tabs = [DOM.infoTabBtn, DOM.noiseTabBtn, DOM.lofiTabBtn];
+                
+                if (!panels.some(panel => panel.contains(e.target)) && 
+                    !tabs.includes(e.target)) {
+                    panels.forEach(panel => panel.classList.remove('show'));
+                }
+            });
+            
+            // Save state before unload
+            window.addEventListener('beforeunload', () => {
+                localStorage.setItem('totalWorkSeconds', STATE.totalWorkSeconds.toString());
+                localStorage.setItem('totalBreakSeconds', STATE.totalBreakSeconds.toString());
+                noteActions.saveToStorage();
+            });
+        }
+
+        // ========== Initialization ==========
+        function init() {
+            setupEventListeners();
+            noteActions.loadFromStorage();
+            timerActions.updateModeIndicator();
+            soundActions.updateVolume();
+            DOM.nowPlaying.textContent = STATE.noiseNames['none'];
+        }
+
+        // Start the application
+        init();
+    </script>
+</body>
+</html>
