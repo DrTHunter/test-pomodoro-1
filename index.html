@@ -152,6 +152,7 @@
             left: 50%;
             transform: translate(-50%, -50%);
             z-index: 2;
+            transition: none; /* Remove transition to prevent movement during celebration */
         }
 
         .timer-progress {
@@ -460,6 +461,9 @@
             max-height: 60vh;
             overflow-y: auto;
             z-index: 101;
+            right: 20px;
+            bottom: 90px;
+            width: 350px;
         }
 
         .panel.show { display: block; }
@@ -469,6 +473,8 @@
             left: 20px;
             width: 350px;
             max-height: 400px;
+            right: auto;
+            bottom: auto;
         }
 
         .info-panel h3 {
@@ -494,6 +500,8 @@
             width: 350px;
             max-height: 400px;
             display: none;
+            right: auto;
+            bottom: auto;
         }
 
         .productivity-panel h3 {
@@ -611,12 +619,6 @@
             background-color: #ff7043;
         }
 
-        .history-panel {
-            bottom: 90px;
-            right: 20px;
-            width: 350px;
-        }
-
         .history-item {
             padding: 10px;
             margin-bottom: 10px;
@@ -707,12 +709,6 @@
             background-color: #f5f9ff;
         }
 
-        .rewards-panel {
-            bottom: 90px;
-            right: 20px;
-            width: 350px;
-        }
-
         .reward-item {
             display: flex;
             align-items: center;
@@ -786,24 +782,47 @@
             opacity: 0;
         }
 
-        .reward-history-tab {
-            padding: 10px;
-            background-color: #f5f5f5;
-            border-radius: 5px;
-            margin-bottom: 5px;
+        .reward-tabs {
+            display: flex;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .reward-tab {
+            padding: 8px 15px;
             cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
         }
 
-        .reward-history-tab.active {
-            background-color: #e1bee7;
+        .reward-tab.active {
+            border-bottom: 2px solid var(--accent-purple);
+            color: var(--accent-purple);
+            font-weight: bold;
         }
 
-        .reward-history-content {
+        .reward-tab-content {
             display: none;
         }
 
-        .reward-history-content.show {
+        .reward-tab-content.active {
             display: block;
+        }
+
+        .reward-controls {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+
+        .reset-rewards-btn {
+            background-color: var(--primary-orange);
+            color: white;
+        }
+
+        .delete-history-btn {
+            background-color: #f44336;
+            color: white;
         }
 
         ::-webkit-scrollbar { width: 8px; }
@@ -1035,7 +1054,7 @@
         </a>
     </div>
 
-    <div class="panel history-panel" id="historyPanel">
+    <div class="panel" id="historyPanel">
         <h3 style="margin-top: 0; color: var(--accent-purple);">Session History</h3>
         <div class="history-controls">
             <button id="exportHistory" class="export-btn">Export History</button>
@@ -1044,30 +1063,30 @@
         <div id="historyList"></div>
     </div>
 
-    <div class="panel rewards-panel" id="rewardsPanel">
+    <div class="panel" id="rewardsPanel">
         <h3 style="margin-top: 0; color: var(--accent-purple);">Your Rewards</h3>
-        <div class="reward-history-tabs" id="rewardHistoryTabs">
-            <div class="reward-history-tab active" data-period="current">Current</div>
-            <div class="reward-history-tab" data-period="daily">Daily</div>
-            <div class="reward-history-tab" data-period="weekly">Weekly</div>
-            <div class="reward-history-tab" data-period="monthly">Monthly</div>
-        </div>
-        <div id="rewardsList"></div>
         
-        <div class="reward-history-content" id="currentRewards" style="display: block;">
-            <!-- Current rewards will be rendered here -->
+        <div class="reward-tabs">
+            <div class="reward-tab active" data-tab="daily">Daily</div>
+            <div class="reward-tab" data-tab="weekly">Weekly</div>
+            <div class="reward-tab" data-tab="monthly">Monthly</div>
         </div>
-        <div class="reward-history-content" id="dailyRewards">
-            <h4>Daily Rewards History</h4>
+        
+        <div class="reward-tab-content active" id="dailyRewards">
             <div id="dailyRewardsList"></div>
         </div>
-        <div class="reward-history-content" id="weeklyRewards">
-            <h4>Weekly Rewards History</h4>
+        
+        <div class="reward-tab-content" id="weeklyRewards">
             <div id="weeklyRewardsList"></div>
         </div>
-        <div class="reward-history-content" id="monthlyRewards">
-            <h4>Monthly Rewards History</h4>
+        
+        <div class="reward-tab-content" id="monthlyRewards">
             <div id="monthlyRewardsList"></div>
+        </div>
+        
+        <div class="reward-controls">
+            <button id="resetRewards" class="reset-rewards-btn">Reset Rewards</button>
+            <button id="deleteRewardHistory" class="delete-history-btn">Delete History</button>
         </div>
     </div>
 
@@ -1132,22 +1151,18 @@
             exportHistory: document.getElementById('exportHistory'),
             rewardsTabBtn: document.getElementById('rewardsTabBtn'),
             rewardsPanel: document.getElementById('rewardsPanel'),
-            rewardsList: document.getElementById('rewardsList'),
+            dailyRewardsList: document.getElementById('dailyRewardsList'),
+            weeklyRewardsList: document.getElementById('weeklyRewardsList'),
+            monthlyRewardsList: document.getElementById('monthlyRewardsList'),
+            resetRewards: document.getElementById('resetRewards'),
+            deleteRewardHistory: document.getElementById('deleteRewardHistory'),
             confettiContainer: document.getElementById('confettiContainer'),
             leftAnimalGif: document.getElementById('leftAnimalGif'),
             rightAnimalGif: document.getElementById('rightAnimalGif'),
             productivityPanel: document.getElementById('productivityPanel'),
             closeProductivityPanel: document.getElementById('closeProductivityPanel'),
             productivityTabBtn: document.getElementById('productivityTabBtn'),
-            body: document.body,
-            rewardHistoryTabs: document.getElementById('rewardHistoryTabs'),
-            currentRewards: document.getElementById('currentRewards'),
-            dailyRewards: document.getElementById('dailyRewards'),
-            weeklyRewards: document.getElementById('weeklyRewards'),
-            monthlyRewards: document.getElementById('monthlyRewards'),
-            dailyRewardsList: document.getElementById('dailyRewardsList'),
-            weeklyRewardsList: document.getElementById('weeklyRewardsList'),
-            monthlyRewardsList: document.getElementById('monthlyRewardsList')
+            body: document.body
         };
 
         // ========== State Management ==========
@@ -1175,120 +1190,106 @@
             },
             sessionHistory: [],
             notes: [],
-            rewards: [
-                {
-                    id: 'first_session',
-                    title: 'First Timer',
-                    description: 'Complete your first Pomodoro session',
-                    icon: '⏱️',
-                    goal: 1,
-                    current: 0,
-                    reward: '🏅',
-                    earned: false,
-                    type: 'current'
-                },
-                {
-                    id: 'five_sessions',
-                    title: 'Pomodoro Pro',
-                    description: 'Complete 5 work sessions',
-                    icon: '📚',
-                    goal: 5,
-                    current: 0,
-                    reward: '🥉',
-                    earned: false,
-                    type: 'current'
-                },
-                {
-                    id: 'ten_sessions',
-                    title: 'Focus Master',
-                    description: 'Complete 10 work sessions',
-                    icon: '🎯',
-                    goal: 10,
-                    current: 0,
-                    reward: '🥈',
-                    earned: false,
-                    type: 'current'
-                },
-                {
-                    id: 'twenty_sessions',
-                    title: 'Productivity Guru',
-                    description: 'Complete 20 work sessions',
-                    icon: '🧠',
-                    goal: 20,
-                    current: 0,
-                    reward: '🥇',
-                    earned: false,
-                    type: 'current'
-                },
-                {
-                    id: 'one_hour',
-                    title: 'Hour of Power',
-                    description: 'Complete 1 hour of focused work',
-                    icon: '⏳',
-                    goal: 3600,
-                    current: 0,
-                    reward: '🌟',
-                    earned: false,
-                    type: 'current'
-                },
-                {
-                    id: 'five_hours',
-                    title: 'Marathon Runner',
-                    description: 'Complete 5 hours of focused work',
-                    icon: '🏃‍♂️',
-                    goal: 18000,
-                    current: 0,
-                    reward: '🚀',
-                    earned: false,
-                    type: 'current'
-                },
-                {
-                    id: 'ten_hours',
-                    title: 'Dedicated Learner',
-                    description: 'Complete 10 hours of focused work',
-                    icon: '📖',
-                    goal: 36000,
-                    current: 0,
-                    reward: '🏆',
-                    earned: false,
-                    type: 'current'
-                },
-                {
-                    id: 'daily_goal',
-                    title: 'Daily Goal',
-                    description: 'Complete 4 work sessions in a day',
-                    icon: '☀️',
-                    goal: 4,
-                    current: 0,
-                    reward: '🌞',
-                    earned: false,
-                    type: 'daily'
-                },
-                {
-                    id: 'weekly_goal',
-                    title: 'Weekly Goal',
-                    description: 'Complete 20 work sessions in a week',
-                    icon: '📅',
-                    goal: 20,
-                    current: 0,
-                    reward: '🌟',
-                    earned: false,
-                    type: 'weekly'
-                },
-                {
-                    id: 'monthly_goal',
-                    title: 'Monthly Goal',
-                    description: 'Complete 80 work sessions in a month',
-                    icon: '📆',
-                    goal: 80,
-                    current: 0,
-                    reward: '🏆',
-                    earned: false,
-                    type: 'monthly'
-                }
-            ],
+            rewards: {
+                daily: [
+                    {
+                        id: 'daily_1',
+                        title: 'Morning Starter',
+                        description: 'Complete 1 work session before noon',
+                        icon: '🌅',
+                        goal: 1,
+                        current: 0,
+                        reward: '☕',
+                        earned: false
+                    },
+                    {
+                        id: 'daily_2',
+                        title: 'Daily Goal',
+                        description: 'Complete 4 work sessions in a day',
+                        icon: '✅',
+                        goal: 4,
+                        current: 0,
+                        reward: '🏅',
+                        earned: false
+                    },
+                    {
+                        id: 'daily_3',
+                        title: 'Productivity Master',
+                        description: 'Complete 8 work sessions in a day',
+                        icon: '🚀',
+                        goal: 8,
+                        current: 0,
+                        reward: '🌟',
+                        earned: false
+                    }
+                ],
+                weekly: [
+                    {
+                        id: 'weekly_1',
+                        title: 'Week Starter',
+                        description: 'Complete 5 work sessions by Wednesday',
+                        icon: '📅',
+                        goal: 5,
+                        current: 0,
+                        reward: '🌱',
+                        earned: false
+                    },
+                    {
+                        id: 'weekly_2',
+                        title: 'Weekly Goal',
+                        description: 'Complete 20 work sessions this week',
+                        icon: '🎯',
+                        goal: 20,
+                        current: 0,
+                        reward: '🏆',
+                        earned: false
+                    },
+                    {
+                        id: 'weekly_3',
+                        title: 'Ultimate Focus',
+                        description: 'Complete 35 work sessions this week',
+                        icon: '🧠',
+                        goal: 35,
+                        current: 0,
+                        reward: '💎',
+                        earned: false
+                    }
+                ],
+                monthly: [
+                    {
+                        id: 'monthly_1',
+                        title: 'Month Starter',
+                        description: 'Complete 20 work sessions in first 10 days',
+                        icon: '📆',
+                        goal: 20,
+                        current: 0,
+                        reward: '🌞',
+                        earned: false
+                    },
+                    {
+                        id: 'monthly_2',
+                        title: 'Monthly Goal',
+                        description: 'Complete 80 work sessions this month',
+                        icon: '🏁',
+                        goal: 80,
+                        current: 0,
+                        reward: '🚀',
+                        earned: false
+                    },
+                    {
+                        id: 'monthly_3',
+                        title: 'Legendary Month',
+                        description: 'Complete 120 work sessions this month',
+                        icon: '🏆',
+                        goal: 120,
+                        current: 0,
+                        reward: '💎',
+                        earned: false
+                    }
+                ]
+            },
             completedSessions: 0,
-            breakGif: 'assets/break-animation.gif', // You can change this to your own GIF filename
+            breakGif: 'assets/break-animation.gif',
             lastTrackingUpdate: 0,
             dailyCompletedSessions: 0,
             weeklyCompletedSessions: 0,
@@ -1623,6 +1624,8 @@
             updateSessionCounters() {
                 const now = new Date();
                 const today = now.toDateString();
+                const currentDay = now.getDay(); // 0 (Sunday) to 6 (Saturday)
+                const currentDate = now.getDate();
                 const currentMonth = now.getMonth();
                 const currentYear = now.getFullYear();
                 
@@ -1635,7 +1638,7 @@
                     STATE.dailyCompletedSessions = 0;
                     
                     // Check if new week (Monday)
-                    if (now.getDay() === 1 || !STATE.lastSessionDate) {
+                    if (currentDay === 1 || !STATE.lastSessionDate) {
                         if (STATE.weeklyCompletedSessions > 0) {
                             rewardActions.archiveRewardProgress('weekly', STATE.weeklyCompletedSessions);
                         }
@@ -1643,7 +1646,7 @@
                     }
                     
                     // Check if new month
-                    if (now.getDate() === 1 || !STATE.lastSessionDate) {
+                    if (currentDate === 1 || !STATE.lastSessionDate) {
                         if (STATE.monthlyCompletedSessions > 0) {
                             rewardActions.archiveRewardProgress('monthly', STATE.monthlyCompletedSessions);
                         }
@@ -1686,26 +1689,9 @@
             
             updateRewards(type, duration) {
                 if (type === 'work') {
-                    STATE.rewards.forEach(reward => {
-                        if (reward.type === 'current' && reward.id.includes('session') && !reward.earned) {
-                            reward.current = STATE.completedSessions;
-                            if (reward.current >= reward.goal) {
-                                reward.earned = true;
-                                this.showRewardNotification(reward);
-                                celebrationActions.showBigReward(reward);
-                            }
-                        }
-                        
-                        if (reward.type === 'current' && reward.id.includes('hour') && !reward.earned) {
-                            reward.current = STATE.totalWorkSeconds;
-                            if (reward.current >= reward.goal) {
-                                reward.earned = true;
-                                this.showRewardNotification(reward);
-                                celebrationActions.showBigReward(reward);
-                            }
-                        }
-                        
-                        if (reward.type === 'daily' && !reward.earned) {
+                    // Update daily rewards
+                    STATE.rewards.daily.forEach(reward => {
+                        if (!reward.earned) {
                             reward.current = STATE.dailyCompletedSessions;
                             if (reward.current >= reward.goal) {
                                 reward.earned = true;
@@ -1713,8 +1699,11 @@
                                 celebrationActions.showBigReward(reward);
                             }
                         }
-                        
-                        if (reward.type === 'weekly' && !reward.earned) {
+                    });
+                    
+                    // Update weekly rewards
+                    STATE.rewards.weekly.forEach(reward => {
+                        if (!reward.earned) {
                             reward.current = STATE.weeklyCompletedSessions;
                             if (reward.current >= reward.goal) {
                                 reward.earned = true;
@@ -1722,8 +1711,11 @@
                                 celebrationActions.showBigReward(reward);
                             }
                         }
-                        
-                        if (reward.type === 'monthly' && !reward.earned) {
+                    });
+                    
+                    // Update monthly rewards
+                    STATE.rewards.monthly.forEach(reward => {
+                        if (!reward.earned) {
                             reward.current = STATE.monthlyCompletedSessions;
                             if (reward.current >= reward.goal) {
                                 reward.earned = true;
@@ -1829,31 +1821,20 @@
                     }));
                 }
                 
-                STATE.rewards.forEach(reward => {
-                    if (reward.type === 'current' && reward.id.includes('session')) {
-                        reward.current = STATE.completedSessions;
-                        reward.earned = reward.current >= reward.goal;
-                    }
-                    
-                    if (reward.type === 'current' && reward.id.includes('hour')) {
-                        reward.current = STATE.totalWorkSeconds;
-                        reward.earned = reward.current >= reward.goal;
-                    }
-                    
-                    if (reward.type === 'daily') {
-                        reward.current = STATE.dailyCompletedSessions;
-                        reward.earned = reward.current >= reward.goal;
-                    }
-                    
-                    if (reward.type === 'weekly') {
-                        reward.current = STATE.weeklyCompletedSessions;
-                        reward.earned = reward.current >= reward.goal;
-                    }
-                    
-                    if (reward.type === 'monthly') {
-                        reward.current = STATE.monthlyCompletedSessions;
-                        reward.earned = reward.current >= reward.goal;
-                    }
+                // Update earned status for all rewards
+                Object.keys(STATE.rewards).forEach(type => {
+                    STATE.rewards[type].forEach(reward => {
+                        if (type === 'daily') {
+                            reward.current = STATE.dailyCompletedSessions;
+                            reward.earned = reward.current >= reward.goal;
+                        } else if (type === 'weekly') {
+                            reward.current = STATE.weeklyCompletedSessions;
+                            reward.earned = reward.current >= reward.goal;
+                        } else if (type === 'monthly') {
+                            reward.current = STATE.monthlyCompletedSessions;
+                            reward.earned = reward.current >= reward.goal;
+                        }
+                    });
                 });
                 
                 this.renderRewards();
@@ -1861,89 +1842,12 @@
             },
             
             renderRewards() {
-                DOM.currentRewards.innerHTML = '';
-                
-                STATE.rewards.filter(reward => reward.type === 'current').forEach(reward => {
-                    const rewardItem = document.createElement('div');
-                    rewardItem.className = `reward-item ${reward.earned ? 'reward-earned' : ''}`;
-                    
-                    const progressPercent = Math.min(100, (reward.current / reward.goal) * 100);
-                    
-                    rewardItem.innerHTML = `
-                        <div class="reward-icon">${reward.icon}</div>
-                        <div class="reward-details">
-                            <div class="reward-title">${reward.title}</div>
-                            <div class="reward-description">${reward.description}</div>
-                            ${!reward.earned ? `
-                                <div class="reward-progress">
-                                    <div class="progress-bar" style="width: ${progressPercent}%"></div>
-                                </div>
-                                <div class="reward-status">${reward.current}/${reward.goal} ${reward.id.includes('hour') ? 'seconds' : 'sessions'}</div>
-                            ` : ''}
-                        </div>
-                        ${reward.earned ? `<div class="reward-emoji">${reward.reward}</div>` : ''}
-                    `;
-                    
-                    DOM.currentRewards.appendChild(rewardItem);
-                });
-            },
-            
-            renderRewardHistory() {
                 DOM.dailyRewardsList.innerHTML = '';
                 DOM.weeklyRewardsList.innerHTML = '';
                 DOM.monthlyRewardsList.innerHTML = '';
                 
-                // Render daily history
-                STATE.rewardHistory.daily.forEach(item => {
-                    const historyItem = document.createElement('div');
-                    historyItem.className = 'reward-item';
-                    historyItem.innerHTML = `
-                        <div class="reward-icon">☀️</div>
-                        <div class="reward-details">
-                            <div class="reward-title">${item.periodName}</div>
-                            <div class="reward-description">Completed ${item.completedSessions} sessions</div>
-                            <div class="reward-status">Archived on ${item.archivedAt.toLocaleDateString()}</div>
-                        </div>
-                    `;
-                    DOM.dailyRewardsList.appendChild(historyItem);
-                });
-                
-                // Render weekly history
-                STATE.rewardHistory.weekly.forEach(item => {
-                    const historyItem = document.createElement('div');
-                    historyItem.className = 'reward-item';
-                    historyItem.innerHTML = `
-                        <div class="reward-icon">📅</div>
-                        <div class="reward-details">
-                            <div class="reward-title">${item.periodName}</div>
-                            <div class="reward-description">Completed ${item.completedSessions} sessions</div>
-                            <div class="reward-status">Archived on ${item.archivedAt.toLocaleDateString()}</div>
-                        </div>
-                    `;
-                    DOM.weeklyRewardsList.appendChild(historyItem);
-                });
-                
-                // Render monthly history
-                STATE.rewardHistory.monthly.forEach(item => {
-                    const historyItem = document.createElement('div');
-                    historyItem.className = 'reward-item';
-                    historyItem.innerHTML = `
-                        <div class="reward-icon">📆</div>
-                        <div class="reward-details">
-                            <div class="reward-title">${item.periodName}</div>
-                            <div class="reward-description">Completed ${item.completedSessions} sessions</div>
-                            <div class="reward-status">Archived on ${item.archivedAt.toLocaleDateString()}</div>
-                        </div>
-                    `;
-                    DOM.monthlyRewardsList.appendChild(historyItem);
-                });
-                
-                // Render current daily, weekly, monthly progress
-                STATE.rewards.filter(reward => reward.type !== 'current').forEach(reward => {
-                    const container = reward.type === 'daily' ? DOM.dailyRewardsList : 
-                                      reward.type === 'weekly' ? DOM.weeklyRewardsList : 
-                                      DOM.monthlyRewardsList;
-                    
+                // Render daily rewards
+                STATE.rewards.daily.forEach(reward => {
                     const rewardItem = document.createElement('div');
                     rewardItem.className = `reward-item ${reward.earned ? 'reward-earned' : ''}`;
                     
@@ -1964,23 +1868,97 @@
                         ${reward.earned ? `<div class="reward-emoji">${reward.reward}</div>` : ''}
                     `;
                     
-                    container.insertBefore(rewardItem, container.firstChild);
+                    DOM.dailyRewardsList.appendChild(rewardItem);
+                });
+                
+                // Render weekly rewards
+                STATE.rewards.weekly.forEach(reward => {
+                    const rewardItem = document.createElement('div');
+                    rewardItem.className = `reward-item ${reward.earned ? 'reward-earned' : ''}`;
+                    
+                    const progressPercent = Math.min(100, (reward.current / reward.goal) * 100);
+                    
+                    rewardItem.innerHTML = `
+                        <div class="reward-icon">${reward.icon}</div>
+                        <div class="reward-details">
+                            <div class="reward-title">${reward.title}</div>
+                            <div class="reward-description">${reward.description}</div>
+                            ${!reward.earned ? `
+                                <div class="reward-progress">
+                                    <div class="progress-bar" style="width: ${progressPercent}%"></div>
+                                </div>
+                                <div class="reward-status">${reward.current}/${reward.goal} sessions</div>
+                            ` : ''}
+                        </div>
+                        ${reward.earned ? `<div class="reward-emoji">${reward.reward}</div>` : ''}
+                    `;
+                    
+                    DOM.weeklyRewardsList.appendChild(rewardItem);
+                });
+                
+                // Render monthly rewards
+                STATE.rewards.monthly.forEach(reward => {
+                    const rewardItem = document.createElement('div');
+                    rewardItem.className = `reward-item ${reward.earned ? 'reward-earned' : ''}`;
+                    
+                    const progressPercent = Math.min(100, (reward.current / reward.goal) * 100);
+                    
+                    rewardItem.innerHTML = `
+                        <div class="reward-icon">${reward.icon}</div>
+                        <div class="reward-details">
+                            <div class="reward-title">${reward.title}</div>
+                            <div class="reward-description">${reward.description}</div>
+                            ${!reward.earned ? `
+                                <div class="reward-progress">
+                                    <div class="progress-bar" style="width: ${progressPercent}%"></div>
+                                </div>
+                                <div class="reward-status">${reward.current}/${reward.goal} sessions</div>
+                            ` : ''}
+                        </div>
+                        ${reward.earned ? `<div class="reward-emoji">${reward.reward}</div>` : ''}
+                    `;
+                    
+                    DOM.monthlyRewardsList.appendChild(rewardItem);
                 });
             },
             
+            renderRewardHistory() {
+                // This function will be called when viewing history tabs
+                // Currently we're showing current progress in the main tabs
+            },
+            
             resetRewards() {
-                if (confirm('Are you sure you want to reset all rewards progress?')) {
-                    STATE.rewards.forEach(reward => {
+                if (confirm('Are you sure you want to reset all rewards progress? This will not delete your history.')) {
+                    STATE.rewards.daily.forEach(reward => {
                         reward.current = 0;
                         reward.earned = false;
                     });
-                    STATE.completedSessions = 0;
+                    STATE.rewards.weekly.forEach(reward => {
+                        reward.current = 0;
+                        reward.earned = false;
+                    });
+                    STATE.rewards.monthly.forEach(reward => {
+                        reward.current = 0;
+                        reward.earned = false;
+                    });
+                    
                     STATE.dailyCompletedSessions = 0;
                     STATE.weeklyCompletedSessions = 0;
                     STATE.monthlyCompletedSessions = 0;
-                    STATE.rewardHistory = { daily: [], weekly: [], monthly: [] };
+                    
                     this.saveRewards();
                     this.renderRewards();
+                }
+            },
+            
+            deleteRewardHistory() {
+                if (confirm('Are you sure you want to delete all reward history? This cannot be undone.')) {
+                    STATE.rewardHistory = {
+                        daily: [],
+                        weekly: [],
+                        monthly: []
+                    };
+                    this.saveRewards();
                     this.renderRewardHistory();
                 }
             }
@@ -2252,11 +2230,6 @@
                         p.classList.remove('show');
                     }
                 });
-                
-                // Special handling for LoFi panel to ensure it opens correctly
-                if (panel === DOM.lofiPanel) {
-                    DOM.lofiPanel.style.display = panel.classList.contains('show') ? 'block' : 'none';
-                }
             },
             
             toggleNoisePlayback() {
@@ -2313,20 +2286,20 @@
         // ========== Reward Tab Functions ==========
         const rewardTabActions = {
             setupTabs() {
-                DOM.rewardHistoryTabs.querySelectorAll('.reward-history-tab').forEach(tab => {
+                document.querySelectorAll('.reward-tab').forEach(tab => {
                     tab.addEventListener('click', () => {
                         // Set active tab
-                        DOM.rewardHistoryTabs.querySelectorAll('.reward-history-tab').forEach(t => {
+                        document.querySelectorAll('.reward-tab').forEach(t => {
                             t.classList.remove('active');
                         });
                         tab.classList.add('active');
                         
                         // Show corresponding content
-                        const period = tab.getAttribute('data-period');
-                        document.querySelectorAll('.reward-history-content').forEach(content => {
-                            content.style.display = 'none';
+                        const tabType = tab.getAttribute('data-tab');
+                        document.querySelectorAll('.reward-tab-content').forEach(content => {
+                            content.classList.remove('active');
                         });
-                        document.getElementById(`${period}Rewards`).style.display = 'block';
+                        document.getElementById(`${tabType}Rewards`).classList.add('active');
                     });
                 });
             }
@@ -2390,6 +2363,9 @@
             DOM.closeProductivityPanel.addEventListener('click', () => {
                 DOM.productivityPanel.classList.remove('show');
             });
+
+            DOM.resetRewards.addEventListener('click', rewardActions.resetRewards);
+            DOM.deleteRewardHistory.addEventListener('click', rewardActions.deleteRewardHistory);
 
             document.addEventListener('click', (e) => {
                 const panels = [DOM.infoPanel, DOM.noisePanel, DOM.lofiPanel, DOM.historyPanel, DOM.rewardsPanel, DOM.productivityPanel];
