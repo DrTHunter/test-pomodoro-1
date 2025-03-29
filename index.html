@@ -336,19 +336,20 @@
             position: absolute;
             bottom: 70px;
             right: 0;
-            width: 250px;
+            width: 300px;
             background-color: white;
             border-radius: 15px;
             padding: 15px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
             display: none;
+            max-height: 60vh;
+            overflow-y: auto;
         }
 
         .panel.show { display: block; }
 
         .info-panel {
             max-height: 400px;
-            overflow-y: auto;
         }
 
         .info-panel h3 {
@@ -450,6 +451,101 @@
             transform: translateY(-3px);
             box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
             background-color: #ff7043;
+        }
+
+        /* History Panel Styles */
+        .history-panel {
+            width: 350px;
+        }
+
+        .history-item {
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+            border-left: 4px solid var(--primary-purple);
+        }
+
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+
+        .history-type {
+            font-weight: bold;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        .work-history { background-color: #ffebee; color: var(--primary-pink); }
+        .break-history { background-color: #e8f5e9; color: var(--primary-green); }
+
+        .history-time {
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        .history-duration {
+            font-weight: bold;
+        }
+
+        .history-notes {
+            margin-top: 5px;
+            padding: 5px;
+            background-color: white;
+            border-radius: 4px;
+        }
+
+        .history-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 5px;
+            margin-top: 5px;
+        }
+
+        .history-action-btn {
+            padding: 3px 8px;
+            font-size: 0.8em;
+            border-radius: 4px;
+            background-color: #f5f5f5;
+            border: 1px solid #ddd;
+        }
+
+        .history-action-btn:hover { background-color: #e0e0e0; }
+
+        .history-controls {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .export-btn {
+            background-color: var(--primary-green);
+            color: white;
+            padding: 8px 15px;
+            margin-top: 10px;
+        }
+
+        .clear-history-btn {
+            background-color: #f44336;
+            color: white;
+            padding: 8px 15px;
+            margin-top: 10px;
+        }
+
+        .editable {
+            border: 1px dashed #ccc;
+            padding: 2px;
+            min-height: 1em;
+        }
+
+        .editable:focus {
+            outline: none;
+            border: 1px solid var(--primary-blue);
+            background-color: #f5f9ff;
         }
 
         ::-webkit-scrollbar { width: 8px; }
@@ -626,6 +722,17 @@
                 Chill Cow
             </a>
         </div>
+
+        <!-- New History Tab -->
+        <div class="tab" id="historyTabBtn">📊</div>
+        <div class="panel history-panel" id="historyPanel">
+            <h3 style="margin-top: 0; color: var(--accent-purple);">Session History</h3>
+            <div class="history-controls">
+                <button id="exportHistory" class="export-btn">Export Report</button>
+                <button id="clearHistory" class="clear-history-btn">Clear History</button>
+            </div>
+            <div id="historyList"></div>
+        </div>
     </div>
 
     <audio id="alarmSound" src="https://assets.mixkit.co/sfx/preview/mixkit-alarm-digital-clock-beep-989.mp3" preload="auto"></audio>
@@ -676,7 +783,12 @@
             lofiTabBtn: document.getElementById('lofiTabBtn'),
             lofiPanel: document.getElementById('lofiPanel'),
             infoTabBtn: document.getElementById('infoTabBtn'),
-            infoPanel: document.getElementById('infoPanel')
+            infoPanel: document.getElementById('infoPanel'),
+            historyTabBtn: document.getElementById('historyTabBtn'),
+            historyPanel: document.getElementById('historyPanel'),
+            historyList: document.getElementById('historyList'),
+            exportHistory: document.getElementById('exportHistory'),
+            clearHistory: document.getElementById('clearHistory')
         };
 
         // ========== State Management ==========
@@ -700,7 +812,8 @@
                 'whitenoise': 'White Noise',
                 'coffee': 'Coffee Shop',
                 'none': 'No sound selected'
-            }
+            },
+            sessionHistory: []
         };
 
         // ========== Timer Functions ==========
@@ -725,11 +838,28 @@
                             STATE.isRunning = false;
                             DOM.alarmSound.play();
                             
+                            // Record the completed session
+                            const sessionEndTime = new Date();
+                            const sessionDuration = Math.floor((STATE.sessionStartTime - sessionEndTime) / 1000) * -1;
+                            
                             if (STATE.isWorkMode) {
-                                STATE.totalWorkSeconds += (25 * 60) - STATE.totalSeconds;
+                                STATE.totalWorkSeconds += sessionDuration;
+                                historyActions.addSession({
+                                    type: 'work',
+                                    duration: sessionDuration,
+                                    notes: DOM.noteInput.value.trim(),
+                                    timestamp: STATE.sessionStartTime
+                                });
                             } else {
-                                STATE.totalBreakSeconds += (timerActions.isBreakShort() ? 5 * 60 : 30 * 60) - STATE.totalSeconds;
+                                STATE.totalBreakSeconds += sessionDuration;
+                                historyActions.addSession({
+                                    type: 'break',
+                                    duration: sessionDuration,
+                                    notes: DOM.breakNoteInput.value.trim(),
+                                    timestamp: STATE.sessionStartTime
+                                });
                             }
+                            
                             trackingActions.updateDisplay();
                             
                             STATE.isWorkMode = !STATE.isWorkMode;
@@ -762,8 +892,20 @@
                     
                     if (STATE.isWorkMode) {
                         STATE.totalWorkSeconds += sessionDuration;
+                        historyActions.addSession({
+                            type: 'work',
+                            duration: sessionDuration,
+                            notes: DOM.noteInput.value.trim(),
+                            timestamp: STATE.sessionStartTime
+                        });
                     } else {
                         STATE.totalBreakSeconds += sessionDuration;
+                        historyActions.addSession({
+                            type: 'break',
+                            duration: sessionDuration,
+                            notes: DOM.breakNoteInput.value.trim(),
+                            timestamp: STATE.sessionStartTime
+                        });
                     }
                     trackingActions.updateDisplay();
                 }
@@ -934,10 +1076,133 @@
             }
         };
 
+        // ========== History Functions ==========
+        const historyActions = {
+            addSession(session) {
+                STATE.sessionHistory.push(session);
+                this.saveHistory();
+                this.renderHistory();
+            },
+
+            saveHistory() {
+                localStorage.setItem('sessionHistory', JSON.stringify(STATE.sessionHistory));
+            },
+
+            loadHistory() {
+                const savedHistory = localStorage.getItem('sessionHistory');
+                if (savedHistory) {
+                    STATE.sessionHistory = JSON.parse(savedHistory);
+                    this.renderHistory();
+                }
+            },
+
+            clearHistory() {
+                STATE.sessionHistory = [];
+                this.saveHistory();
+                this.renderHistory();
+            },
+
+            renderHistory() {
+                DOM.historyList.innerHTML = '';
+                
+                if (STATE.sessionHistory.length === 0) {
+                    DOM.historyList.innerHTML = '<p>No sessions recorded yet</p>';
+                    return;
+                }
+                
+                STATE.sessionHistory.forEach((session, index) => {
+                    const historyItem = document.createElement('div');
+                    historyItem.className = 'history-item';
+                    
+                    const date = new Date(session.timestamp);
+                    const dateString = date.toLocaleDateString();
+                    const timeString = date.toLocaleTimeString();
+                    const durationString = trackingActions.formatTime(session.duration);
+                    
+                    historyItem.innerHTML = `
+                        <div class="history-header">
+                            <span class="history-type ${session.type}-history">${session.type.charAt(0).toUpperCase() + session.type.slice(1)}</span>
+                            <span class="history-time">${dateString} ${timeString}</span>
+                        </div>
+                        <div class="history-duration">Duration: ${durationString}</div>
+                        <div class="history-notes editable" contenteditable="true" data-index="${index}">${session.notes || 'No notes'}</div>
+                        <div class="history-actions">
+                            <button class="history-action-btn" onclick="historyActions.deleteSession(${index})">Delete</button>
+                        </div>
+                    `;
+                    
+                    DOM.historyList.appendChild(historyItem);
+                });
+                
+                // Add event listeners for editable notes
+                document.querySelectorAll('.history-notes').forEach(element => {
+                    element.addEventListener('blur', function() {
+                        const index = parseInt(this.getAttribute('data-index'));
+                        STATE.sessionHistory[index].notes = this.textContent;
+                        historyActions.saveHistory();
+                    });
+                });
+            },
+
+            deleteSession(index) {
+                STATE.sessionHistory.splice(index, 1);
+                this.saveHistory();
+                this.renderHistory();
+            },
+
+            exportToReport() {
+                if (STATE.sessionHistory.length === 0) {
+                    alert('No sessions to export');
+                    return;
+                }
+                
+                let reportText = 'Pomodoro Session Report\n\n';
+                reportText += `Generated on: ${new Date().toLocaleString()}\n\n`;
+                reportText += '==================================\n\n';
+                
+                // Summary
+                const totalWork = STATE.sessionHistory
+                    .filter(s => s.type === 'work')
+                    .reduce((sum, session) => sum + session.duration, 0);
+                
+                const totalBreak = STATE.sessionHistory
+                    .filter(s => s.type === 'break')
+                    .reduce((sum, session) => sum + session.duration, 0);
+                
+                reportText += `Total Work Time: ${trackingActions.formatTime(totalWork)}\n`;
+                reportText += `Total Break Time: ${trackingActions.formatTime(totalBreak)}\n\n`;
+                reportText += '==================================\n\n';
+                
+                // Detailed sessions
+                reportText += 'Session Details:\n\n';
+                
+                STATE.sessionHistory.forEach(session => {
+                    const date = new Date(session.timestamp);
+                    reportText += `Type: ${session.type.charAt(0).toUpperCase() + session.type.slice(1)}\n`;
+                    reportText += `Date: ${date.toLocaleDateString()}\n`;
+                    reportText += `Time: ${date.toLocaleTimeString()}\n`;
+                    reportText += `Duration: ${trackingActions.formatTime(session.duration)}\n`;
+                    reportText += `Notes: ${session.notes || 'None'}\n`;
+                    reportText += '----------------------------------\n';
+                });
+                
+                // Create a blob and download it
+                const blob = new Blob([reportText], { type: 'text/plain' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `pomodoro-report-${new Date().toISOString().slice(0, 10)}.txt`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            }
+        };
+
         // ========== Sound Control Functions ==========
         const soundActions = {
             togglePanel(panel) {
-                const panels = [DOM.infoPanel, DOM.noisePanel, DOM.lofiPanel];
+                const panels = [DOM.infoPanel, DOM.noisePanel, DOM.lofiPanel, DOM.historyPanel];
                 panels.forEach(p => {
                     if (p === panel) {
                         p.classList.toggle('show');
@@ -1039,10 +1304,24 @@
                 soundActions.togglePanel(DOM.infoPanel);
             });
 
+            // History tab
+            DOM.historyTabBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                soundActions.togglePanel(DOM.historyPanel);
+            });
+
+            // History controls
+            DOM.exportHistory.addEventListener('click', historyActions.exportToReport);
+            DOM.clearHistory.addEventListener('click', () => {
+                if (confirm('Are you sure you want to clear all session history?')) {
+                    historyActions.clearHistory();
+                }
+            });
+
             // Close panels when clicking outside
             document.addEventListener('click', (e) => {
-                const panels = [DOM.infoPanel, DOM.noisePanel, DOM.lofiPanel];
-                const tabs = [DOM.infoTabBtn, DOM.noiseTabBtn, DOM.lofiTabBtn];
+                const panels = [DOM.infoPanel, DOM.noisePanel, DOM.lofiPanel, DOM.historyPanel];
+                const tabs = [DOM.infoTabBtn, DOM.noiseTabBtn, DOM.lofiTabBtn, DOM.historyTabBtn];
                 
                 if (!panels.some(panel => panel.contains(e.target)) && 
                     !tabs.includes(e.target)) {
@@ -1055,6 +1334,7 @@
                 localStorage.setItem('totalWorkSeconds', STATE.totalWorkSeconds.toString());
                 localStorage.setItem('totalBreakSeconds', STATE.totalBreakSeconds.toString());
                 noteActions.saveToStorage();
+                historyActions.saveHistory();
             });
         }
 
@@ -1062,6 +1342,7 @@
         function init() {
             setupEventListeners();
             noteActions.loadFromStorage();
+            historyActions.loadHistory();
             timerActions.updateModeIndicator();
             soundActions.updateVolume();
             DOM.nowPlaying.textContent = STATE.noiseNames['none'];
