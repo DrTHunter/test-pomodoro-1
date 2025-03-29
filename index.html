@@ -17,6 +17,10 @@
             --background-gradient-2: #e8f5e9;
             --background-gradient-3: #e3f2fd;
             --background-gradient-4: #f3e5f5;
+            --work-bg: #ffebee;
+            --break-bg: #e8f5e9;
+            --work-text: #e91e63;
+            --break-text: #4caf50;
         }
 
         body {
@@ -35,12 +39,31 @@
                 var(--background-gradient-4));
             background-size: 400% 400%;
             animation: gradientBG 15s ease infinite;
+            transition: background-color 0.5s ease;
+        }
+
+        body.work-mode {
+            background-color: var(--work-bg);
+            animation: none;
+        }
+
+        body.break-mode {
+            background-color: var(--break-bg);
+            animation: none;
         }
 
         @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+            0% { background-position: 0% 50%; background-color: var(--background-gradient-1); }
+            25% { background-color: var(--background-gradient-2); }
+            50% { background-position: 100% 50%; background-color: var(--background-gradient-3); }
+            75% { background-color: var(--background-gradient-4); }
+            100% { background-position: 0% 50%; background-color: var(--background-gradient-1); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
         }
 
         .animal-side {
@@ -302,8 +325,8 @@
             display: inline-block;
         }
 
-        .work-mode { background-color: #ffebee; color: var(--primary-pink); }
-        .break-mode { background-color: #e8f5e9; color: var(--primary-green); }
+        .work-mode { background-color: var(--work-bg); color: var(--work-text); }
+        .break-mode { background-color: var(--break-bg); color: var(--break-text); }
 
         .tab-container {
             position: fixed;
@@ -336,7 +359,7 @@
             position: absolute;
             bottom: 70px;
             right: 0;
-            width: 300px;
+            width: 350px;
             background-color: white;
             border-radius: 15px;
             padding: 15px;
@@ -480,8 +503,8 @@
             font-size: 0.9em;
         }
 
-        .work-history { background-color: #ffebee; color: var(--primary-pink); }
-        .break-history { background-color: #e8f5e9; color: var(--primary-green); }
+        .work-history { background-color: var(--work-bg); color: var(--work-text); }
+        .break-history { background-color: var(--break-bg); color: var(--break-text); }
 
         .history-time {
             font-size: 0.9em;
@@ -546,6 +569,85 @@
             outline: none;
             border: 1px solid var(--primary-blue);
             background-color: #f5f9ff;
+        }
+
+        /* Rewards Panel Styles */
+        .rewards-panel {
+            width: 350px;
+        }
+
+        .reward-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+        }
+
+        .reward-icon {
+            font-size: 1.5em;
+            margin-right: 10px;
+            width: 40px;
+            text-align: center;
+        }
+
+        .reward-details {
+            flex: 1;
+        }
+
+        .reward-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .reward-progress {
+            height: 10px;
+            background-color: #e0e0e0;
+            border-radius: 5px;
+            margin-top: 5px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background-color: var(--primary-green);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        .reward-status {
+            font-size: 0.8em;
+            color: #666;
+            margin-top: 3px;
+        }
+
+        .reward-earned {
+            background-color: #e8f5e9;
+            border-left: 4px solid var(--primary-green);
+        }
+
+        .reward-emoji {
+            font-size: 1.2em;
+            margin-left: 10px;
+        }
+
+        /* Confetti */
+        .confetti-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            opacity: 0;
         }
 
         ::-webkit-scrollbar { width: 8px; }
@@ -723,7 +825,6 @@
             </a>
         </div>
 
-        <!-- New History Tab -->
         <div class="tab" id="historyTabBtn">📊</div>
         <div class="panel history-panel" id="historyPanel">
             <h3 style="margin-top: 0; color: var(--accent-purple);">Session History</h3>
@@ -733,9 +834,20 @@
             </div>
             <div id="historyList"></div>
         </div>
+
+        <!-- New Rewards Tab -->
+        <div class="tab" id="rewardsTabBtn">🏆</div>
+        <div class="panel rewards-panel" id="rewardsPanel">
+            <h3 style="margin-top: 0; color: var(--accent-purple);">Your Rewards</h3>
+            <div id="rewardsList"></div>
+        </div>
     </div>
 
+    <!-- Confetti Container -->
+    <div class="confetti-container" id="confettiContainer"></div>
+
     <audio id="alarmSound" src="https://assets.mixkit.co/sfx/preview/mixkit-alarm-digital-clock-beep-989.mp3" preload="auto"></audio>
+    <audio id="applauseSound" src="https://assets.mixkit.co/sfx/preview/mixkit-achievement-bell-600.mp3" preload="auto"></audio>
     <audio id="rainSound" loop src="https://assets.mixkit.co/sfx/preview/mixkit-rain-ambience-1193.mp3" preload="auto"></audio>
     <audio id="forestSound" loop src="https://assets.mixkit.co/sfx/preview/mixkit-forest-ambience-1683.mp3" preload="auto"></audio>
     <audio id="wavesSound" loop src="https://assets.mixkit.co/sfx/preview/mixkit-waves-coming-to-shore-1934.mp3" preload="auto"></audio>
@@ -767,6 +879,7 @@
             workNoteList: document.getElementById('workNoteList'),
             breakNoteList: document.getElementById('breakNoteList'),
             alarmSound: document.getElementById('alarmSound'),
+            applauseSound: document.getElementById('applauseSound'),
             modeIndicator: document.getElementById('modeIndicator'),
             noiseTabBtn: document.getElementById('noiseTabBtn'),
             noisePanel: document.getElementById('noisePanel'),
@@ -788,7 +901,12 @@
             historyPanel: document.getElementById('historyPanel'),
             historyList: document.getElementById('historyList'),
             exportHistory: document.getElementById('exportHistory'),
-            clearHistory: document.getElementById('clearHistory')
+            clearHistory: document.getElementById('clearHistory'),
+            rewardsTabBtn: document.getElementById('rewardsTabBtn'),
+            rewardsPanel: document.getElementById('rewardsPanel'),
+            rewardsList: document.getElementById('rewardsList'),
+            confettiContainer: document.getElementById('confettiContainer'),
+            body: document.body
         };
 
         // ========== State Management ==========
@@ -813,7 +931,80 @@
                 'coffee': 'Coffee Shop',
                 'none': 'No sound selected'
             },
-            sessionHistory: []
+            sessionHistory: [],
+            rewards: [
+                {
+                    id: 'first_session',
+                    title: 'First Timer',
+                    description: 'Complete your first Pomodoro session',
+                    icon: '⏱️',
+                    goal: 1,
+                    current: 0,
+                    reward: '🏅',
+                    earned: false
+                },
+                {
+                    id: 'five_sessions',
+                    title: 'Pomodoro Pro',
+                    description: 'Complete 5 work sessions',
+                    icon: '📚',
+                    goal: 5,
+                    current: 0,
+                    reward: '🥉',
+                    earned: false
+                },
+                {
+                    id: 'ten_sessions',
+                    title: 'Focus Master',
+                    description: 'Complete 10 work sessions',
+                    icon: '🎯',
+                    goal: 10,
+                    current: 0,
+                    reward: '🥈',
+                    earned: false
+                },
+                {
+                    id: 'twenty_sessions',
+                    title: 'Productivity Guru',
+                    description: 'Complete 20 work sessions',
+                    icon: '🧠',
+                    goal: 20,
+                    current: 0,
+                    reward: '🥇',
+                    earned: false
+                },
+                {
+                    id: 'one_hour',
+                    title: 'Hour of Power',
+                    description: 'Complete 1 hour of focused work',
+                    icon: '⏳',
+                    goal: 3600,
+                    current: 0,
+                    reward: '🌟',
+                    earned: false
+                },
+                {
+                    id: 'five_hours',
+                    title: 'Marathon Runner',
+                    description: 'Complete 5 hours of focused work',
+                    icon: '🏃‍♂️',
+                    goal: 18000,
+                    current: 0,
+                    reward: '🚀',
+                    earned: false
+                },
+                {
+                    id: 'ten_hours',
+                    title: 'Dedicated Learner',
+                    description: 'Complete 10 hours of focused work',
+                    icon: '📖',
+                    goal: 36000,
+                    current: 0,
+                    reward: '🏆',
+                    earned: false
+                }
+            ],
+            completedSessions: 0
         };
 
         // ========== Timer Functions ==========
@@ -829,6 +1020,10 @@
                     STATE.isRunning = true;
                     STATE.sessionStartTime = new Date();
                     
+                    // Update body class for mode
+                    DOM.body.classList.remove('work-mode', 'break-mode');
+                    DOM.body.classList.add(STATE.isWorkMode ? 'work-mode' : 'break-mode');
+                    
                     STATE.timer = setInterval(() => {
                         STATE.totalSeconds--;
                         timerActions.updateDisplay();
@@ -837,6 +1032,7 @@
                             clearInterval(STATE.timer);
                             STATE.isRunning = false;
                             DOM.alarmSound.play();
+                            celebrationActions.triggerCelebration();
                             
                             // Record the completed session
                             const sessionEndTime = new Date();
@@ -844,12 +1040,14 @@
                             
                             if (STATE.isWorkMode) {
                                 STATE.totalWorkSeconds += sessionDuration;
+                                STATE.completedSessions++;
                                 historyActions.addSession({
                                     type: 'work',
                                     duration: sessionDuration,
                                     notes: DOM.noteInput.value.trim(),
                                     timestamp: STATE.sessionStartTime
                                 });
+                                rewardActions.updateRewards('work', sessionDuration);
                             } else {
                                 STATE.totalBreakSeconds += sessionDuration;
                                 historyActions.addSession({
@@ -864,6 +1062,10 @@
                             
                             STATE.isWorkMode = !STATE.isWorkMode;
                             timerActions.updateModeIndicator();
+                            
+                            // Update body class for new mode
+                            DOM.body.classList.remove('work-mode', 'break-mode');
+                            DOM.body.classList.add(STATE.isWorkMode ? 'work-mode' : 'break-mode');
                             
                             if (STATE.isWorkMode) {
                                 timerActions.setQuickTime(25, 0, true);
@@ -892,12 +1094,14 @@
                     
                     if (STATE.isWorkMode) {
                         STATE.totalWorkSeconds += sessionDuration;
+                        STATE.completedSessions++;
                         historyActions.addSession({
                             type: 'work',
                             duration: sessionDuration,
                             notes: DOM.noteInput.value.trim(),
                             timestamp: STATE.sessionStartTime
                         });
+                        rewardActions.updateRewards('work', sessionDuration);
                     } else {
                         STATE.totalBreakSeconds += sessionDuration;
                         historyActions.addSession({
@@ -926,10 +1130,13 @@
                 
                 if (STATE.totalSeconds <= 60) {
                     DOM.timer.style.color = '#f44336';
+                    DOM.timer.style.animation = 'pulse 1s infinite';
                 } else if (STATE.totalSeconds <= 300) {
                     DOM.timer.style.color = '#ff9800';
+                    DOM.timer.style.animation = 'none';
                 } else {
-                    DOM.timer.style.color = STATE.isWorkMode ? 'var(--primary-pink)' : 'var(--primary-green)';
+                    DOM.timer.style.color = STATE.isWorkMode ? 'var(--work-text)' : 'var(--break-text)';
+                    DOM.timer.style.animation = 'none';
                 }
             },
 
@@ -941,11 +1148,19 @@
                 STATE.isWorkMode = workMode;
                 timerActions.updateDisplay();
                 timerActions.updateModeIndicator();
+                
+                // Update body class for mode
+                DOM.body.classList.remove('work-mode', 'break-mode');
+                DOM.body.classList.add(STATE.isWorkMode ? 'work-mode' : 'break-mode');
             },
 
             setMode(workMode) {
                 STATE.isWorkMode = workMode;
                 timerActions.updateModeIndicator();
+                
+                // Update body class for mode
+                DOM.body.classList.remove('work-mode', 'break-mode');
+                DOM.body.classList.add(STATE.isWorkMode ? 'work-mode' : 'break-mode');
             },
 
             isBreakShort() {
@@ -963,6 +1178,74 @@
             }
         };
 
+        // ========== Celebration Functions ==========
+        const celebrationActions = {
+            triggerCelebration() {
+                // Play applause sound
+                DOM.applauseSound.play();
+                
+                // Create confetti
+                this.createConfetti();
+                
+                // Pulse animation
+                DOM.container.style.animation = 'pulse 0.5s 3';
+                setTimeout(() => {
+                    DOM.container.style.animation = '';
+                }, 1500);
+            },
+            
+            createConfetti() {
+                // Clear any existing confetti
+                DOM.confettiContainer.innerHTML = '';
+                
+                // Create 100 confetti pieces
+                for (let i = 0; i < 100; i++) {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    
+                    // Random properties
+                    const colors = ['#e91e63', '#4caf50', '#2196f3', '#ff9800', '#9c27b0'];
+                    const shapes = ['circle', 'square', 'triangle'];
+                    
+                    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.left = Math.random() * 100 + 'vw';
+                    confetti.style.width = (Math.random() * 10 + 5) + 'px';
+                    confetti.style.height = (Math.random() * 10 + 5) + 'px';
+                    confetti.style.opacity = '1';
+                    confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
+                    
+                    // Animation
+                    const animationDuration = Math.random() * 3 + 2;
+                    confetti.style.animation = `fall ${animationDuration}s linear forwards`;
+                    
+                    // Keyframes for falling
+                    const keyframes = `
+                        @keyframes fall {
+                            to {
+                                transform: translateY(100vh) rotate(${Math.random() * 360}deg);
+                                opacity: 0;
+                            }
+                        }
+                    `;
+                    
+                    // Add keyframes if not already present
+                    if (!document.getElementById('confetti-keyframes')) {
+                        const style = document.createElement('style');
+                        style.id = 'confetti-keyframes';
+                        style.innerHTML = keyframes;
+                        document.head.appendChild(style);
+                    }
+                    
+                    DOM.confettiContainer.appendChild(confetti);
+                    
+                    // Remove confetti after animation
+                    setTimeout(() => {
+                        confetti.remove();
+                    }, animationDuration * 1000);
+                }
+            }
+        };
+
         // ========== Tracking Functions ==========
         const trackingActions = {
             updateDisplay() {
@@ -975,6 +1258,152 @@
                 const minutes = Math.floor((totalSeconds % 3600) / 60);
                 const seconds = totalSeconds % 60;
                 return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            }
+        };
+
+        // ========== Reward Functions ==========
+        const rewardActions = {
+            updateRewards(type, duration) {
+                if (type === 'work') {
+                    // Update session-based rewards
+                    STATE.rewards.forEach(reward => {
+                        if (reward.id.includes('session') && !reward.earned) {
+                            reward.current = STATE.completedSessions;
+                            if (reward.current >= reward.goal) {
+                                reward.earned = true;
+                                this.showRewardNotification(reward);
+                            }
+                        }
+                        
+                        // Update time-based rewards
+                        if (reward.id.includes('hour') && !reward.earned) {
+                            reward.current = STATE.totalWorkSeconds;
+                            if (reward.current >= reward.goal) {
+                                reward.earned = true;
+                                this.showRewardNotification(reward);
+                            }
+                        }
+                    });
+                }
+                
+                this.saveRewards();
+                this.renderRewards();
+            },
+            
+            showRewardNotification(reward) {
+                // Create notification
+                const notification = document.createElement('div');
+                notification.className = 'reward-notification';
+                notification.innerHTML = `
+                    <div style="background-color: #e8f5e9; padding: 15px; border-radius: 10px; 
+                        box-shadow: 0 4px 8px rgba(0,0,0,0.2); position: fixed; top: 20px; 
+                        left: 50%; transform: translateX(-50%); z-index: 1000; display: flex; 
+                        align-items: center; animation: slideIn 0.5s forwards;">
+                        <span style="font-size: 2em; margin-right: 10px;">${reward.reward}</span>
+                        <div>
+                            <div style="font-weight: bold;">Reward Unlocked!</div>
+                            <div>${reward.title}</div>
+                        </div>
+                    </div>
+                `;
+                
+                document.body.appendChild(notification);
+                
+                // Remove after 3 seconds
+                setTimeout(() => {
+                    notification.style.animation = 'slideOut 0.5s forwards';
+                    setTimeout(() => {
+                        notification.remove();
+                    }, 500);
+                }, 3000);
+                
+                // Add keyframes if not present
+                if (!document.getElementById('reward-keyframes')) {
+                    const style = document.createElement('style');
+                    style.id = 'reward-keyframes';
+                    style.innerHTML = `
+                        @keyframes slideIn {
+                            from { top: -100px; opacity: 0; }
+                            to { top: 20px; opacity: 1; }
+                        }
+                        @keyframes slideOut {
+                            from { top: 20px; opacity: 1; }
+                            to { top: -100px; opacity: 0; }
+                        }
+                    `;
+                    document.head.appendChild(style);
+                }
+            },
+            
+            saveRewards() {
+                localStorage.setItem('rewards', JSON.stringify(STATE.rewards));
+                localStorage.setItem('completedSessions', STATE.completedSessions.toString());
+                localStorage.setItem('totalWorkSeconds', STATE.totalWorkSeconds.toString());
+            },
+            
+            loadRewards() {
+                const savedRewards = localStorage.getItem('rewards');
+                if (savedRewards) {
+                    STATE.rewards = JSON.parse(savedRewards);
+                }
+                
+                STATE.completedSessions = parseInt(localStorage.getItem('completedSessions')) || 0;
+                STATE.totalWorkSeconds = parseInt(localStorage.getItem('totalWorkSeconds')) || 0;
+                
+                // Update current progress
+                STATE.rewards.forEach(reward => {
+                    if (reward.id.includes('session')) {
+                        reward.current = STATE.completedSessions;
+                        reward.earned = reward.current >= reward.goal;
+                    }
+                    
+                    if (reward.id.includes('hour')) {
+                        reward.current = STATE.totalWorkSeconds;
+                        reward.earned = reward.current >= reward.goal;
+                    }
+                });
+                
+                this.renderRewards();
+            },
+            
+            renderRewards() {
+                DOM.rewardsList.innerHTML = '';
+                
+                STATE.rewards.forEach(reward => {
+                    const rewardItem = document.createElement('div');
+                    rewardItem.className = `reward-item ${reward.earned ? 'reward-earned' : ''}`;
+                    
+                    const progressPercent = Math.min(100, (reward.current / reward.goal) * 100);
+                    
+                    rewardItem.innerHTML = `
+                        <div class="reward-icon">${reward.icon}</div>
+                        <div class="reward-details">
+                            <div class="reward-title">${reward.title}</div>
+                            <div class="reward-description">${reward.description}</div>
+                            ${!reward.earned ? `
+                                <div class="reward-progress">
+                                    <div class="progress-bar" style="width: ${progressPercent}%"></div>
+                                </div>
+                                <div class="reward-status">${reward.current}/${reward.goal} ${reward.id.includes('hour') ? 'seconds' : 'sessions'}</div>
+                            ` : ''}
+                        </div>
+                        ${reward.earned ? `<div class="reward-emoji">${reward.reward}</div>` : ''}
+                    `;
+                    
+                    DOM.rewardsList.appendChild(rewardItem);
+                });
+            },
+            
+            resetRewards() {
+                if (confirm('Are you sure you want to reset all rewards progress?')) {
+                    STATE.rewards.forEach(reward => {
+                        reward.current = 0;
+                        reward.earned = false;
+                    });
+                    STATE.completedSessions = 0;
+                    this.saveRewards();
+                    this.renderRewards();
+                }
             }
         };
 
@@ -1202,7 +1631,7 @@
         // ========== Sound Control Functions ==========
         const soundActions = {
             togglePanel(panel) {
-                const panels = [DOM.infoPanel, DOM.noisePanel, DOM.lofiPanel, DOM.historyPanel];
+                const panels = [DOM.infoPanel, DOM.noisePanel, DOM.lofiPanel, DOM.historyPanel, DOM.rewardsPanel];
                 panels.forEach(p => {
                     if (p === panel) {
                         p.classList.toggle('show');
@@ -1318,10 +1747,16 @@
                 }
             });
 
+            // Rewards tab
+            DOM.rewardsTabBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                soundActions.togglePanel(DOM.rewardsPanel);
+            });
+
             // Close panels when clicking outside
             document.addEventListener('click', (e) => {
-                const panels = [DOM.infoPanel, DOM.noisePanel, DOM.lofiPanel, DOM.historyPanel];
-                const tabs = [DOM.infoTabBtn, DOM.noiseTabBtn, DOM.lofiTabBtn, DOM.historyTabBtn];
+                const panels = [DOM.infoPanel, DOM.noisePanel, DOM.lofiPanel, DOM.historyPanel, DOM.rewardsPanel];
+                const tabs = [DOM.infoTabBtn, DOM.noiseTabBtn, DOM.lofiTabBtn, DOM.historyTabBtn, DOM.rewardsTabBtn];
                 
                 if (!panels.some(panel => panel.contains(e.target)) && 
                     !tabs.includes(e.target)) {
@@ -1335,6 +1770,7 @@
                 localStorage.setItem('totalBreakSeconds', STATE.totalBreakSeconds.toString());
                 noteActions.saveToStorage();
                 historyActions.saveHistory();
+                rewardActions.saveRewards();
             });
         }
 
@@ -1343,6 +1779,7 @@
             setupEventListeners();
             noteActions.loadFromStorage();
             historyActions.loadHistory();
+            rewardActions.loadRewards();
             timerActions.updateModeIndicator();
             soundActions.updateVolume();
             DOM.nowPlaying.textContent = STATE.noiseNames['none'];
