@@ -85,7 +85,7 @@
         }
 
         .animal-gif {
-            width: 160px; /* Doubled from 80px */
+            width: 160px;
             height: auto;
             filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1));
             animation: float 4s ease-in-out infinite;
@@ -116,7 +116,7 @@
             width: 90%;
             backdrop-filter: blur(5px);
             position: relative;
-            z-index: 2; /* Lower than panels */
+            z-index: 2;
         }
 
         h1 {
@@ -338,7 +338,7 @@
             display: flex;
             flex-direction: column;
             gap: 15px;
-            z-index: 100; /* Higher than container */
+            z-index: 100;
         }
 
         .tab {
@@ -370,7 +370,7 @@
             display: none;
             max-height: 60vh;
             overflow-y: auto;
-            z-index: 101; /* Higher than tabs */
+            z-index: 101;
         }
 
         .panel.show { display: block; }
@@ -455,7 +455,6 @@
             vertical-align: middle;
         }
 
-        /* Updated donate button */
         .donate-btn {
             position: fixed;
             bottom: 20px;
@@ -484,7 +483,6 @@
             background-color: #ff7043;
         }
 
-        /* History Panel Styles */
         .history-panel {
             width: 350px;
         }
@@ -579,7 +577,6 @@
             background-color: #f5f9ff;
         }
 
-        /* Rewards Panel Styles */
         .rewards-panel {
             width: 350px;
         }
@@ -640,7 +637,6 @@
             margin-left: 10px;
         }
 
-        /* Confetti */
         .confetti-container {
             position: fixed;
             top: 0;
@@ -661,60 +657,228 @@
         /* Productivity report styles */
         .report-header {
             text-align: center;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
             border-bottom: 2px solid var(--primary-purple);
+            background: linear-gradient(135deg, rgba(156, 39, 176, 0.1) 0%, rgba(255, 255, 255, 0.8) 100%);
+            border-radius: 10px;
+            padding: 20px;
         }
 
         .report-title {
-            font-size: 1.5em;
+            font-size: 2em;
             color: var(--primary-purple);
             margin-bottom: 5px;
+            font-weight: 700;
+        }
+
+        .report-subtitle {
+            font-size: 1.2em;
+            color: var(--primary-purple);
+            opacity: 0.8;
+            margin-bottom: 10px;
         }
 
         .report-date {
             color: #666;
             font-style: italic;
+            font-size: 0.9em;
         }
 
         .report-section {
-            margin-bottom: 20px;
+            margin-bottom: 25px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
         }
 
         .report-section-title {
-            font-size: 1.2em;
+            font-size: 1.3em;
             color: var(--primary-purple);
-            border-bottom: 1px solid #ddd;
-            padding-bottom: 5px;
-            margin-bottom: 10px;
+            border-bottom: 2px solid #e1bee7;
+            padding-bottom: 8px;
+            margin-bottom: 15px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+        }
+
+        .report-section-title:before {
+            content: "▹";
+            margin-right: 10px;
+            color: var(--primary-purple);
+        }
+
+        .report-metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+            margin-bottom: 15px;
         }
 
         .report-metric {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
             display: flex;
-            justify-content: space-between;
-            margin-bottom: 8px;
+            flex-direction: column;
         }
 
         .report-metric-label {
-            font-weight: bold;
+            font-weight: 600;
+            color: #555;
+            margin-bottom: 5px;
+            font-size: 0.95em;
         }
 
         .report-metric-value {
-            font-weight: bold;
-            color: var(--primary-green);
+            font-weight: 700;
+            color: var(--primary-purple);
+            font-size: 1.4em;
+        }
+
+        .report-metric-description {
+            font-size: 0.8em;
+            color: #777;
+            margin-top: 5px;
+        }
+
+        .report-achievements {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 15px;
         }
 
         .report-achievement {
-            margin-bottom: 10px;
-            padding-left: 15px;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
             position: relative;
+            padding-left: 30px;
+            border-left: 4px solid var(--primary-purple);
         }
 
         .report-achievement:before {
-            content: "•";
+            content: "✓";
             position: absolute;
-            left: 0;
+            left: 10px;
+            top: 15px;
+            color: var(--primary-green);
+            font-weight: bold;
+        }
+
+        .report-achievement-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        .report-achievement-desc {
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        .report-chart-container {
+            height: 200px;
+            background: white;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 20px 0;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+
+        .report-chart {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-around;
+        }
+
+        .report-chart-bar {
+            width: 30px;
+            background: linear-gradient(to top, var(--primary-purple), #e1bee7);
+            border-radius: 4px 4px 0 0;
+            position: relative;
+            transition: height 0.5s ease;
+        }
+
+        .report-chart-bar-label {
+            position: absolute;
+            bottom: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.8em;
+            color: #666;
+            white-space: nowrap;
+        }
+
+        .report-chart-bar-value {
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.8em;
+            font-weight: bold;
             color: var(--primary-purple);
+        }
+
+        .report-recommendation {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 15px;
+            padding: 15px;
+            background: #f9f5ff;
+            border-radius: 8px;
+        }
+
+        .report-recommendation-icon {
+            font-size: 1.5em;
+            margin-right: 15px;
+            color: var(--primary-purple);
+        }
+
+        .report-recommendation-content {
+            flex: 1;
+        }
+
+        .report-recommendation-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: var(--primary-purple);
+        }
+
+        .report-divider {
+            height: 1px;
+            background: linear-gradient(to right, transparent, var(--primary-purple), transparent);
+            margin: 25px 0;
+            opacity: 0.3;
+        }
+
+        .report-footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+            color: #888;
+            font-size: 0.9em;
+        }
+
+        @media (max-width: 768px) {
+            .report-metrics-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .report-achievements {
+                grid-template-columns: 1fr;
+            }
+            
+            .report-title {
+                font-size: 1.5em;
+            }
         }
 
         ::-webkit-scrollbar { width: 8px; }
@@ -1089,7 +1253,6 @@
                     STATE.isRunning = true;
                     STATE.sessionStartTime = new Date();
                     
-                    // Update body class for mode
                     DOM.body.classList.remove('work-mode', 'break-mode');
                     DOM.body.classList.add(STATE.isWorkMode ? 'work-mode' : 'break-mode');
                     
@@ -1103,7 +1266,6 @@
                             DOM.alarmSound.play();
                             celebrationActions.triggerCelebration();
                             
-                            // Record the completed session
                             const sessionEndTime = new Date();
                             const sessionDuration = Math.floor((STATE.sessionStartTime - sessionEndTime) / 1000) * -1;
                             
@@ -1132,7 +1294,6 @@
                             STATE.isWorkMode = !STATE.isWorkMode;
                             timerActions.updateModeIndicator();
                             
-                            // Update body class for new mode
                             DOM.body.classList.remove('work-mode', 'break-mode');
                             DOM.body.classList.add(STATE.isWorkMode ? 'work-mode' : 'break-mode');
                             
@@ -1218,7 +1379,6 @@
                 timerActions.updateDisplay();
                 timerActions.updateModeIndicator();
                 
-                // Update body class for mode
                 DOM.body.classList.remove('work-mode', 'break-mode');
                 DOM.body.classList.add(STATE.isWorkMode ? 'work-mode' : 'break-mode');
             },
@@ -1227,7 +1387,6 @@
                 STATE.isWorkMode = workMode;
                 timerActions.updateModeIndicator();
                 
-                // Update body class for mode
                 DOM.body.classList.remove('work-mode', 'break-mode');
                 DOM.body.classList.add(STATE.isWorkMode ? 'work-mode' : 'break-mode');
             },
@@ -1250,13 +1409,9 @@
         // ========== Celebration Functions ==========
         const celebrationActions = {
             triggerCelebration() {
-                // Play applause sound
                 DOM.applauseSound.play();
-                
-                // Create confetti
                 this.createConfetti();
                 
-                // Pulse animation
                 DOM.container.style.animation = 'pulse 0.5s 3';
                 setTimeout(() => {
                     DOM.container.style.animation = '';
@@ -1264,15 +1419,12 @@
             },
             
             createConfetti() {
-                // Clear any existing confetti
                 DOM.confettiContainer.innerHTML = '';
                 
-                // Create 100 confetti pieces
                 for (let i = 0; i < 100; i++) {
                     const confetti = document.createElement('div');
                     confetti.className = 'confetti';
                     
-                    // Random properties
                     const colors = ['#e91e63', '#4caf50', '#2196f3', '#ff9800', '#9c27b0'];
                     const shapes = ['circle', 'square', 'triangle'];
                     
@@ -1283,11 +1435,9 @@
                     confetti.style.opacity = '1';
                     confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
                     
-                    // Animation
                     const animationDuration = Math.random() * 3 + 2;
                     confetti.style.animation = `fall ${animationDuration}s linear forwards`;
                     
-                    // Keyframes for falling
                     const keyframes = `
                         @keyframes fall {
                             to {
@@ -1297,7 +1447,6 @@
                         }
                     `;
                     
-                    // Add keyframes if not already present
                     if (!document.getElementById('confetti-keyframes')) {
                         const style = document.createElement('style');
                         style.id = 'confetti-keyframes';
@@ -1307,7 +1456,6 @@
                     
                     DOM.confettiContainer.appendChild(confetti);
                     
-                    // Remove confetti after animation
                     setTimeout(() => {
                         confetti.remove();
                     }, animationDuration * 1000);
@@ -1334,7 +1482,6 @@
         const rewardActions = {
             updateRewards(type, duration) {
                 if (type === 'work') {
-                    // Update session-based rewards
                     STATE.rewards.forEach(reward => {
                         if (reward.id.includes('session') && !reward.earned) {
                             reward.current = STATE.completedSessions;
@@ -1344,7 +1491,6 @@
                             }
                         }
                         
-                        // Update time-based rewards
                         if (reward.id.includes('hour') && !reward.earned) {
                             reward.current = STATE.totalWorkSeconds;
                             if (reward.current >= reward.goal) {
@@ -1360,7 +1506,6 @@
             },
             
             showRewardNotification(reward) {
-                // Create notification
                 const notification = document.createElement('div');
                 notification.className = 'reward-notification';
                 notification.innerHTML = `
@@ -1378,7 +1523,6 @@
                 
                 document.body.appendChild(notification);
                 
-                // Remove after 3 seconds
                 setTimeout(() => {
                     notification.style.animation = 'slideOut 0.5s forwards';
                     setTimeout(() => {
@@ -1386,7 +1530,6 @@
                     }, 500);
                 }, 3000);
                 
-                // Add keyframes if not present
                 if (!document.getElementById('reward-keyframes')) {
                     const style = document.createElement('style');
                     style.id = 'reward-keyframes';
@@ -1419,7 +1562,6 @@
                 STATE.completedSessions = parseInt(localStorage.getItem('completedSessions')) || 0;
                 STATE.totalWorkSeconds = parseInt(localStorage.getItem('totalWorkSeconds')) || 0;
                 
-                // Update current progress
                 STATE.rewards.forEach(reward => {
                     if (reward.id.includes('session')) {
                         reward.current = STATE.completedSessions;
@@ -1632,7 +1774,6 @@
                     DOM.historyList.appendChild(historyItem);
                 });
                 
-                // Add event listeners for editable notes
                 document.querySelectorAll('.history-notes').forEach(element => {
                     element.addEventListener('blur', function() {
                         const index = parseInt(this.getAttribute('data-index'));
@@ -1654,19 +1795,18 @@
                     return;
                 }
                 
-                // Calculate summary statistics
                 const workSessions = STATE.sessionHistory.filter(s => s.type === 'work');
                 const breakSessions = STATE.sessionHistory.filter(s => s.type === 'break');
                 
                 const totalWorkTime = workSessions.reduce((sum, session) => sum + session.duration, 0);
                 const totalBreakTime = breakSessions.reduce((sum, session) => sum + session.duration, 0);
+                const totalProductivity = Math.round(totalWorkTime / (totalWorkTime + totalBreakTime) * 100);
                 
                 const avgWorkSession = workSessions.length > 0 ? 
                     Math.round(totalWorkTime / workSessions.length) : 0;
                 const avgBreakSession = breakSessions.length > 0 ? 
                     Math.round(totalBreakTime / breakSessions.length) : 0;
                 
-                // Find most productive day
                 const sessionsByDay = {};
                 STATE.sessionHistory.forEach(session => {
                     const date = new Date(session.timestamp).toLocaleDateString();
@@ -1681,72 +1821,217 @@
                 });
                 
                 let mostProductiveDay = { date: '', workTime: 0 };
+                let longestSession = { duration: 0 };
                 for (const date in sessionsByDay) {
                     if (sessionsByDay[date].work > mostProductiveDay.workTime) {
                         mostProductiveDay = { date, workTime: sessionsByDay[date].work };
                     }
                 }
                 
-                // Generate report HTML
+                workSessions.forEach(session => {
+                    if (session.duration > longestSession.duration) {
+                        longestSession = session;
+                    }
+                });
+                
+                // Generate chart data for last 7 days
+                const last7Days = Array.from({ length: 7 }, (_, i) => {
+                    const d = new Date();
+                    d.setDate(d.getDate() - i);
+                    return d.toLocaleDateString();
+                }).reverse();
+                
+                const chartData = last7Days.map(day => {
+                    return {
+                        day: new Date(day).toLocaleDateString('en-US', { weekday: 'short' }),
+                        workTime: sessionsByDay[day] ? sessionsByDay[day].work / 60 : 0,
+                        breakTime: sessionsByDay[day] ? sessionsByDay[day].break / 60 : 0
+                    };
+                });
+                
+                const maxChartValue = Math.max(...chartData.map(d => d.workTime + d.breakTime), 1);
+                
                 let reportHTML = `
-                    <div class="report-header">
-                        <div class="report-title">Productivity Performance Report</div>
-                        <div class="report-date">Generated on ${new Date().toLocaleDateString()}</div>
-                    </div>
-                    
-                    <div class="report-section">
-                        <div class="report-section-title">Summary Overview</div>
-                        <div class="report-metric">
-                            <span class="report-metric-label">Total Work Time:</span>
-                            <span class="report-metric-value">${trackingActions.formatTime(totalWorkTime)}</span>
+                    <!DOCTYPE html>
+                    <html>
+                    <head>
+                        <title>Productivity Performance Report</title>
+                        <style>
+                            body {
+                                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                                line-height: 1.6;
+                                color: #333;
+                                max-width: 900px;
+                                margin: 0 auto;
+                                padding: 30px;
+                                background-color: #f9f9f9;
+                            }
+                            ${document.querySelector('style').innerHTML}
+                        </style>
+                    </head>
+                    <body>
+                        <div class="report-header">
+                            <div class="report-title">Productivity Performance Report</div>
+                            <div class="report-subtitle">Your Pomodoro Session Insights</div>
+                            <div class="report-date">Generated on ${new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</div>
                         </div>
-                        <div class="report-metric">
-                            <span class="report-metric-label">Total Break Time:</span>
-                            <span class="report-metric-value">${trackingActions.formatTime(totalBreakTime)}</span>
+                        
+                        <div class="report-section">
+                            <div class="report-section-title">Key Metrics</div>
+                            <div class="report-metrics-grid">
+                                <div class="report-metric">
+                                    <div class="report-metric-label">Total Focus Time</div>
+                                    <div class="report-metric-value">${trackingActions.formatTime(totalWorkTime)}</div>
+                                    <div class="report-metric-description">${workSessions.length} work sessions</div>
+                                </div>
+                                <div class="report-metric">
+                                    <div class="report-metric-label">Total Break Time</div>
+                                    <div class="report-metric-value">${trackingActions.formatTime(totalBreakTime)}</div>
+                                    <div class="report-metric-description">${breakSessions.length} break sessions</div>
+                                </div>
+                                <div class="report-metric">
+                                    <div class="report-metric-label">Productivity Ratio</div>
+                                    <div class="report-metric-value">${totalProductivity}%</div>
+                                    <div class="report-metric-description">Work vs. Break time</div>
+                                </div>
+                                <div class="report-metric">
+                                    <div class="report-metric-label">Average Session</div>
+                                    <div class="report-metric-value">${trackingActions.formatTime(avgWorkSession)}</div>
+                                    <div class="report-metric-description">Per work session</div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="report-metric">
-                            <span class="report-metric-label">Work Sessions Completed:</span>
-                            <span class="report-metric-value">${workSessions.length}</span>
+                        
+                        <div class="report-divider"></div>
+                        
+                        <div class="report-section">
+                            <div class="report-section-title">Weekly Activity</div>
+                            <div class="report-chart-container">
+                                <div class="report-chart">
+                                    ${chartData.map(day => `
+                                        <div style="display: flex; flex-direction: column; align-items: center; height: 100%;">
+                                            <div style="display: flex; height: 100%; align-items: flex-end;">
+                                                <div class="report-chart-bar" style="height: ${(day.workTime / maxChartValue) * 100}%; margin-right: 2px; background: linear-gradient(to top, var(--primary-purple), #e1bee7);">
+                                                    <div class="report-chart-bar-value">${day.workTime.toFixed(1)}m</div>
+                                                </div>
+                                                <div class="report-chart-bar" style="height: ${(day.breakTime / maxChartValue) * 100}%; background: linear-gradient(to top, var(--primary-green), #c8e6c9);">
+                                                    <div class="report-chart-bar-value">${day.breakTime.toFixed(1)}m</div>
+                                                </div>
+                                            </div>
+                                            <div class="report-chart-bar-label">${day.day}</div>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            </div>
+                            <div style="display: flex; justify-content: center; gap: 20px; margin-top: 10px;">
+                                <div style="display: flex; align-items: center;">
+                                    <div style="width: 15px; height: 15px; background-color: var(--primary-purple); margin-right: 5px;"></div>
+                                    <span style="font-size: 0.8em;">Work</span>
+                                </div>
+                                <div style="display: flex; align-items: center;">
+                                    <div style="width: 15px; height: 15px; background-color: var(--primary-green); margin-right: 5px;"></div>
+                                    <span style="font-size: 0.8em;">Break</span>
+                                </div>
+                            </div>
                         </div>
-                        <div class="report-metric">
-                            <span class="report-metric-label">Average Work Session:</span>
-                            <span class="report-metric-value">${trackingActions.formatTime(avgWorkSession)}</span>
+                        
+                        <div class="report-divider"></div>
+                        
+                        <div class="report-section">
+                            <div class="report-section-title">Performance Highlights</div>
+                            <div class="report-achievements">
+                                <div class="report-achievement">
+                                    <div class="report-achievement-title">Most Productive Day</div>
+                                    <div class="report-achievement-desc">
+                                        ${mostProductiveDay.date ? `
+                                            ${mostProductiveDay.date} with ${trackingActions.formatTime(mostProductiveDay.workTime)} of focused work
+                                        ` : 'Not enough data yet'}
+                                    </div>
+                                </div>
+                                ${longestSession.duration > 0 ? `
+                                <div class="report-achievement">
+                                    <div class="report-achievement-title">Longest Focus Session</div>
+                                    <div class="report-achievement-desc">
+                                        ${trackingActions.formatTime(longestSession.duration)} on ${new Date(longestSession.timestamp).toLocaleDateString()}
+                                    </div>
+                                </div>
+                                ` : ''}
+                                <div class="report-achievement">
+                                    <div class="report-achievement-title">Consistency</div>
+                                    <div class="report-achievement-desc">
+                                        ${Object.keys(sessionsByDay).length} days with recorded activity
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="report-metric">
-                            <span class="report-metric-label">Average Break Session:</span>
-                            <span class="report-metric-value">${trackingActions.formatTime(avgBreakSession)}</span>
+                        
+                        <div class="report-divider"></div>
+                        
+                        <div class="report-section">
+                            <div class="report-section-title">Work Patterns</div>
+                            <div class="report-metrics-grid">
+                                <div class="report-metric">
+                                    <div class="report-metric-label">Average Sessions Per Day</div>
+                                    <div class="report-metric-value">${workSessions.length > 0 ? Math.round(workSessions.length / Object.keys(sessionsByDay).length) : 0}</div>
+                                    <div class="report-metric-description">Pomodoros completed daily</div>
+                                </div>
+                                <div class="report-metric">
+                                    <div class="report-metric-label">Average Break Length</div>
+                                    <div class="report-metric-value">${trackingActions.formatTime(avgBreakSession)}</div>
+                                    <div class="report-metric-description">Between work sessions</div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    
-                    <div class="report-section">
-                        <div class="report-section-title">Key Achievements</div>
-                        <div class="report-achievement">Completed ${workSessions.length} focused work sessions</div>
-                        <div class="report-achievement">Maintained focus for ${trackingActions.formatTime(totalWorkTime)} total time</div>
-                        ${mostProductiveDay.date ? `
-                            <div class="report-achievement">Most productive day: ${mostProductiveDay.date} (${trackingActions.formatTime(mostProductiveDay.workTime)} of focused work)</div>
-                        ` : ''}
-                    </div>
-                    
-                    <div class="report-section">
-                        <div class="report-section-title">Performance Insights</div>
-                        <div class="report-achievement">Work/Break Ratio: ${Math.round(totalWorkTime / (totalWorkTime + totalBreakTime) * 100)}% work, ${Math.round(totalBreakTime / (totalWorkTime + totalBreakTime) * 100)}% break</div>
-                        <div class="report-achievement">Average sessions per day: ${workSessions.length > 0 ? Math.round(workSessions.length / Object.keys(sessionsByDay).length) : 0}</div>
-                    </div>
-                    
-                    <div class="report-section">
-                        <div class="report-section-title">Recommendations</div>
-                        <div class="report-achievement">Consider adjusting work session length based on task complexity</div>
-                        <div class="report-achievement">Ensure breaks are truly restorative - step away from work completely</div>
-                        <div class="report-achievement">Track task completion in notes to measure effectiveness</div>
-                    </div>
+                        
+                        <div class="report-divider"></div>
+                        
+                        <div class="report-section">
+                            <div class="report-section-title">Recommendations</div>
+                            <div class="report-recommendation">
+                                <div class="report-recommendation-icon">💡</div>
+                                <div class="report-recommendation-content">
+                                    <div class="report-recommendation-title">Optimize Session Length</div>
+                                    <div class="report-achievement-desc">
+                                        Your average session is ${trackingActions.formatTime(avgWorkSession)}. Consider adjusting based on task complexity - 
+                                        shorter for simple tasks, longer for deep work.
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="report-recommendation">
+                                <div class="report-recommendation-icon">⚖️</div>
+                                <div class="report-recommendation-content">
+                                    <div class="report-recommendation-title">Balance Work & Rest</div>
+                                    <div class="report-achievement-desc">
+                                        Your work/break ratio is ${totalProductivity}%/${100-totalProductivity}%. Aim for 80/20 for optimal productivity 
+                                        without burnout.
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="report-recommendation">
+                                <div class="report-recommendation-icon">📝</div>
+                                <div class="report-recommendation-content">
+                                    <div class="report-recommendation-title">Track Task Completion</div>
+                                    <div class="report-achievement-desc">
+                                        Add notes about completed tasks to better measure your effectiveness per session.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="report-footer">
+                            Generated by Pomodoro Timer • ${new Date().getFullYear()}
+                        </div>
+                    </body>
+                    </html>
                 `;
                 
-                // Create a blob and download it
                 const blob = new Blob([reportHTML], { type: 'text/html' });
                 const url = URL.createObjectURL(blob);
                 const a = document.createElement('a');
                 a.href = url;
-                a.download = `productivity-report-${new Date().toISOString().slice(0, 10)}.html`;
+                a.download = `pomodoro-report-${new Date().toISOString().slice(0, 10)}.html`;
                 document.body.appendChild(a);
                 a.click();
                 document.body.removeChild(a);
@@ -1820,7 +2105,6 @@
 
         // ========== Event Listeners ==========
         function setupEventListeners() {
-            // Timer controls
             DOM.startButton.addEventListener('click', timerActions.start);
             DOM.stopButton.addEventListener('click', timerActions.stop);
             DOM.resetButton.addEventListener('click', timerActions.reset);
@@ -1830,13 +2114,11 @@
             DOM.setWorkModeButton.addEventListener('click', () => timerActions.setMode(true));
             DOM.setBreakModeButton.addEventListener('click', () => timerActions.setMode(false));
             
-            // Notes controls
             DOM.saveNoteButton.addEventListener('click', () => noteActions.saveNote(true));
             DOM.saveBreakNoteButton.addEventListener('click', () => noteActions.saveNote(false));
             DOM.copyWorkNotesButton.addEventListener('click', () => noteActions.copyToClipboard(true));
             DOM.copyBreakNotesButton.addEventListener('click', () => noteActions.copyToClipboard(false));
             
-            // Sound controls
             DOM.noiseTabBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
                 soundActions.togglePanel(DOM.noisePanel);
@@ -1847,25 +2129,21 @@
                 option.addEventListener('change', soundActions.changeBackgroundNoise);
             });
             
-            // Lofi tab
             DOM.lofiTabBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
                 soundActions.togglePanel(DOM.lofiPanel);
             });
 
-            // Info tab
             DOM.infoTabBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
                 soundActions.togglePanel(DOM.infoPanel);
             });
 
-            // History tab
             DOM.historyTabBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
                 soundActions.togglePanel(DOM.historyPanel);
             });
 
-            // History controls
             DOM.exportHistory.addEventListener('click', historyActions.exportToReport);
             DOM.clearHistory.addEventListener('click', () => {
                 if (confirm('Are you sure you want to clear all session history?')) {
@@ -1873,13 +2151,11 @@
                 }
             });
 
-            // Rewards tab
             DOM.rewardsTabBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
                 soundActions.togglePanel(DOM.rewardsPanel);
             });
 
-            // Close panels when clicking outside
             document.addEventListener('click', (e) => {
                 const panels = [DOM.infoPanel, DOM.noisePanel, DOM.lofiPanel, DOM.historyPanel, DOM.rewardsPanel];
                 const tabs = [DOM.infoTabBtn, DOM.noiseTabBtn, DOM.lofiTabBtn, DOM.historyTabBtn, DOM.rewardsTabBtn];
@@ -1890,7 +2166,6 @@
                 }
             });
             
-            // Save state before unload
             window.addEventListener('beforeunload', () => {
                 localStorage.setItem('totalWorkSeconds', STATE.totalWorkSeconds.toString());
                 localStorage.setItem('totalBreakSeconds', STATE.totalBreakSeconds.toString());
@@ -1911,7 +2186,6 @@
             DOM.nowPlaying.textContent = STATE.noiseNames['none'];
         }
 
-        // Start the application
         init();
     </script>
 </body>
