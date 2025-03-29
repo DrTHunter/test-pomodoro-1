@@ -220,7 +220,8 @@
             box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
         }
 
-        #startStop { background-color: var(--primary-green); color: white; }
+        #start { background-color: var(--primary-green); color: white; }
+        #stop { background-color: #f44336; color: white; display: none; }
         #reset { background-color: var(--primary-blue); color: white; }
 
         .quick-buttons {
@@ -895,6 +896,32 @@
                 padding: 8px 12px;
                 font-size: 0.9em;
             }
+            
+            /* Center tab bubbles on mobile */
+            .reward-tabs {
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+            
+            .reward-tab {
+                padding: 8px 10px;
+                font-size: 0.9em;
+            }
+            
+            /* Make rewards panel taller on desktop */
+            @media (min-width: 769px) {
+                #rewardsPanel {
+                    height: 500px;
+                }
+            }
+            
+            /* Show rewards on mobile */
+            @media (max-width: 768px) {
+                #rewardsPanel {
+                    max-height: 70vh;
+                    height: auto;
+                }
+            }
         }
     </style>
 </head>
@@ -954,7 +981,8 @@
         </div>
         
         <div class="buttons">
-            <button id="startStop">Start</button>
+            <button id="start">Start</button>
+            <button id="stop">Stop</button>
             <button id="reset">Reset</button>
         </div>
         
@@ -1173,7 +1201,8 @@
             timerProgress: document.getElementById('timerProgress'),
             minutesInput: document.getElementById('minutes'),
             secondsInput: document.getElementById('seconds'),
-            startStopButton: document.getElementById('startStop'),
+            startButton: document.getElementById('start'),
+            stopButton: document.getElementById('stop'),
             resetButton: document.getElementById('reset'),
             work25Button: document.getElementById('work25'),
             break5Button: document.getElementById('break5'),
@@ -1431,14 +1460,6 @@
 
         // ========== Timer Functions ==========
         const timerActions = {
-            startStop() {
-                if (STATE.isRunning) {
-                    this.stop();
-                } else {
-                    this.start();
-                }
-            },
-            
             start() {
                 const minutes = parseInt(DOM.minutesInput.value) || 0;
                 const seconds = parseInt(DOM.secondsInput.value) || 0;
@@ -1457,8 +1478,8 @@
                 }
                 STATE.lastTrackingUpdate = Date.now();
                 
-                DOM.startStopButton.textContent = 'Stop';
-                DOM.startStopButton.style.backgroundColor = '#f44336';
+                DOM.startButton.style.display = 'none';
+                DOM.stopButton.style.display = 'inline-block';
                 
                 DOM.body.classList.remove('work-mode', 'break-mode');
                 DOM.body.classList.add(STATE.isWorkMode ? 'work-mode' : 'break-mode');
@@ -1555,8 +1576,8 @@
                         }
                         
                         // Reset the start/stop button
-                        DOM.startStopButton.textContent = 'Start';
-                        DOM.startStopButton.style.backgroundColor = 'var(--primary-green)';
+                        DOM.startButton.style.display = 'inline-block';
+                        DOM.stopButton.style.display = 'none';
                         STATE.sessionStartTime = null;
                     }
                 }, 1000);
@@ -1566,8 +1587,8 @@
                 if (STATE.isRunning) {
                     clearInterval(STATE.timer);
                     STATE.isRunning = false;
-                    DOM.startStopButton.textContent = 'Start';
-                    DOM.startStopButton.style.backgroundColor = 'var(--primary-green)';
+                    DOM.startButton.style.display = 'inline-block';
+                    DOM.stopButton.style.display = 'none';
                     
                     const sessionEndTime = new Date();
                     const sessionDuration = Math.floor((sessionEndTime - STATE.sessionStartTime) / 1000);
@@ -2559,7 +2580,8 @@
 
         // ========== Event Listeners ==========
         function setupEventListeners() {
-            DOM.startStopButton.addEventListener('click', timerActions.startStop);
+            DOM.startButton.addEventListener('click', timerActions.start);
+            DOM.stopButton.addEventListener('click', timerActions.stop);
             DOM.resetButton.addEventListener('click', timerActions.reset);
             DOM.work25Button.addEventListener('click', () => timerActions.setQuickTime(25, 0, true));
             DOM.break5Button.addEventListener('click', () => timerActions.setQuickTime(5, 0, false));
