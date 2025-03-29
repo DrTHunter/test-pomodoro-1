@@ -1366,7 +1366,7 @@
                                 historyActions.addSession({
                                     type: 'work',
                                     duration: sessionDuration,
-                                    notes: DOM.noteInput.value.trim(),
+                                    notes: DOM.noteInput.value.trim() || 'Enter work/project here',
                                     timestamp: STATE.sessionStartTime
                                 });
                                 rewardActions.updateRewards('work', sessionDuration);
@@ -1375,7 +1375,7 @@
                                 historyActions.addSession({
                                     type: 'break',
                                     duration: sessionDuration,
-                                    notes: DOM.noteInput.value.trim(),
+                                    notes: DOM.noteInput.value.trim() || 'Enter work/project here',
                                     timestamp: STATE.sessionStartTime
                                 });
                             }
@@ -1429,7 +1429,7 @@
                         historyActions.addSession({
                             type: 'work',
                             duration: sessionDuration,
-                            notes: DOM.noteInput.value.trim(),
+                            notes: DOM.noteInput.value.trim() || 'Enter work/project here',
                             timestamp: STATE.sessionStartTime
                         });
                         rewardActions.updateRewards('work', sessionDuration);
@@ -1438,7 +1438,7 @@
                         historyActions.addSession({
                             type: 'break',
                             duration: sessionDuration,
-                            notes: DOM.noteInput.value.trim(),
+                            notes: DOM.noteInput.value.trim() || 'Enter work/project here',
                             timestamp: STATE.sessionStartTime
                         });
                     }
@@ -2135,7 +2135,11 @@
                 if (confirm('Are you sure you want to clear all session history? This cannot be undone.')) {
                     STATE.sessionHistory = [];
                     this.saveHistory();
-                    DOM.historyList.innerHTML = '<p>No sessions recorded yet</p>';
+                    DOM.historyList.innerHTML = '';
+                    // Force immediate UI update
+                    setTimeout(() => {
+                        historyActions.renderHistory();
+                    }, 0);
                 }
             },
 
@@ -2151,7 +2155,7 @@
                     historyText += `Type: ${session.type.toUpperCase()}\n`;
                     historyText += `Date: ${dateString} ${timeString}\n`;
                     historyText += `Duration: ${durationString}\n`;
-                    historyText += `Notes: ${session.notes || 'No notes'}\n\n`;
+                    historyText += `Notes: ${session.notes || 'Enter work/project here'}\n\n`;
                 });
                 
                 // Create a blob and download it
@@ -2170,7 +2174,7 @@
                 DOM.historyList.innerHTML = '';
                 
                 if (STATE.sessionHistory.length === 0) {
-                    DOM.historyList.innerHTML = '<p style="text-align: center; padding: 20px; color: #666;">Enter work/project here</p>';
+                    DOM.historyList.innerHTML = '<p style="text-align: center; padding: 20px; color: #666;">No session history yet</p>';
                     return;
                 }
                 
@@ -2191,8 +2195,8 @@
                             <span class="history-type ${session.type}-history">${session.type.charAt(0).toUpperCase() + session.type.slice(1)}</span>
                             <span class="history-time" contenteditable="true" data-type="time" data-index="${index}">${dateString} ${timeString}</span>
                         </div>
-                        <div class="history-duration">Duration: ${durationString}</div>
-                        <div class="history-notes editable" contenteditable="true" data-type="notes" data-index="${index}">${session.notes || 'No notes'}</div>
+                        <div class="history-duration editable" contenteditable="true" data-type="duration" data-index="${index}">Duration: ${durationString}</div>
+                        <div class="history-notes editable" contenteditable="true" data-type="notes" data-index="${index}">${session.notes || 'Enter work/project here'}</div>
                         <div class="history-actions">
                             <button class="history-action-btn" onclick="historyActions.deleteSession(${index})">Delete</button>
                         </div>
@@ -2202,7 +2206,7 @@
                 });
                 
                 // Add event listeners for editable fields
-                document.querySelectorAll('.history-time, .history-notes').forEach(element => {
+                document.querySelectorAll('.history-time, .history-duration, .history-notes').forEach(element => {
                     element.addEventListener('blur', function() {
                         const index = parseInt(this.getAttribute('data-index'));
                         const type = this.getAttribute('data-type');
@@ -2216,6 +2220,11 @@
                             
                             const newDate = new Date(year, month - 1, day, hours, minutes, seconds);
                             STATE.sessionHistory[index].timestamp = newDate;
+                        } else if (type === 'duration') {
+                            // Parse duration from text like "Duration: 00:05:00"
+                            const durationText = this.textContent.replace('Duration: ', '');
+                            const [hours, minutes, seconds] = durationText.split(':').map(Number);
+                            STATE.sessionHistory[index].duration = hours * 3600 + minutes * 60 + seconds;
                         } else if (type === 'notes') {
                             STATE.sessionHistory[index].notes = this.textContent;
                         }
@@ -2243,6 +2252,11 @@
                         p.classList.remove('show');
                     }
                 });
+                
+                // Special handling for LoFi panel to ensure it opens correctly
+                if (panel === DOM.lofiPanel) {
+                    DOM.lofiPanel.style.display = panel.classList.contains('show') ? 'block' : 'none';
+                }
             },
             
             toggleNoisePlayback() {
