@@ -153,6 +153,8 @@
             transform: translate(-50%, -50%);
             z-index: 2;
             transition: none; /* Remove transition to prevent movement during celebration */
+            width: 100%;
+            text-align: center;
         }
 
         .timer-progress {
@@ -218,8 +220,7 @@
             box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
         }
 
-        #start { background-color: var(--primary-green); color: white; }
-        #stop { background-color: #f44336; color: white; }
+        #startStop { background-color: var(--primary-green); color: white; }
         #reset { background-color: var(--primary-blue); color: white; }
 
         .quick-buttons {
@@ -882,8 +883,7 @@
         </div>
         
         <div class="buttons">
-            <button id="start">Start</button>
-            <button id="stop">Stop</button>
+            <button id="startStop">Start</button>
             <button id="reset">Reset</button>
         </div>
         
@@ -1070,6 +1070,7 @@
             <div class="reward-tab active" data-tab="daily">Daily</div>
             <div class="reward-tab" data-tab="weekly">Weekly</div>
             <div class="reward-tab" data-tab="monthly">Monthly</div>
+            <div class="reward-tab" data-tab="history">History</div>
         </div>
         
         <div class="reward-tab-content active" id="dailyRewards">
@@ -1084,9 +1085,12 @@
             <div id="monthlyRewardsList"></div>
         </div>
         
+        <div class="reward-tab-content" id="historyRewards">
+            <div id="historyRewardsList"></div>
+        </div>
+        
         <div class="reward-controls">
             <button id="resetRewards" class="reset-rewards-btn">Reset Rewards</button>
-            <button id="deleteRewardHistory" class="delete-history-btn">Delete History</button>
         </div>
     </div>
 
@@ -1108,8 +1112,7 @@
             timerProgress: document.getElementById('timerProgress'),
             minutesInput: document.getElementById('minutes'),
             secondsInput: document.getElementById('seconds'),
-            startButton: document.getElementById('start'),
-            stopButton: document.getElementById('stop'),
+            startStopButton: document.getElementById('startStop'),
             resetButton: document.getElementById('reset'),
             work25Button: document.getElementById('work25'),
             break5Button: document.getElementById('break5'),
@@ -1154,8 +1157,8 @@
             dailyRewardsList: document.getElementById('dailyRewardsList'),
             weeklyRewardsList: document.getElementById('weeklyRewardsList'),
             monthlyRewardsList: document.getElementById('monthlyRewardsList'),
+            historyRewardsList: document.getElementById('historyRewardsList'),
             resetRewards: document.getElementById('resetRewards'),
-            deleteRewardHistory: document.getElementById('deleteRewardHistory'),
             confettiContainer: document.getElementById('confettiContainer'),
             leftAnimalGif: document.getElementById('leftAnimalGif'),
             rightAnimalGif: document.getElementById('rightAnimalGif'),
@@ -1304,121 +1307,143 @@
 
         // ========== Timer Functions ==========
         const timerActions = {
+            startStop() {
+                if (STATE.isRunning) {
+                    this.stop();
+                } else {
+                    this.start();
+                }
+            },
+            
             start() {
+                const minutes = parseInt(DOM.minutesInput.value) || 0;
+                const seconds = parseInt(DOM.secondsInput.value) || 0;
+                STATE.totalSeconds = minutes * 60 + seconds;
+                
+                // Only set initialSeconds if we're starting fresh (not resuming)
                 if (!STATE.isRunning) {
-                    const minutes = parseInt(DOM.minutesInput.value) || 0;
-                    const seconds = parseInt(DOM.secondsInput.value) || 0;
-                    STATE.totalSeconds = minutes * 60 + seconds;
                     STATE.initialSeconds = STATE.totalSeconds;
-                    
-                    if (STATE.totalSeconds <= 0) return;
-                    
-                    STATE.isRunning = true;
+                }
+                
+                if (STATE.totalSeconds <= 0) return;
+                
+                STATE.isRunning = true;
+                if (!STATE.sessionStartTime) {
                     STATE.sessionStartTime = new Date();
-                    STATE.lastTrackingUpdate = Date.now();
+                }
+                STATE.lastTrackingUpdate = Date.now();
+                
+                DOM.startStopButton.textContent = 'Stop';
+                DOM.startStopButton.style.backgroundColor = '#f44336';
+                
+                DOM.body.classList.remove('work-mode', 'break-mode');
+                DOM.body.classList.add(STATE.isWorkMode ? 'work-mode' : 'break-mode');
+                
+                // Update animal GIFs based on mode
+                if (STATE.isWorkMode) {
+                    DOM.leftAnimalGif.src = 'assets/working-dog-animation.gif';
+                    DOM.rightAnimalGif.src = 'assets/working-dog-animation.gif';
+                } else {
+                    DOM.leftAnimalGif.src = STATE.breakGif;
+                    DOM.rightAnimalGif.src = STATE.breakGif;
+                }
+                
+                STATE.timer = setInterval(() => {
+                    STATE.totalSeconds--;
+                    timerActions.updateDisplay();
                     
-                    DOM.body.classList.remove('work-mode', 'break-mode');
-                    DOM.body.classList.add(STATE.isWorkMode ? 'work-mode' : 'break-mode');
+                    // Update progress circle
+                    const progressPercent = 100 - (STATE.totalSeconds / STATE.initialSeconds * 100);
+                    DOM.timerProgress.style.background = `conic-gradient(var(--primary-blue) ${progressPercent}%, transparent ${progressPercent}%)`;
                     
-                    // Update animal GIFs based on mode
-                    if (STATE.isWorkMode) {
-                        DOM.leftAnimalGif.src = 'assets/working-dog-animation.gif';
-                        DOM.rightAnimalGif.src = 'assets/working-dog-animation.gif';
-                    } else {
-                        DOM.leftAnimalGif.src = STATE.breakGif;
-                        DOM.rightAnimalGif.src = STATE.breakGif;
+                    // Update tracking time in real-time
+                    const now = Date.now();
+                    const elapsedSeconds = Math.floor((now - STATE.lastTrackingUpdate) / 1000);
+                    
+                    if (elapsedSeconds >= 1) {
+                        if (STATE.isWorkMode) {
+                            STATE.totalWorkSeconds += elapsedSeconds;
+                        } else {
+                            STATE.totalBreakSeconds += elapsedSeconds;
+                        }
+                        STATE.lastTrackingUpdate = now;
+                        trackingActions.updateDisplay();
                     }
                     
-                    STATE.timer = setInterval(() => {
-                        STATE.totalSeconds--;
-                        timerActions.updateDisplay();
+                    if (STATE.totalSeconds <= 0) {
+                        clearInterval(STATE.timer);
+                        STATE.isRunning = false;
+                        DOM.alarmSound.play();
+                        celebrationActions.triggerCelebration();
                         
-                        // Update progress circle
-                        const progressPercent = 100 - (STATE.totalSeconds / STATE.initialSeconds * 100);
-                        DOM.timerProgress.style.background = `conic-gradient(var(--primary-blue) ${progressPercent}%, transparent ${progressPercent}%)`;
+                        const sessionEndTime = new Date();
+                        const sessionDuration = Math.floor((sessionEndTime - STATE.sessionStartTime) / 1000);
                         
-                        // Update tracking time in real-time
-                        const now = Date.now();
-                        const elapsedSeconds = Math.floor((now - STATE.lastTrackingUpdate) / 1000);
-                        
-                        if (elapsedSeconds >= 1) {
-                            if (STATE.isWorkMode) {
-                                STATE.totalWorkSeconds += elapsedSeconds;
-                            } else {
-                                STATE.totalBreakSeconds += elapsedSeconds;
-                            }
-                            STATE.lastTrackingUpdate = now;
-                            trackingActions.updateDisplay();
+                        if (STATE.isWorkMode) {
+                            STATE.totalWorkSeconds += sessionDuration;
+                            STATE.completedSessions++;
+                            rewardActions.updateSessionCounters();
+                            historyActions.addSession({
+                                type: 'work',
+                                duration: sessionDuration,
+                                notes: DOM.noteInput.value.trim() || 'Enter work/project here',
+                                timestamp: STATE.sessionStartTime
+                            });
+                            rewardActions.updateRewards('work', sessionDuration);
+                        } else {
+                            STATE.totalBreakSeconds += sessionDuration;
+                            historyActions.addSession({
+                                type: 'break',
+                                duration: sessionDuration,
+                                notes: DOM.noteInput.value.trim() || 'Enter work/project here',
+                                timestamp: STATE.sessionStartTime
+                            });
                         }
                         
-                        if (STATE.totalSeconds <= 0) {
-                            clearInterval(STATE.timer);
-                            STATE.isRunning = false;
-                            DOM.alarmSound.play();
-                            celebrationActions.triggerCelebration();
-                            
-                            const sessionEndTime = new Date();
-                            const sessionDuration = Math.floor((sessionEndTime - STATE.sessionStartTime) / 1000);
-                            
-                            if (STATE.isWorkMode) {
-                                STATE.totalWorkSeconds += sessionDuration;
-                                STATE.completedSessions++;
-                                rewardActions.updateSessionCounters();
-                                historyActions.addSession({
-                                    type: 'work',
-                                    duration: sessionDuration,
-                                    notes: DOM.noteInput.value.trim() || 'Enter work/project here',
-                                    timestamp: STATE.sessionStartTime
-                                });
-                                rewardActions.updateRewards('work', sessionDuration);
+                        trackingActions.updateDisplay();
+                        
+                        STATE.isWorkMode = !STATE.isWorkMode;
+                        timerActions.updateModeIndicator();
+                        
+                        DOM.body.classList.remove('work-mode', 'break-mode');
+                        DOM.body.classList.add(STATE.isWorkMode ? 'work-mode' : 'break-mode');
+                        
+                        // Update animal GIFs based on new mode
+                        if (STATE.isWorkMode) {
+                            DOM.leftAnimalGif.src = 'assets/working-dog-animation.gif';
+                            DOM.rightAnimalGif.src = 'assets/working-dog-animation.gif';
+                        } else {
+                            DOM.leftAnimalGif.src = STATE.breakGif;
+                            DOM.rightAnimalGif.src = STATE.breakGif;
+                        }
+                        
+                        if (STATE.isWorkMode) {
+                            timerActions.setQuickTime(25, 0, true);
+                        } else {
+                            const lastBreakWasShort = localStorage.getItem('lastBreakWasShort') === 'true';
+                            if (lastBreakWasShort) {
+                                timerActions.setQuickTime(30, 0, false);
+                                localStorage.setItem('lastBreakWasShort', 'false');
                             } else {
-                                STATE.totalBreakSeconds += sessionDuration;
-                                historyActions.addSession({
-                                    type: 'break',
-                                    duration: sessionDuration,
-                                    notes: DOM.noteInput.value.trim() || 'Enter work/project here',
-                                    timestamp: STATE.sessionStartTime
-                                });
-                            }
-                            
-                            trackingActions.updateDisplay();
-                            
-                            STATE.isWorkMode = !STATE.isWorkMode;
-                            timerActions.updateModeIndicator();
-                            
-                            DOM.body.classList.remove('work-mode', 'break-mode');
-                            DOM.body.classList.add(STATE.isWorkMode ? 'work-mode' : 'break-mode');
-                            
-                            // Update animal GIFs based on new mode
-                            if (STATE.isWorkMode) {
-                                DOM.leftAnimalGif.src = 'assets/working-dog-animation.gif';
-                                DOM.rightAnimalGif.src = 'assets/working-dog-animation.gif';
-                            } else {
-                                DOM.leftAnimalGif.src = STATE.breakGif;
-                                DOM.rightAnimalGif.src = STATE.breakGif;
-                            }
-                            
-                            if (STATE.isWorkMode) {
-                                timerActions.setQuickTime(25, 0, true);
-                            } else {
-                                const lastBreakWasShort = localStorage.getItem('lastBreakWasShort') === 'true';
-                                if (lastBreakWasShort) {
-                                    timerActions.setQuickTime(30, 0, false);
-                                    localStorage.setItem('lastBreakWasShort', 'false');
-                                } else {
-                                    timerActions.setQuickTime(5, 0, false);
-                                    localStorage.setItem('lastBreakWasShort', 'true');
-                                }
+                                timerActions.setQuickTime(5, 0, false);
+                                localStorage.setItem('lastBreakWasShort', 'true');
                             }
                         }
-                    }, 1000);
-                }
+                        
+                        // Reset the start/stop button
+                        DOM.startStopButton.textContent = 'Start';
+                        DOM.startStopButton.style.backgroundColor = 'var(--primary-green)';
+                        STATE.sessionStartTime = null;
+                    }
+                }, 1000);
             },
 
             stop() {
                 if (STATE.isRunning) {
                     clearInterval(STATE.timer);
                     STATE.isRunning = false;
+                    DOM.startStopButton.textContent = 'Start';
+                    DOM.startStopButton.style.backgroundColor = 'var(--primary-green)';
                     
                     const sessionEndTime = new Date();
                     const sessionDuration = Math.floor((sessionEndTime - STATE.sessionStartTime) / 1000);
@@ -1444,6 +1469,7 @@
                         });
                     }
                     trackingActions.updateDisplay();
+                    STATE.sessionStartTime = null;
                 }
             },
 
@@ -1923,8 +1949,74 @@
             },
             
             renderRewardHistory() {
-                // This function will be called when viewing history tabs
-                // Currently we're showing current progress in the main tabs
+                DOM.historyRewardsList.innerHTML = '';
+                
+                // Render daily history
+                if (STATE.rewardHistory.daily.length > 0) {
+                    const dailyHeader = document.createElement('h4');
+                    dailyHeader.textContent = 'Daily Progress History';
+                    DOM.historyRewardsList.appendChild(dailyHeader);
+                    
+                    STATE.rewardHistory.daily.forEach(item => {
+                        const historyItem = document.createElement('div');
+                        historyItem.className = 'history-item';
+                        historyItem.innerHTML = `
+                            <div><strong>${item.periodName}</strong></div>
+                            <div>Completed: ${item.completedSessions} sessions</div>
+                            <div style="font-size: 0.8em; color: #666;">${item.archivedAt.toLocaleDateString()}</div>
+                        `;
+                        DOM.historyRewardsList.appendChild(historyItem);
+                    });
+                }
+                
+                // Render weekly history
+                if (STATE.rewardHistory.weekly.length > 0) {
+                    const weeklyHeader = document.createElement('h4');
+                    weeklyHeader.textContent = 'Weekly Progress History';
+                    weeklyHeader.style.marginTop = '20px';
+                    DOM.historyRewardsList.appendChild(weeklyHeader);
+                    
+                    STATE.rewardHistory.weekly.forEach(item => {
+                        const historyItem = document.createElement('div');
+                        historyItem.className = 'history-item';
+                        historyItem.innerHTML = `
+                            <div><strong>${item.periodName}</strong></div>
+                            <div>Completed: ${item.completedSessions} sessions</div>
+                            <div style="font-size: 0.8em; color: #666;">${item.archivedAt.toLocaleDateString()}</div>
+                        `;
+                        DOM.historyRewardsList.appendChild(historyItem);
+                    });
+                }
+                
+                // Render monthly history
+                if (STATE.rewardHistory.monthly.length > 0) {
+                    const monthlyHeader = document.createElement('h4');
+                    monthlyHeader.textContent = 'Monthly Progress History';
+                    monthlyHeader.style.marginTop = '20px';
+                    DOM.historyRewardsList.appendChild(monthlyHeader);
+                    
+                    STATE.rewardHistory.monthly.forEach(item => {
+                        const historyItem = document.createElement('div');
+                        historyItem.className = 'history-item';
+                        historyItem.innerHTML = `
+                            <div><strong>${item.periodName}</strong></div>
+                            <div>Completed: ${item.completedSessions} sessions</div>
+                            <div style="font-size: 0.8em; color: #666;">${item.archivedAt.toLocaleDateString()}</div>
+                        `;
+                        DOM.historyRewardsList.appendChild(historyItem);
+                    });
+                }
+                
+                if (STATE.rewardHistory.daily.length === 0 && 
+                    STATE.rewardHistory.weekly.length === 0 && 
+                    STATE.rewardHistory.monthly.length === 0) {
+                    const emptyMessage = document.createElement('p');
+                    emptyMessage.textContent = 'No reward history yet';
+                    emptyMessage.style.textAlign = 'center';
+                    emptyMessage.style.padding = '20px';
+                    emptyMessage.style.color = '#666';
+                    DOM.historyRewardsList.appendChild(emptyMessage);
+                }
             },
             
             resetRewards() {
@@ -1948,18 +2040,6 @@
                     
                     this.saveRewards();
                     this.renderRewards();
-                }
-            },
-            
-            deleteRewardHistory() {
-                if (confirm('Are you sure you want to delete all reward history? This cannot be undone.')) {
-                    STATE.rewardHistory = {
-                        daily: [],
-                        weekly: [],
-                        monthly: []
-                    };
-                    this.saveRewards();
-                    this.renderRewardHistory();
                 }
             }
         };
@@ -2307,8 +2387,7 @@
 
         // ========== Event Listeners ==========
         function setupEventListeners() {
-            DOM.startButton.addEventListener('click', timerActions.start);
-            DOM.stopButton.addEventListener('click', timerActions.stop);
+            DOM.startStopButton.addEventListener('click', timerActions.startStop);
             DOM.resetButton.addEventListener('click', timerActions.reset);
             DOM.work25Button.addEventListener('click', () => timerActions.setQuickTime(25, 0, true));
             DOM.break5Button.addEventListener('click', () => timerActions.setQuickTime(5, 0, false));
@@ -2365,7 +2444,6 @@
             });
 
             DOM.resetRewards.addEventListener('click', rewardActions.resetRewards);
-            DOM.deleteRewardHistory.addEventListener('click', rewardActions.deleteRewardHistory);
 
             document.addEventListener('click', (e) => {
                 const panels = [DOM.infoPanel, DOM.noisePanel, DOM.lofiPanel, DOM.historyPanel, DOM.rewardsPanel, DOM.productivityPanel];
