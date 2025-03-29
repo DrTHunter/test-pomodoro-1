@@ -396,46 +396,15 @@
         .work-mode { background-color: var(--work-bg); color: var(--work-text); }
         .break-mode { background-color: var(--break-bg); color: var(--break-text); }
 
-        /* Left side tab container */
-        .left-tab-container {
+        /* Top right dropdown menu */
+        .dropdown-menu {
             position: fixed;
             top: 20px;
-            left: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            z-index: 100;
-        }
-
-        .left-tab {
-            background-color: var(--accent-purple);
-            color: white;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            cursor: pointer;
-            transition: all 0.3s;
-            font-size: 1.5em;
-        }
-
-        .left-tab:hover { transform: scale(1.1); }
-
-        /* Right side tab container */
-        .tab-container {
-            position: fixed;
-            bottom: 20px;
             right: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
             z-index: 100;
         }
 
-        .tab {
+        .dropdown-btn {
             background-color: var(--accent-purple);
             color: white;
             width: 50px;
@@ -450,7 +419,43 @@
             font-size: 1.5em;
         }
 
-        .tab:hover { transform: scale(1.1); }
+        .dropdown-btn:hover { 
+            transform: scale(1.1); 
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            background-color: white;
+            min-width: 200px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            border-radius: 10px;
+            z-index: 101;
+        }
+
+        .dropdown-content.show {
+            display: block;
+        }
+
+        .dropdown-item {
+            padding: 12px 16px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            color: #333;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .dropdown-item:hover {
+            background-color: #f1f1f1;
+        }
+
+        .dropdown-item i {
+            margin-right: 10px;
+            font-size: 1.2em;
+        }
 
         .panel {
             position: fixed;
@@ -459,7 +464,7 @@
             padding: 15px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
             display: none;
-            max-height: 60vh;
+            max-height: 80vh;
             overflow-y: auto;
             z-index: 101;
             right: 20px;
@@ -467,13 +472,17 @@
             width: 350px;
         }
 
-        .panel.show { display: block; }
+        .panel.show { 
+            display: block;
+            max-height: 80vh;
+            height: auto;
+        }
 
         .info-panel {
             top: 90px;
             left: 20px;
             width: 350px;
-            max-height: 400px;
+            max-height: 80vh;
             right: auto;
             bottom: auto;
         }
@@ -499,7 +508,7 @@
             top: 90px;
             left: 20px;
             width: 350px;
-            max-height: 400px;
+            max-height: 80vh;
             display: none;
             right: auto;
             bottom: auto;
@@ -847,6 +856,46 @@
             animation: bigCelebration 2s ease-out forwards;
             pointer-events: none;
         }
+
+        /* Mobile responsiveness */
+        @media (max-width: 768px) {
+            .dropdown-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2em;
+            }
+            
+            .panel {
+                width: 90%;
+                max-width: 350px;
+                right: 5%;
+                bottom: 80px;
+            }
+            
+            .info-panel, .productivity-panel {
+                left: 5%;
+                width: 90%;
+                max-width: 350px;
+            }
+            
+            .timer-container {
+                width: 250px;
+                height: 250px;
+            }
+            
+            .timer-display {
+                font-size: 4em;
+            }
+            
+            .quick-buttons {
+                flex-wrap: wrap;
+            }
+            
+            .quick-btn {
+                padding: 8px 12px;
+                font-size: 0.9em;
+            }
+        }
     </style>
 </head>
 <body>
@@ -854,10 +903,32 @@
         <img class="animal-gif" id="leftAnimalGif" src="assets/working-dog-animation.gif" alt="Working animal">
     </div>
 
-    <!-- Left side tabs -->
-    <div class="left-tab-container">
-        <div class="left-tab" id="infoTabBtn">ℹ️</div>
-        <div class="left-tab" id="productivityTabBtn">📈</div>
+    <!-- Top right dropdown menu -->
+    <div class="dropdown-menu">
+        <div class="dropdown-btn" id="dropdownBtn">☰</div>
+        <div class="dropdown-content" id="dropdownContent">
+            <div class="dropdown-item" id="infoMenuItem">
+                <i>ℹ️</i> Info
+            </div>
+            <div class="dropdown-item" id="productivityMenuItem">
+                <i>📈</i> Productivity
+            </div>
+            <div class="dropdown-item" id="noiseMenuItem">
+                <i>🎵</i> Background Sounds
+            </div>
+            <div class="dropdown-item" id="lofiMenuItem">
+                <i>🎧</i> LoFi Channels
+            </div>
+            <div class="dropdown-item" id="historyMenuItem">
+                <i>📊</i> Session History
+            </div>
+            <div class="dropdown-item" id="rewardsMenuItem">
+                <i>🏆</i> Rewards
+            </div>
+            <div class="dropdown-item" id="donateMenuItem">
+                <i>☕</i> Buy Creator a Coffee
+            </div>
+        </div>
     </div>
 
     <div class="container">
@@ -957,21 +1028,7 @@
         <p>This data provides objective evidence to support your case for career advancement.</p>
     </div>
 
-    <a href="https://www.paypal.com/donate?business=YOUR_PAYPAL_EMAIL&item_name=Support+Pomodoro+Timer+Creator" 
-       class="donate-btn" 
-       target="_blank">
-       ☕ Buy Creator a Coffee
-    </a>
-
-    <!-- Tab container at bottom right -->
-    <div class="tab-container">
-        <div class="tab" id="noiseTabBtn">🎵</div>
-        <div class="tab" id="lofiTabBtn">🎧</div>
-        <div class="tab" id="historyTabBtn">📊</div>
-        <div class="tab" id="rewardsTabBtn">🏆</div>
-    </div>
-
-    <!-- Panels -->
+    <!-- Info Panel -->
     <div class="panel info-panel" id="infoPanel">
         <h3>About Pomodoro Technique</h3>
         <p>The Pomodoro Technique is a time management method developed by Francesco Cirillo in the late 1980s.</p>
@@ -983,7 +1040,7 @@
             <li>Work focused until the timer rings</li>
             <li>Take a <strong>5-minute break</strong></li>
             <li>After 4 work sessions, take a <strong>30-minute break</strong></li>
-            <li><strong>Change tasks periodically</strong> to ensure too much time isn't spent on one thing</li>
+            <li><strong>Change tasks periodically</strong> to ensure too much time isn't spent on one task</li>
         </ol>
         
         <h4>Key Productivity Tips:</h4>
@@ -996,6 +1053,7 @@
         </ul>
     </div>
 
+    <!-- Noise Panel -->
     <div class="panel" id="noisePanel">
         <h3 style="margin-top: 0; color: var(--accent-purple);">Background Sounds</h3>
         <div class="noise-controls">
@@ -1034,6 +1092,7 @@
         <div style="text-align: center; margin-top: 5px; font-size: 0.8em;">Volume</div>
     </div>
 
+    <!-- LoFi Panel -->
     <div class="panel" id="lofiPanel">
         <h3 style="margin-top: 0; color: var(--accent-purple);">LoFi Channels</h3>
         <a href="https://www.youtube.com/watch?v=jfKfPfyJRdk" target="_blank" class="lofi-channel">
@@ -1054,6 +1113,7 @@
         </a>
     </div>
 
+    <!-- History Panel -->
     <div class="panel" id="historyPanel">
         <h3 style="margin-top: 0; color: var(--accent-purple);">Session History</h3>
         <div class="history-controls">
@@ -1063,6 +1123,7 @@
         <div id="historyList"></div>
     </div>
 
+    <!-- Rewards Panel -->
     <div class="panel" id="rewardsPanel">
         <h3 style="margin-top: 0; color: var(--accent-purple);">Your Rewards</h3>
         
@@ -1131,9 +1192,6 @@
             alarmSound: document.getElementById('alarmSound'),
             applauseSound: document.getElementById('applauseSound'),
             modeIndicator: document.getElementById('modeIndicator'),
-            noiseTabBtn: document.getElementById('noiseTabBtn'),
-            noisePanel: document.getElementById('noisePanel'),
-            noisePlayBtn: document.getElementById('noisePlayBtn'),
             nowPlaying: document.getElementById('nowPlaying'),
             volumeControl: document.getElementById('volumeControl'),
             rainSound: document.getElementById('rainSound'),
@@ -1143,17 +1201,10 @@
             whiteNoiseSound: document.getElementById('whiteNoiseSound'),
             coffeeSound: document.getElementById('coffeeSound'),
             noiseOptions: document.querySelectorAll('.noise-option input'),
-            lofiTabBtn: document.getElementById('lofiTabBtn'),
-            lofiPanel: document.getElementById('lofiPanel'),
-            infoTabBtn: document.getElementById('infoTabBtn'),
             infoPanel: document.getElementById('infoPanel'),
-            historyTabBtn: document.getElementById('historyTabBtn'),
-            historyPanel: document.getElementById('historyPanel'),
             historyList: document.getElementById('historyList'),
             clearHistory: document.getElementById('clearHistory'),
             exportHistory: document.getElementById('exportHistory'),
-            rewardsTabBtn: document.getElementById('rewardsTabBtn'),
-            rewardsPanel: document.getElementById('rewardsPanel'),
             dailyRewardsList: document.getElementById('dailyRewardsList'),
             weeklyRewardsList: document.getElementById('weeklyRewardsList'),
             monthlyRewardsList: document.getElementById('monthlyRewardsList'),
@@ -1164,8 +1215,21 @@
             rightAnimalGif: document.getElementById('rightAnimalGif'),
             productivityPanel: document.getElementById('productivityPanel'),
             closeProductivityPanel: document.getElementById('closeProductivityPanel'),
-            productivityTabBtn: document.getElementById('productivityTabBtn'),
-            body: document.body
+            body: document.body,
+            dropdownBtn: document.getElementById('dropdownBtn'),
+            dropdownContent: document.getElementById('dropdownContent'),
+            infoMenuItem: document.getElementById('infoMenuItem'),
+            productivityMenuItem: document.getElementById('productivityMenuItem'),
+            noiseMenuItem: document.getElementById('noiseMenuItem'),
+            lofiMenuItem: document.getElementById('lofiMenuItem'),
+            historyMenuItem: document.getElementById('historyMenuItem'),
+            rewardsMenuItem: document.getElementById('rewardsMenuItem'),
+            donateMenuItem: document.getElementById('donateMenuItem'),
+            noisePlayBtn: document.getElementById('noisePlayBtn'),
+            noisePanel: document.getElementById('noisePanel'),
+            lofiPanel: document.getElementById('lofiPanel'),
+            historyPanel: document.getElementById('historyPanel'),
+            rewardsPanel: document.getElementById('rewardsPanel')
         };
 
         // ========== State Management ==========
@@ -1224,6 +1288,26 @@
                         current: 0,
                         reward: '🌟',
                         earned: false
+                    },
+                    {
+                        id: 'daily_4',
+                        title: 'Early Bird',
+                        description: 'Complete a work session before 8 AM',
+                        icon: '🐦',
+                        goal: 1,
+                        current: 0,
+                        reward: '🌞',
+                        earned: false
+                    },
+                    {
+                        id: 'daily_5',
+                        title: 'Night Owl',
+                        description: 'Complete a work session after 8 PM',
+                        icon: '🦉',
+                        goal: 1,
+                        current: 0,
+                        reward: '🌙',
+                        earned: false
                     }
                 ],
                 weekly: [
@@ -1256,6 +1340,26 @@
                         current: 0,
                         reward: '💎',
                         earned: false
+                    },
+                    {
+                        id: 'weekly_4',
+                        title: 'Consistency King',
+                        description: 'Complete at least 3 sessions every day for a week',
+                        icon: '👑',
+                        goal: 7,
+                        current: 0,
+                        reward: '🏅',
+                        earned: false
+                    },
+                    {
+                        id: 'weekly_5',
+                        title: 'Weekend Warrior',
+                        description: 'Complete 5 work sessions on weekend days',
+                        icon: '⚔️',
+                        goal: 5,
+                        current: 0,
+                        reward: '🛡️',
+                        earned: false
                     }
                 ],
                 monthly: [
@@ -1287,6 +1391,26 @@
                         goal: 120,
                         current: 0,
                         reward: '💎',
+                        earned: false
+                    },
+                    {
+                        id: 'monthly_4',
+                        title: 'Perfect Attendance',
+                        description: 'Complete at least 1 session every day for a month',
+                        icon: '📅',
+                        goal: 30,
+                        current: 0,
+                        reward: '✨',
+                        earned: false
+                    },
+                    {
+                        id: 'monthly_5',
+                        title: 'Balance Master',
+                        description: 'Maintain at least 20% break time ratio for the month',
+                        icon: '⚖️',
+                        goal: 1,
+                        current: 0,
+                        reward: '🧘',
                         earned: false
                     }
                 ]
@@ -2385,6 +2509,54 @@
             }
         };
 
+        // ========== Dropdown Menu Functions ==========
+        const dropdownActions = {
+            toggleDropdown() {
+                DOM.dropdownContent.classList.toggle('show');
+            },
+            
+            closeDropdown() {
+                DOM.dropdownContent.classList.remove('show');
+            },
+            
+            setupMenuItems() {
+                DOM.infoMenuItem.addEventListener('click', () => {
+                    soundActions.togglePanel(DOM.infoPanel);
+                    this.closeDropdown();
+                });
+                
+                DOM.productivityMenuItem.addEventListener('click', () => {
+                    soundActions.togglePanel(DOM.productivityPanel);
+                    this.closeDropdown();
+                });
+                
+                DOM.noiseMenuItem.addEventListener('click', () => {
+                    soundActions.togglePanel(DOM.noisePanel);
+                    this.closeDropdown();
+                });
+                
+                DOM.lofiMenuItem.addEventListener('click', () => {
+                    soundActions.togglePanel(DOM.lofiPanel);
+                    this.closeDropdown();
+                });
+                
+                DOM.historyMenuItem.addEventListener('click', () => {
+                    soundActions.togglePanel(DOM.historyPanel);
+                    this.closeDropdown();
+                });
+                
+                DOM.rewardsMenuItem.addEventListener('click', () => {
+                    soundActions.togglePanel(DOM.rewardsPanel);
+                    this.closeDropdown();
+                });
+                
+                DOM.donateMenuItem.addEventListener('click', () => {
+                    window.open('https://www.paypal.com/donate?business=YOUR_PAYPAL_EMAIL&item_name=Support+Pomodoro+Timer+Creator', '_blank');
+                    this.closeDropdown();
+                });
+            }
+        };
+
         // ========== Event Listeners ==========
         function setupEventListeners() {
             DOM.startStopButton.addEventListener('click', timerActions.startStop);
@@ -2401,43 +2573,14 @@
             DOM.deleteAllNotes.addEventListener('click', noteActions.deleteAllNotes);
             DOM.resetTracking.addEventListener('click', trackingActions.resetTracking);
             
-            DOM.noiseTabBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                soundActions.togglePanel(DOM.noisePanel);
-            });
             DOM.noisePlayBtn.addEventListener('click', soundActions.toggleNoisePlayback);
             DOM.volumeControl.addEventListener('input', soundActions.updateVolume);
             DOM.noiseOptions.forEach(option => {
                 option.addEventListener('change', soundActions.changeBackgroundNoise);
             });
-            
-            DOM.lofiTabBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                soundActions.togglePanel(DOM.lofiPanel);
-            });
-
-            DOM.infoTabBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                soundActions.togglePanel(DOM.infoPanel);
-            });
-
-            DOM.historyTabBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                soundActions.togglePanel(DOM.historyPanel);
-            });
 
             DOM.clearHistory.addEventListener('click', historyActions.clearHistory);
             DOM.exportHistory.addEventListener('click', historyActions.exportHistory);
-
-            DOM.rewardsTabBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                soundActions.togglePanel(DOM.rewardsPanel);
-            });
-
-            DOM.productivityTabBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                soundActions.togglePanel(DOM.productivityPanel);
-            });
 
             DOM.closeProductivityPanel.addEventListener('click', () => {
                 DOM.productivityPanel.classList.remove('show');
@@ -2445,13 +2588,22 @@
 
             DOM.resetRewards.addEventListener('click', rewardActions.resetRewards);
 
+            // Dropdown menu events
+            DOM.dropdownBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                dropdownActions.toggleDropdown();
+            });
+            
+            dropdownActions.setupMenuItems();
+
             document.addEventListener('click', (e) => {
                 const panels = [DOM.infoPanel, DOM.noisePanel, DOM.lofiPanel, DOM.historyPanel, DOM.rewardsPanel, DOM.productivityPanel];
-                const tabs = [DOM.infoTabBtn, DOM.noiseTabBtn, DOM.lofiTabBtn, DOM.historyTabBtn, DOM.rewardsTabBtn, DOM.productivityTabBtn];
                 
                 if (!panels.some(panel => panel.contains(e.target)) && 
-                    !tabs.includes(e.target)) {
+                    !DOM.dropdownBtn.contains(e.target) && 
+                    !DOM.dropdownContent.contains(e.target)) {
                     panels.forEach(panel => panel.classList.remove('show'));
+                    dropdownActions.closeDropdown();
                 }
             });
             
