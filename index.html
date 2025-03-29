@@ -786,10 +786,47 @@
             opacity: 0;
         }
 
+        .reward-history-tab {
+            padding: 10px;
+            background-color: #f5f5f5;
+            border-radius: 5px;
+            margin-bottom: 5px;
+            cursor: pointer;
+        }
+
+        .reward-history-tab.active {
+            background-color: #e1bee7;
+        }
+
+        .reward-history-content {
+            display: none;
+        }
+
+        .reward-history-content.show {
+            display: block;
+        }
+
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 4px; }
         ::-webkit-scrollbar-thumb { background: #c1c1c1; border-radius: 4px; }
         ::-webkit-scrollbar-thumb:hover { background: #a8a8a8; }
+
+        @keyframes bigCelebration {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.5); opacity: 0.8; }
+            100% { transform: scale(1); opacity: 0; }
+        }
+
+        .big-reward {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 10em;
+            z-index: 2000;
+            animation: bigCelebration 2s ease-out forwards;
+            pointer-events: none;
+        }
     </style>
 </head>
 <body>
@@ -1009,7 +1046,29 @@
 
     <div class="panel rewards-panel" id="rewardsPanel">
         <h3 style="margin-top: 0; color: var(--accent-purple);">Your Rewards</h3>
+        <div class="reward-history-tabs" id="rewardHistoryTabs">
+            <div class="reward-history-tab active" data-period="current">Current</div>
+            <div class="reward-history-tab" data-period="daily">Daily</div>
+            <div class="reward-history-tab" data-period="weekly">Weekly</div>
+            <div class="reward-history-tab" data-period="monthly">Monthly</div>
+        </div>
         <div id="rewardsList"></div>
+        
+        <div class="reward-history-content" id="currentRewards" style="display: block;">
+            <!-- Current rewards will be rendered here -->
+        </div>
+        <div class="reward-history-content" id="dailyRewards">
+            <h4>Daily Rewards History</h4>
+            <div id="dailyRewardsList"></div>
+        </div>
+        <div class="reward-history-content" id="weeklyRewards">
+            <h4>Weekly Rewards History</h4>
+            <div id="weeklyRewardsList"></div>
+        </div>
+        <div class="reward-history-content" id="monthlyRewards">
+            <h4>Monthly Rewards History</h4>
+            <div id="monthlyRewardsList"></div>
+        </div>
     </div>
 
     <!-- Confetti Container -->
@@ -1080,7 +1139,15 @@
             productivityPanel: document.getElementById('productivityPanel'),
             closeProductivityPanel: document.getElementById('closeProductivityPanel'),
             productivityTabBtn: document.getElementById('productivityTabBtn'),
-            body: document.body
+            body: document.body,
+            rewardHistoryTabs: document.getElementById('rewardHistoryTabs'),
+            currentRewards: document.getElementById('currentRewards'),
+            dailyRewards: document.getElementById('dailyRewards'),
+            weeklyRewards: document.getElementById('weeklyRewards'),
+            monthlyRewards: document.getElementById('monthlyRewards'),
+            dailyRewardsList: document.getElementById('dailyRewardsList'),
+            weeklyRewardsList: document.getElementById('weeklyRewardsList'),
+            monthlyRewardsList: document.getElementById('monthlyRewardsList')
         };
 
         // ========== State Management ==========
@@ -1117,7 +1184,8 @@
                     goal: 1,
                     current: 0,
                     reward: '🏅',
-                    earned: false
+                    earned: false,
+                    type: 'current'
                 },
                 {
                     id: 'five_sessions',
@@ -1127,7 +1195,8 @@
                     goal: 5,
                     current: 0,
                     reward: '🥉',
-                    earned: false
+                    earned: false,
+                    type: 'current'
                 },
                 {
                     id: 'ten_sessions',
@@ -1137,7 +1206,8 @@
                     goal: 10,
                     current: 0,
                     reward: '🥈',
-                    earned: false
+                    earned: false,
+                    type: 'current'
                 },
                 {
                     id: 'twenty_sessions',
@@ -1147,7 +1217,8 @@
                     goal: 20,
                     current: 0,
                     reward: '🥇',
-                    earned: false
+                    earned: false,
+                    type: 'current'
                 },
                 {
                     id: 'one_hour',
@@ -1157,7 +1228,8 @@
                     goal: 3600,
                     current: 0,
                     reward: '🌟',
-                    earned: false
+                    earned: false,
+                    type: 'current'
                 },
                 {
                     id: 'five_hours',
@@ -1167,7 +1239,8 @@
                     goal: 18000,
                     current: 0,
                     reward: '🚀',
-                    earned: false
+                    earned: false,
+                    type: 'current'
                 },
                 {
                     id: 'ten_hours',
@@ -1177,12 +1250,55 @@
                     goal: 36000,
                     current: 0,
                     reward: '🏆',
-                    earned: false
+                    earned: false,
+                    type: 'current'
+                },
+                {
+                    id: 'daily_goal',
+                    title: 'Daily Goal',
+                    description: 'Complete 4 work sessions in a day',
+                    icon: '☀️',
+                    goal: 4,
+                    current: 0,
+                    reward: '🌞',
+                    earned: false,
+                    type: 'daily'
+                },
+                {
+                    id: 'weekly_goal',
+                    title: 'Weekly Goal',
+                    description: 'Complete 20 work sessions in a week',
+                    icon: '📅',
+                    goal: 20,
+                    current: 0,
+                    reward: '🌟',
+                    earned: false,
+                    type: 'weekly'
+                },
+                {
+                    id: 'monthly_goal',
+                    title: 'Monthly Goal',
+                    description: 'Complete 80 work sessions in a month',
+                    icon: '📆',
+                    goal: 80,
+                    current: 0,
+                    reward: '🏆',
+                    earned: false,
+                    type: 'monthly'
                 }
             ],
             completedSessions: 0,
             breakGif: 'assets/break-animation.gif', // You can change this to your own GIF filename
-            lastTrackingUpdate: 0
+            lastTrackingUpdate: 0,
+            dailyCompletedSessions: 0,
+            weeklyCompletedSessions: 0,
+            monthlyCompletedSessions: 0,
+            lastSessionDate: null,
+            rewardHistory: {
+                daily: [],
+                weekly: [],
+                monthly: []
+            }
         };
 
         // ========== Timer Functions ==========
@@ -1246,6 +1362,7 @@
                             if (STATE.isWorkMode) {
                                 STATE.totalWorkSeconds += sessionDuration;
                                 STATE.completedSessions++;
+                                rewardActions.updateSessionCounters();
                                 historyActions.addSession({
                                     type: 'work',
                                     duration: sessionDuration,
@@ -1308,6 +1425,7 @@
                     if (STATE.isWorkMode) {
                         STATE.totalWorkSeconds += sessionDuration;
                         STATE.completedSessions++;
+                        rewardActions.updateSessionCounters();
                         historyActions.addSession({
                             type: 'work',
                             duration: sessionDuration,
@@ -1461,6 +1579,17 @@
                         confetti.remove();
                     }, animationDuration * 1000);
                 }
+            },
+            
+            showBigReward(reward) {
+                const bigReward = document.createElement('div');
+                bigReward.className = 'big-reward';
+                bigReward.textContent = reward.reward;
+                document.body.appendChild(bigReward);
+                
+                setTimeout(() => {
+                    bigReward.remove();
+                }, 2000);
             }
         };
 
@@ -1491,22 +1620,115 @@
 
         // ========== Reward Functions ==========
         const rewardActions = {
+            updateSessionCounters() {
+                const now = new Date();
+                const today = now.toDateString();
+                const currentMonth = now.getMonth();
+                const currentYear = now.getFullYear();
+                
+                // Check if we need to reset counters
+                if (!STATE.lastSessionDate || STATE.lastSessionDate.toDateString() !== today) {
+                    // New day, check if we need to archive yesterday's daily progress
+                    if (STATE.dailyCompletedSessions > 0) {
+                        rewardActions.archiveRewardProgress('daily', STATE.dailyCompletedSessions);
+                    }
+                    STATE.dailyCompletedSessions = 0;
+                    
+                    // Check if new week (Monday)
+                    if (now.getDay() === 1 || !STATE.lastSessionDate) {
+                        if (STATE.weeklyCompletedSessions > 0) {
+                            rewardActions.archiveRewardProgress('weekly', STATE.weeklyCompletedSessions);
+                        }
+                        STATE.weeklyCompletedSessions = 0;
+                    }
+                    
+                    // Check if new month
+                    if (now.getDate() === 1 || !STATE.lastSessionDate) {
+                        if (STATE.monthlyCompletedSessions > 0) {
+                            rewardActions.archiveRewardProgress('monthly', STATE.monthlyCompletedSessions);
+                        }
+                        STATE.monthlyCompletedSessions = 0;
+                    }
+                }
+                
+                STATE.lastSessionDate = now;
+                STATE.dailyCompletedSessions++;
+                STATE.weeklyCompletedSessions++;
+                STATE.monthlyCompletedSessions++;
+                
+                this.saveRewards();
+            },
+            
+            archiveRewardProgress(type, count) {
+                const now = new Date();
+                let periodName = '';
+                
+                if (type === 'daily') {
+                    periodName = now.toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' });
+                } else if (type === 'weekly') {
+                    const startOfWeek = new Date(now);
+                    startOfWeek.setDate(now.getDate() - now.getDay() + 1); // Get Monday of this week
+                    periodName = `Week of ${startOfWeek.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`;
+                } else if (type === 'monthly') {
+                    periodName = now.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+                }
+                
+                STATE.rewardHistory[type].push({
+                    date: now,
+                    periodName: periodName,
+                    completedSessions: count,
+                    archivedAt: new Date()
+                });
+                
+                this.saveRewards();
+                this.renderRewardHistory();
+            },
+            
             updateRewards(type, duration) {
                 if (type === 'work') {
                     STATE.rewards.forEach(reward => {
-                        if (reward.id.includes('session') && !reward.earned) {
+                        if (reward.type === 'current' && reward.id.includes('session') && !reward.earned) {
                             reward.current = STATE.completedSessions;
                             if (reward.current >= reward.goal) {
                                 reward.earned = true;
                                 this.showRewardNotification(reward);
+                                celebrationActions.showBigReward(reward);
                             }
                         }
                         
-                        if (reward.id.includes('hour') && !reward.earned) {
+                        if (reward.type === 'current' && reward.id.includes('hour') && !reward.earned) {
                             reward.current = STATE.totalWorkSeconds;
                             if (reward.current >= reward.goal) {
                                 reward.earned = true;
                                 this.showRewardNotification(reward);
+                                celebrationActions.showBigReward(reward);
+                            }
+                        }
+                        
+                        if (reward.type === 'daily' && !reward.earned) {
+                            reward.current = STATE.dailyCompletedSessions;
+                            if (reward.current >= reward.goal) {
+                                reward.earned = true;
+                                this.showRewardNotification(reward);
+                                celebrationActions.showBigReward(reward);
+                            }
+                        }
+                        
+                        if (reward.type === 'weekly' && !reward.earned) {
+                            reward.current = STATE.weeklyCompletedSessions;
+                            if (reward.current >= reward.goal) {
+                                reward.earned = true;
+                                this.showRewardNotification(reward);
+                                celebrationActions.showBigReward(reward);
+                            }
+                        }
+                        
+                        if (reward.type === 'monthly' && !reward.earned) {
+                            reward.current = STATE.monthlyCompletedSessions;
+                            if (reward.current >= reward.goal) {
+                                reward.earned = true;
+                                this.showRewardNotification(reward);
+                                celebrationActions.showBigReward(reward);
                             }
                         }
                     });
@@ -1562,6 +1784,11 @@
                 localStorage.setItem('rewards', JSON.stringify(STATE.rewards));
                 localStorage.setItem('completedSessions', STATE.completedSessions.toString());
                 localStorage.setItem('totalWorkSeconds', STATE.totalWorkSeconds.toString());
+                localStorage.setItem('dailyCompletedSessions', STATE.dailyCompletedSessions.toString());
+                localStorage.setItem('weeklyCompletedSessions', STATE.weeklyCompletedSessions.toString());
+                localStorage.setItem('monthlyCompletedSessions', STATE.monthlyCompletedSessions.toString());
+                localStorage.setItem('lastSessionDate', STATE.lastSessionDate ? STATE.lastSessionDate.getTime() : '');
+                localStorage.setItem('rewardHistory', JSON.stringify(STATE.rewardHistory));
             },
             
             loadRewards() {
@@ -1572,26 +1799,71 @@
                 
                 STATE.completedSessions = parseInt(localStorage.getItem('completedSessions')) || 0;
                 STATE.totalWorkSeconds = parseInt(localStorage.getItem('totalWorkSeconds')) || 0;
+                STATE.dailyCompletedSessions = parseInt(localStorage.getItem('dailyCompletedSessions')) || 0;
+                STATE.weeklyCompletedSessions = parseInt(localStorage.getItem('weeklyCompletedSessions')) || 0;
+                STATE.monthlyCompletedSessions = parseInt(localStorage.getItem('monthlyCompletedSessions')) || 0;
+                
+                const lastSessionDate = localStorage.getItem('lastSessionDate');
+                if (lastSessionDate) {
+                    STATE.lastSessionDate = new Date(parseInt(lastSessionDate));
+                }
+                
+                const savedRewardHistory = localStorage.getItem('rewardHistory');
+                if (savedRewardHistory) {
+                    STATE.rewardHistory = JSON.parse(savedRewardHistory);
+                    // Convert string dates back to Date objects
+                    STATE.rewardHistory.daily = STATE.rewardHistory.daily.map(item => ({
+                        ...item,
+                        date: new Date(item.date),
+                        archivedAt: new Date(item.archivedAt)
+                    }));
+                    STATE.rewardHistory.weekly = STATE.rewardHistory.weekly.map(item => ({
+                        ...item,
+                        date: new Date(item.date),
+                        archivedAt: new Date(item.archivedAt)
+                    }));
+                    STATE.rewardHistory.monthly = STATE.rewardHistory.monthly.map(item => ({
+                        ...item,
+                        date: new Date(item.date),
+                        archivedAt: new Date(item.archivedAt)
+                    }));
+                }
                 
                 STATE.rewards.forEach(reward => {
-                    if (reward.id.includes('session')) {
+                    if (reward.type === 'current' && reward.id.includes('session')) {
                         reward.current = STATE.completedSessions;
                         reward.earned = reward.current >= reward.goal;
                     }
                     
-                    if (reward.id.includes('hour')) {
+                    if (reward.type === 'current' && reward.id.includes('hour')) {
                         reward.current = STATE.totalWorkSeconds;
+                        reward.earned = reward.current >= reward.goal;
+                    }
+                    
+                    if (reward.type === 'daily') {
+                        reward.current = STATE.dailyCompletedSessions;
+                        reward.earned = reward.current >= reward.goal;
+                    }
+                    
+                    if (reward.type === 'weekly') {
+                        reward.current = STATE.weeklyCompletedSessions;
+                        reward.earned = reward.current >= reward.goal;
+                    }
+                    
+                    if (reward.type === 'monthly') {
+                        reward.current = STATE.monthlyCompletedSessions;
                         reward.earned = reward.current >= reward.goal;
                     }
                 });
                 
                 this.renderRewards();
+                this.renderRewardHistory();
             },
             
             renderRewards() {
-                DOM.rewardsList.innerHTML = '';
+                DOM.currentRewards.innerHTML = '';
                 
-                STATE.rewards.forEach(reward => {
+                STATE.rewards.filter(reward => reward.type === 'current').forEach(reward => {
                     const rewardItem = document.createElement('div');
                     rewardItem.className = `reward-item ${reward.earned ? 'reward-earned' : ''}`;
                     
@@ -1612,7 +1884,87 @@
                         ${reward.earned ? `<div class="reward-emoji">${reward.reward}</div>` : ''}
                     `;
                     
-                    DOM.rewardsList.appendChild(rewardItem);
+                    DOM.currentRewards.appendChild(rewardItem);
+                });
+            },
+            
+            renderRewardHistory() {
+                DOM.dailyRewardsList.innerHTML = '';
+                DOM.weeklyRewardsList.innerHTML = '';
+                DOM.monthlyRewardsList.innerHTML = '';
+                
+                // Render daily history
+                STATE.rewardHistory.daily.forEach(item => {
+                    const historyItem = document.createElement('div');
+                    historyItem.className = 'reward-item';
+                    historyItem.innerHTML = `
+                        <div class="reward-icon">☀️</div>
+                        <div class="reward-details">
+                            <div class="reward-title">${item.periodName}</div>
+                            <div class="reward-description">Completed ${item.completedSessions} sessions</div>
+                            <div class="reward-status">Archived on ${item.archivedAt.toLocaleDateString()}</div>
+                        </div>
+                    `;
+                    DOM.dailyRewardsList.appendChild(historyItem);
+                });
+                
+                // Render weekly history
+                STATE.rewardHistory.weekly.forEach(item => {
+                    const historyItem = document.createElement('div');
+                    historyItem.className = 'reward-item';
+                    historyItem.innerHTML = `
+                        <div class="reward-icon">📅</div>
+                        <div class="reward-details">
+                            <div class="reward-title">${item.periodName}</div>
+                            <div class="reward-description">Completed ${item.completedSessions} sessions</div>
+                            <div class="reward-status">Archived on ${item.archivedAt.toLocaleDateString()}</div>
+                        </div>
+                    `;
+                    DOM.weeklyRewardsList.appendChild(historyItem);
+                });
+                
+                // Render monthly history
+                STATE.rewardHistory.monthly.forEach(item => {
+                    const historyItem = document.createElement('div');
+                    historyItem.className = 'reward-item';
+                    historyItem.innerHTML = `
+                        <div class="reward-icon">📆</div>
+                        <div class="reward-details">
+                            <div class="reward-title">${item.periodName}</div>
+                            <div class="reward-description">Completed ${item.completedSessions} sessions</div>
+                            <div class="reward-status">Archived on ${item.archivedAt.toLocaleDateString()}</div>
+                        </div>
+                    `;
+                    DOM.monthlyRewardsList.appendChild(historyItem);
+                });
+                
+                // Render current daily, weekly, monthly progress
+                STATE.rewards.filter(reward => reward.type !== 'current').forEach(reward => {
+                    const container = reward.type === 'daily' ? DOM.dailyRewardsList : 
+                                      reward.type === 'weekly' ? DOM.weeklyRewardsList : 
+                                      DOM.monthlyRewardsList;
+                    
+                    const rewardItem = document.createElement('div');
+                    rewardItem.className = `reward-item ${reward.earned ? 'reward-earned' : ''}`;
+                    
+                    const progressPercent = Math.min(100, (reward.current / reward.goal) * 100);
+                    
+                    rewardItem.innerHTML = `
+                        <div class="reward-icon">${reward.icon}</div>
+                        <div class="reward-details">
+                            <div class="reward-title">${reward.title}</div>
+                            <div class="reward-description">${reward.description}</div>
+                            ${!reward.earned ? `
+                                <div class="reward-progress">
+                                    <div class="progress-bar" style="width: ${progressPercent}%"></div>
+                                </div>
+                                <div class="reward-status">${reward.current}/${reward.goal} sessions</div>
+                            ` : ''}
+                        </div>
+                        ${reward.earned ? `<div class="reward-emoji">${reward.reward}</div>` : ''}
+                    `;
+                    
+                    container.insertBefore(rewardItem, container.firstChild);
                 });
             },
             
@@ -1623,8 +1975,13 @@
                         reward.earned = false;
                     });
                     STATE.completedSessions = 0;
+                    STATE.dailyCompletedSessions = 0;
+                    STATE.weeklyCompletedSessions = 0;
+                    STATE.monthlyCompletedSessions = 0;
+                    STATE.rewardHistory = { daily: [], weekly: [], monthly: [] };
                     this.saveRewards();
                     this.renderRewards();
+                    this.renderRewardHistory();
                 }
             }
         };
@@ -1775,10 +2132,10 @@
             },
 
             clearHistory() {
-                if (confirm('Are you sure you want to clear all session history?')) {
+                if (confirm('Are you sure you want to clear all session history? This cannot be undone.')) {
                     STATE.sessionHistory = [];
                     this.saveHistory();
-                    this.renderHistory();
+                    DOM.historyList.innerHTML = '<p>No sessions recorded yet</p>';
                 }
             },
 
@@ -1813,7 +2170,7 @@
                 DOM.historyList.innerHTML = '';
                 
                 if (STATE.sessionHistory.length === 0) {
-                    DOM.historyList.innerHTML = '<p>No sessions recorded yet</p>';
+                    DOM.historyList.innerHTML = '<p style="text-align: center; padding: 20px; color: #666;">Enter work/project here</p>';
                     return;
                 }
                 
@@ -1939,6 +2296,28 @@
             }
         };
 
+        // ========== Reward Tab Functions ==========
+        const rewardTabActions = {
+            setupTabs() {
+                DOM.rewardHistoryTabs.querySelectorAll('.reward-history-tab').forEach(tab => {
+                    tab.addEventListener('click', () => {
+                        // Set active tab
+                        DOM.rewardHistoryTabs.querySelectorAll('.reward-history-tab').forEach(t => {
+                            t.classList.remove('active');
+                        });
+                        tab.classList.add('active');
+                        
+                        // Show corresponding content
+                        const period = tab.getAttribute('data-period');
+                        document.querySelectorAll('.reward-history-content').forEach(content => {
+                            content.style.display = 'none';
+                        });
+                        document.getElementById(`${period}Rewards`).style.display = 'block';
+                    });
+                });
+            }
+        };
+
         // ========== Event Listeners ==========
         function setupEventListeners() {
             DOM.startButton.addEventListener('click', timerActions.start);
@@ -2015,6 +2394,8 @@
                 historyActions.saveHistory();
                 rewardActions.saveRewards();
             });
+
+            rewardTabActions.setupTabs();
         }
 
         // ========== Initialization ==========
