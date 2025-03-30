@@ -850,8 +850,9 @@
             max-height: 80vh;
             overflow-y: auto;
             z-index: 101;
-            right: 20px;
             width: 350px;
+            left: 50%;
+            transform: translateX(-50%);
         }
 
         .calendar-header {
@@ -980,14 +981,15 @@
             .panel {
                 width: 90%;
                 max-width: 350px;
-                right: 5%;
-                left: 5%;
-                top: 50%;
-                transform: translateY(-50%);
+                right: auto;
+                left: 50%;
+                transform: translateX(-50%);
+                top: 50px;
             }
             
             .info-panel, .productivity-panel {
-                left: 5%;
+                left: 50%;
+                transform: translateX(-50%);
                 width: 90%;
                 max-width: 350px;
             }
@@ -1034,6 +1036,11 @@
                     max-height: 70vh;
                     height: auto;
                 }
+            }
+
+            /* Remove close button from calendar panel */
+            #closeCalendarPanel {
+                display: none;
             }
         }
     </style>
