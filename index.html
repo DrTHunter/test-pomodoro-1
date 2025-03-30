@@ -152,7 +152,7 @@
             left: 50%;
             transform: translate(-50%, -50%);
             z-index: 2;
-            transition: none; /* Remove transition to prevent movement during celebration */
+            transition: none;
             width: 100%;
             text-align: center;
         }
@@ -611,46 +611,6 @@
             background-color: #ff7043;
         }
 
-        .animal-side {
-            position: fixed;
-            top: 45%;
-            transform: translateY(-50%);
-            z-index: 1;
-            pointer-events: none;
-        }
-
-        .animal-left { 
-            left: 10px;
-            animation: floatLeft 15s ease-in-out infinite alternate;
-        }
-
-        .animal-right { 
-            right: 10px;
-            animation: floatRight 15s ease-in-out infinite alternate;
-        }
-
-        .animal-gif {
-            width: 160px;
-            height: auto;
-            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1));
-            animation: float 4s ease-in-out infinite;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-15px) rotate(3deg); }
-        }
-
-        @keyframes floatLeft {
-            0% { transform: translateY(-50%) translateX(0); }
-            100% { transform: translateY(-50%) translateX(20px); }
-        }
-
-        @keyframes floatRight {
-            0% { transform: translateY(-50%) translateX(0); }
-            100% { transform: translateY(-50%) translateX(-20px); }
-        }
-
         .reward-item {
             display: flex;
             align-items: center;
@@ -789,7 +749,12 @@
             pointer-events: none;
         }
 
-        /* Calendar styles */
+        /* Negative timer styling */
+        .negative-timer {
+            color: #f44336 !important;
+        }
+
+        /* ===== Improved Calendar Styles ===== */
         .calendar-panel {
             position: fixed;
             background-color: white;
@@ -803,6 +768,11 @@
             width: 350px;
             left: 50%;
             transform: translateX(-50%);
+            top: 20px;
+        }
+
+        .calendar-panel.show {
+            display: block;
         }
 
         .calendar-header {
@@ -830,12 +800,19 @@
             font-size: 1.2em;
             cursor: pointer;
             color: var(--accent-purple);
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+
+        .calendar-nav button:hover {
+            background-color: #f0f0f0;
         }
 
         .calendar-grid {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
             gap: 5px;
+            margin-bottom: 15px;
         }
 
         .calendar-day-header {
@@ -843,6 +820,7 @@
             font-weight: bold;
             padding: 5px;
             color: var(--accent-purple);
+            font-size: 0.9em;
         }
 
         .calendar-day {
@@ -850,6 +828,9 @@
             padding: 8px;
             border-radius: 5px;
             cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+            min-height: 30px;
         }
 
         .calendar-day:hover {
@@ -858,21 +839,33 @@
 
         .calendar-day.empty {
             visibility: hidden;
+            pointer-events: none;
         }
 
         .calendar-day.today {
-            background-color: var(--accent-purple);
-            color: white;
+            background-color: rgba(156, 39, 176, 0.2);
             font-weight: bold;
         }
 
         .calendar-day.has-sessions {
-            background-color: #e1bee7;
+            background-color: rgba(156, 39, 176, 0.1);
             font-weight: bold;
         }
 
+        .calendar-day.has-sessions::after {
+            content: '';
+            position: absolute;
+            bottom: 3px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background-color: var(--accent-purple);
+        }
+
         .calendar-day.selected {
-            background-color: var(--primary-blue);
+            background-color: var(--accent-purple);
             color: white;
         }
 
@@ -880,35 +873,74 @@
             margin-top: 15px;
             max-height: 300px;
             overflow-y: auto;
+            border-top: 1px solid #eee;
+            padding-top: 10px;
         }
 
         .calendar-session-item {
-            padding: 8px;
-            margin-bottom: 5px;
-            border-radius: 5px;
-            background-color: #f5f5f5;
+            padding: 10px;
+            margin-bottom: 8px;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .calendar-session-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
 
         .calendar-session-item.work {
-            border-left: 3px solid var(--primary-pink);
+            border-left: 4px solid var(--primary-pink);
         }
 
         .calendar-session-item.break {
-            border-left: 3px solid var(--primary-green);
+            border-left: 4px solid var(--primary-green);
+        }
+
+        .calendar-session-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 5px;
         }
 
         .calendar-session-time {
-            font-size: 0.8em;
+            font-size: 0.85em;
             color: #666;
+            font-weight: bold;
         }
 
         .calendar-session-duration {
             font-weight: bold;
+            color: var(--accent-purple);
+            font-size: 0.9em;
         }
 
         .calendar-session-notes {
-            margin-top: 3px;
+            margin-top: 5px;
             font-size: 0.9em;
+            line-height: 1.4;
+            padding: 5px;
+            background-color: white;
+            border-radius: 5px;
+        }
+
+        .calendar-session-delete {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: none;
+            border: none;
+            color: #999;
+            cursor: pointer;
+            font-size: 0.8em;
+            padding: 2px;
+        }
+
+        .calendar-session-delete:hover {
+            color: #f44336;
         }
 
         .calendar-export-btn {
@@ -919,82 +951,140 @@
             border-radius: 5px;
             margin-top: 10px;
             cursor: pointer;
+            width: 100%;
+            transition: all 0.2s;
         }
 
-        /* Reward History Styles */
-        .reward-history-item {
-            padding: 10px;
-            margin-bottom: 10px;
+        .calendar-export-btn:hover {
+            background-color: #1976d2;
+        }
+
+        .calendar-empty {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+            font-style: italic;
+        }
+
+        /* ===== Improved Session History Styles ===== */
+        .history-item {
+            padding: 15px;
+            margin-bottom: 12px;
             border-radius: 8px;
             background-color: #f9f9f9;
-            border-left: 4px solid var(--primary-purple);
+            transition: all 0.2s;
+            position: relative;
         }
 
-        .reward-history-title {
+        .history-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .history-type {
             font-weight: bold;
-            margin-bottom: 5px;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.85em;
         }
 
-        .reward-history-date {
-            font-size: 0.8em;
+        .history-type.work-history {
+            background-color: rgba(233, 30, 99, 0.1);
+            color: var(--primary-pink);
+        }
+
+        .history-type.break-history {
+            background-color: rgba(76, 175, 80, 0.1);
+            color: var(--primary-green);
+        }
+
+        .history-time {
+            font-size: 0.85em;
             color: #666;
+            padding: 3px 6px;
+            border-radius: 4px;
+            transition: all 0.2s;
         }
 
-        .reward-history-count {
-            margin-top: 5px;
-            font-weight: bold;
+        .history-time:hover {
+            background-color: #f0f0f0;
         }
 
-        /* Login Form Styles */
-        .login-form {
+        .history-duration {
+            font-size: 0.9em;
+            color: #555;
+            margin-bottom: 8px;
+        }
+
+        .history-notes {
+            font-size: 0.9em;
+            line-height: 1.4;
+            padding: 8px;
             background-color: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            max-width: 400px;
-            margin: 0 auto;
-        }
-
-        .login-form h3 {
-            margin-top: 0;
-            color: var(--accent-purple);
-            text-align: center;
-        }
-
-        .login-form input {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ddd;
             border-radius: 5px;
-            font-size: 1em;
+            margin-bottom: 8px;
+            transition: all 0.2s;
         }
 
-        .login-form button {
-            width: 100%;
-            padding: 10px;
-            background-color: var(--accent-purple);
+        .history-notes:hover {
+            background-color: #f5f5f5;
+        }
+
+        .history-actions {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .history-action-btn {
+            padding: 5px 10px;
+            font-size: 0.85em;
+            background-color: #f5f5f5;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .history-action-btn:hover {
+            background-color: #e0e0e0;
+        }
+
+        .history-empty {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+            font-style: italic;
+        }
+
+        .history-controls {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
+        .export-btn {
+            background-color: var(--primary-blue);
             color: white;
             border: none;
+            padding: 8px 15px;
             border-radius: 5px;
             cursor: pointer;
-            font-size: 1em;
-            margin-top: 10px;
         }
 
-        .login-form button:hover {
-            background-color: var(--primary-purple);
-        }
-
-        .login-form .form-footer {
-            text-align: center;
-            margin-top: 15px;
-            font-size: 0.9em;
-        }
-
-        .login-form .form-footer a {
-            color: var(--accent-purple);
-            text-decoration: none;
+        .clear-history-btn {
+            background-color: #f44336;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
         }
 
         /* Mobile responsiveness */
@@ -1091,11 +1181,6 @@
                 right: 20px;
                 transform: none;
             }
-        }
-
-        /* Negative timer styling */
-        .negative-timer {
-            color: #f44336 !important;
         }
     </style>
 </head>
@@ -1362,7 +1447,6 @@
 
     <!-- Calendar Panel -->
     <div class="panel calendar-panel" id="calendarPanel">
-        <button class="close-panel-btn" id="closeCalendarPanel" style="display: none;">×</button>
         <div class="calendar-header">
             <div class="calendar-title" id="calendarTitle">March 2023</div>
             <div class="calendar-nav">
@@ -1385,7 +1469,7 @@
         </div>
         
         <div class="calendar-sessions" id="calendarSessions">
-            <p style="text-align: center; padding: 20px; color: #666;">Select a date to view sessions</p>
+            <p class="calendar-empty">Select a date to view sessions</p>
         </div>
         
         <button id="exportCalendarBtn" class="calendar-export-btn">Export Calendar Data</button>
@@ -2537,10 +2621,25 @@
                 STATE.sessionHistory.push(session);
                 this.saveHistory();
                 this.renderHistory();
+                
+                // Update calendar if open
+                if (STATE.calendarOpen) {
+                    calendarActions.renderCalendar();
+                    if (STATE.calendar.selectedDate) {
+                        const selectedDate = new Date(STATE.calendar.selectedDate);
+                        calendarActions.showSessionsForDate(selectedDate);
+                    }
+                }
             },
 
             saveHistory() {
+                // Save to localStorage
                 localStorage.setItem('sessionHistory', JSON.stringify(STATE.sessionHistory));
+                
+                // Also save to a separate archive that won't be cleared
+                const archive = JSON.parse(localStorage.getItem('sessionHistoryArchive')) || [];
+                archive.push(...STATE.sessionHistory);
+                localStorage.setItem('sessionHistoryArchive', JSON.stringify(archive));
                 
                 // Sync with server if logged in
                 if (STATE.authToken) {
@@ -2549,21 +2648,45 @@
             },
 
             loadHistory() {
+                // Load from both current history and archive
                 const savedHistory = localStorage.getItem('sessionHistory');
-                if (savedHistory) {
-                    STATE.sessionHistory = JSON.parse(savedHistory);
-                    this.renderHistory();
-                }
+                const savedArchive = localStorage.getItem('sessionHistoryArchive');
+                
+                STATE.sessionHistory = savedHistory ? JSON.parse(savedHistory) : [];
+                const archive = savedArchive ? JSON.parse(savedArchive) : [];
+                
+                // Merge archive with current history, removing duplicates
+                const mergedHistory = [...STATE.sessionHistory];
+                archive.forEach(session => {
+                    const exists = mergedHistory.some(s => 
+                        new Date(s.timestamp).getTime() === new Date(session.timestamp).getTime() &&
+                        s.type === session.type &&
+                        s.duration === session.duration &&
+                        (s.isNote ? s.noteText === session.noteText : true)
+                    );
+                    if (!exists) {
+                        mergedHistory.push(session);
+                    }
+                });
+                
+                STATE.sessionHistory = mergedHistory;
+                this.renderHistory();
             },
 
             clearHistory() {
-                if (confirm('Are you sure you want to clear all session history? This cannot be undone.')) {
+                if (confirm('Are you sure you want to clear all session history? This will not delete archived sessions.')) {
                     STATE.sessionHistory = [];
                     this.saveHistory();
-                    DOM.historyList.innerHTML = '';
-                    setTimeout(() => {
-                        historyActions.renderHistory();
-                    }, 0);
+                    this.renderHistory();
+                    
+                    // Update calendar if open
+                    if (STATE.calendarOpen) {
+                        calendarActions.renderCalendar();
+                        if (STATE.calendar.selectedDate) {
+                            const selectedDate = new Date(STATE.calendar.selectedDate);
+                            calendarActions.showSessionsForDate(selectedDate);
+                        }
+                    }
                 }
             },
 
@@ -2601,10 +2724,14 @@
                 DOM.historyList.innerHTML = '';
                 
                 if (STATE.sessionHistory.length === 0) {
-                    DOM.historyList.innerHTML = '<p style="text-align: center; padding: 20px; color: #666;">No session history yet</p>';
+                    const emptyMessage = document.createElement('p');
+                    emptyMessage.className = 'history-empty';
+                    emptyMessage.textContent = 'No session history yet';
+                    DOM.historyList.appendChild(emptyMessage);
                     return;
                 }
                 
+                // Sort by date (newest first)
                 STATE.sessionHistory.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
                 
                 STATE.sessionHistory.forEach((session, index) => {
@@ -2613,62 +2740,64 @@
                     
                     const date = new Date(session.timestamp);
                     const dateString = date.toLocaleDateString();
-                    const timeString = date.toLocaleTimeString();
+                    const timeString = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
                     const durationString = session.duration > 0 ? trackingActions.formatTime(session.duration) : 'Note';
                     
+                    historyItem.innerHTML = `
+                        <div class="history-header">
+                            <span class="history-type ${session.type}-history">${session.type.charAt(0).toUpperCase() + session.type.slice(1)}${session.isNote ? ' NOTE' : ''}</span>
+                            <span class="history-time" data-index="${index}">${dateString} ${timeString}</span>
+                        </div>
+                    `;
+                    
                     if (session.isNote) {
-                        historyItem.innerHTML = `
-                            <div class="history-header">
-                                <span class="history-type ${session.type}-history">${session.type.charAt(0).toUpperCase() + session.type.slice(1)} NOTE</span>
-                                <span class="history-time" contenteditable="true" data-type="time" data-index="${index}">${dateString} ${timeString}</span>
-                            </div>
-                            <div class="history-notes editable" contenteditable="true" data-type="notes" data-index="${index}">${session.noteText}</div>
-                            <div class="history-actions">
-                                <button class="history-action-btn" onclick="historyActions.deleteSession(${index})">Delete</button>
-                            </div>
-                        `;
+                        const notesDiv = document.createElement('div');
+                        notesDiv.className = 'history-notes';
+                        notesDiv.textContent = session.noteText;
+                        historyItem.appendChild(notesDiv);
                     } else {
-                        historyItem.innerHTML = `
-                            <div class="history-header">
-                                <span class="history-type ${session.type}-history">${session.type.charAt(0).toUpperCase() + session.type.slice(1)}</span>
-                                <span class="history-time" contenteditable="true" data-type="time" data-index="${index}">${dateString} ${timeString}</span>
-                            </div>
-                            <div class="history-duration">Duration: ${durationString}</div>
-                            <div class="history-actions">
-                                <button class="history-action-btn" onclick="historyActions.deleteSession(${index})">Delete</button>
-                            </div>
-                        `;
+                        const durationDiv = document.createElement('div');
+                        durationDiv.className = 'history-duration';
+                        durationDiv.textContent = `Duration: ${durationString}`;
+                        historyItem.appendChild(durationDiv);
                     }
+                    
+                    const actionsDiv = document.createElement('div');
+                    actionsDiv.className = 'history-actions';
+                    actionsDiv.innerHTML = `
+                        <button class="history-action-btn" data-index="${index}">Delete</button>
+                    `;
+                    historyItem.appendChild(actionsDiv);
                     
                     DOM.historyList.appendChild(historyItem);
                 });
                 
-                document.querySelectorAll('.history-time, .history-notes').forEach(element => {
-                    element.addEventListener('blur', function() {
-                        const index = parseInt(this.getAttribute('data-index'));
-                        const type = this.getAttribute('data-type');
-                        
-                        if (type === 'time') {
-                            const timeString = this.textContent;
-                            const [datePart, timePart] = timeString.split(' ');
-                            const [month, day, year] = datePart.split('/');
-                            const [hours, minutes, seconds] = timePart.split(':');
-                            
-                            const newDate = new Date(year, month - 1, day, hours, minutes, seconds);
-                            STATE.sessionHistory[index].timestamp = newDate;
-                        } else if (type === 'notes') {
-                            STATE.sessionHistory[index].noteText = this.textContent;
-                        }
-                        
-                        historyActions.saveHistory();
+                // Add delete button event listeners
+                document.querySelectorAll('.history-action-btn').forEach(button => {
+                    button.addEventListener('click', () => {
+                        const index = parseInt(button.getAttribute('data-index'));
+                        this.deleteSession(index);
                     });
                 });
             },
 
             deleteSession(index) {
-                STATE.sessionHistory.splice(index, 1);
-                this.saveHistory();
-                this.renderHistory();
+                if (index >= 0 && index < STATE.sessionHistory.length) {
+                    if (confirm('Are you sure you want to delete this session?')) {
+                        STATE.sessionHistory.splice(index, 1);
+                        this.saveHistory();
+                        this.renderHistory();
+                        
+                        // Update calendar if open
+                        if (STATE.calendarOpen) {
+                            calendarActions.renderCalendar();
+                            if (STATE.calendar.selectedDate) {
+                                const selectedDate = new Date(STATE.calendar.selectedDate);
+                                calendarActions.showSessionsForDate(selectedDate);
+                            }
+                        }
+                    }
+                }
             }
         };
 
@@ -2682,6 +2811,7 @@
                     "July", "August", "September", "October", "November", "December"];
                 DOM.calendarTitle.textContent = `${monthNames[month]} ${year}`;
                 
+                // Clear existing days (keep headers)
                 while (DOM.calendarGrid.children.length > 7) {
                     DOM.calendarGrid.removeChild(DOM.calendarGrid.lastChild);
                 }
@@ -2689,6 +2819,7 @@
                 const firstDay = new Date(year, month, 1).getDay();
                 const daysInMonth = new Date(year, month + 1, 0).getDate();
                 
+                // Add empty cells for days before the first day of the month
                 for (let i = 0; i < firstDay; i++) {
                     const emptyCell = document.createElement('div');
                     emptyCell.className = 'calendar-day empty';
@@ -2700,11 +2831,13 @@
                 const currentMonth = today.getMonth();
                 const currentYear = today.getFullYear();
                 
+                // Add days of the month
                 for (let day = 1; day <= daysInMonth; day++) {
                     const dayCell = document.createElement('div');
                     dayCell.className = 'calendar-day';
                     dayCell.textContent = day;
                     
+                    // Check if this date has any sessions
                     const hasSessions = STATE.sessionHistory.some(session => {
                         const sessionDate = new Date(session.timestamp);
                         return sessionDate.getDate() === day && 
@@ -2716,10 +2849,12 @@
                         dayCell.classList.add('has-sessions');
                     }
                     
+                    // Highlight today
                     if (day === currentDate && month === currentMonth && year === currentYear) {
                         dayCell.classList.add('today');
                     }
                     
+                    // Highlight selected date
                     if (STATE.calendar.selectedDate && 
                         day === STATE.calendar.selectedDate.getDate() && 
                         month === STATE.calendar.selectedDate.getMonth() && 
@@ -2749,10 +2884,14 @@
                 });
                 
                 if (sessionsForDate.length === 0) {
-                    DOM.calendarSessions.innerHTML = '<p style="text-align: center; padding: 20px; color: #666;">No sessions for this date</p>';
+                    const emptyMessage = document.createElement('p');
+                    emptyMessage.className = 'calendar-empty';
+                    emptyMessage.textContent = 'No sessions for this date';
+                    DOM.calendarSessions.appendChild(emptyMessage);
                     return;
                 }
                 
+                // Sort by time (earliest first)
                 sessionsForDate.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
                 
                 sessionsForDate.forEach((session, index) => {
@@ -2760,23 +2899,37 @@
                     sessionItem.className = `calendar-session-item ${session.type}`;
                     
                     const sessionDate = new Date(session.timestamp);
-                    const timeString = sessionDate.toLocaleTimeString();
-                    const durationString = session.duration > 0 ? trackingActions.formatTime(session.duration) : 'Note';
+                    const timeString = sessionDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                    const durationString = session.duration > 0 ? 
+                        trackingActions.formatTime(session.duration) : 'Note';
+                    
+                    sessionItem.innerHTML = `
+                        <button class="calendar-session-delete" data-index="${STATE.sessionHistory.indexOf(session)}">✕</button>
+                        <div class="calendar-session-header">
+                            <div class="calendar-session-time">${timeString}</div>
+                            <div class="calendar-session-duration">${durationString}</div>
+                        </div>
+                    `;
                     
                     if (session.isNote) {
-                        sessionItem.innerHTML = `
-                            <div class="calendar-session-time">${timeString}</div>
-                            <div class="calendar-session-duration">${durationString}</div>
-                            <div class="calendar-session-notes">${session.noteText}</div>
-                        `;
-                    } else {
-                        sessionItem.innerHTML = `
-                            <div class="calendar-session-time">${timeString}</div>
-                            <div class="calendar-session-duration">${durationString}</div>
-                        `;
+                        const notesDiv = document.createElement('div');
+                        notesDiv.className = 'calendar-session-notes';
+                        notesDiv.textContent = session.noteText;
+                        sessionItem.appendChild(notesDiv);
                     }
                     
                     DOM.calendarSessions.appendChild(sessionItem);
+                });
+                
+                // Add delete button event listeners
+                document.querySelectorAll('.calendar-session-delete').forEach(button => {
+                    button.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        const index = parseInt(button.getAttribute('data-index'));
+                        historyActions.deleteSession(index);
+                        calendarActions.showSessionsForDate(date);
+                        calendarActions.renderCalendar();
+                    });
                 });
             },
             
@@ -2793,7 +2946,9 @@
                 
                 STATE.calendar.selectedDate = null;
                 calendarActions.renderCalendar();
-                DOM.calendarSessions.innerHTML = '<p style="text-align: center; padding: 20px; color: #666;">Select a date to view sessions</p>';
+                
+                // Update the sessions display to show empty state
+                DOM.calendarSessions.innerHTML = '<p class="calendar-empty">Select a date to view sessions</p>';
             },
             
             exportCalendarData() {
@@ -2838,6 +2993,35 @@
                 } else {
                     DOM.calendarPanel.classList.remove('show');
                 }
+            },
+            
+            initCalendar() {
+                // Load calendar data from localStorage
+                const savedCalendar = localStorage.getItem('calendarData');
+                if (savedCalendar) {
+                    const data = JSON.parse(savedCalendar);
+                    STATE.calendar.currentMonth = data.currentMonth;
+                    STATE.calendar.currentYear = data.currentYear;
+                }
+                
+                // Set current month/year if not set
+                const now = new Date();
+                if (STATE.calendar.currentMonth === undefined) {
+                    STATE.calendar.currentMonth = now.getMonth();
+                }
+                if (STATE.calendar.currentYear === undefined) {
+                    STATE.calendar.currentYear = now.getFullYear();
+                }
+                
+                // Render initial calendar
+                this.renderCalendar();
+            },
+            
+            saveCalendarState() {
+                localStorage.setItem('calendarData', JSON.stringify({
+                    currentMonth: STATE.calendar.currentMonth,
+                    currentYear: STATE.calendar.currentYear
+                }));
             }
         };
 
@@ -3225,6 +3409,8 @@
                 noteActions.saveToStorage();
                 historyActions.saveHistory();
                 rewardActions.saveRewards();
+                calendarActions.saveCalendarState();
+                localStorage.setItem('calendarOpen', STATE.calendarOpen.toString());
                 
                 // Sync data if logged in
                 if (STATE.authToken) {
@@ -3275,6 +3461,16 @@
             
             // Check if user is already logged in
             authActions.checkAuth();
+            
+            // Initialize calendar
+            calendarActions.initCalendar();
+            
+            // Check if calendar was open before
+            if (localStorage.getItem('calendarOpen') === 'true') {
+                STATE.calendarOpen = true;
+                DOM.calendarPanel.classList.add('show');
+                calendarActions.renderCalendar();
+            }
         }
 
         init();
