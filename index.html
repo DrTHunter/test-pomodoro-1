@@ -611,94 +611,44 @@
             background-color: #ff7043;
         }
 
-        .history-item {
-            padding: 10px;
-            margin-bottom: 10px;
-            border-radius: 8px;
-            background-color: #f9f9f9;
-            border-left: 4px solid var(--primary-purple);
+        .animal-side {
+            position: fixed;
+            top: 45%;
+            transform: translateY(-50%);
+            z-index: 1;
+            pointer-events: none;
         }
 
-        .history-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 5px;
+        .animal-left { 
+            left: 10px;
+            animation: floatLeft 15s ease-in-out infinite alternate;
         }
 
-        .history-type {
-            font-weight: bold;
-            padding: 3px 8px;
-            border-radius: 4px;
-            font-size: 0.9em;
+        .animal-right { 
+            right: 10px;
+            animation: floatRight 15s ease-in-out infinite alternate;
         }
 
-        .work-history { background-color: var(--work-bg); color: var(--work-text); }
-        .break-history { background-color: var(--break-bg); color: var(--break-text); }
-
-        .history-time {
-            font-size: 0.9em;
-            color: #666;
+        .animal-gif {
+            width: 160px;
+            height: auto;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1));
+            animation: float 4s ease-in-out infinite;
         }
 
-        .history-duration {
-            font-weight: bold;
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(3deg); }
         }
 
-        .history-notes {
-            margin-top: 5px;
-            padding: 5px;
-            background-color: white;
-            border-radius: 4px;
+        @keyframes floatLeft {
+            0% { transform: translateY(-50%) translateX(0); }
+            100% { transform: translateY(-50%) translateX(20px); }
         }
 
-        .history-actions {
-            display: flex;
-            justify-content: flex-end;
-            gap: 5px;
-            margin-top: 5px;
-        }
-
-        .history-action-btn {
-            padding: 3px 8px;
-            font-size: 0.8em;
-            border-radius: 4px;
-            background-color: #f5f5f5;
-            border: 1px solid #ddd;
-        }
-
-        .history-action-btn:hover { background-color: #e0e0e0; }
-
-        .history-controls {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 10px;
-        }
-
-        .clear-history-btn {
-            background-color: #f44336;
-            color: white;
-            padding: 8px 15px;
-            margin-top: 10px;
-        }
-
-        .export-btn {
-            background-color: var(--primary-blue);
-            color: white;
-            padding: 8px 15px;
-            margin-top: 10px;
-        }
-
-        .editable {
-            border: 1px dashed #ccc;
-            padding: 2px;
-            min-height: 1em;
-        }
-
-        .editable:focus {
-            outline: none;
-            border: 1px solid var(--primary-blue);
-            background-color: #f5f9ff;
+        @keyframes floatRight {
+            0% { transform: translateY(-50%) translateX(0); }
+            100% { transform: translateY(-50%) translateX(-20px); }
         }
 
         .reward-item {
@@ -971,6 +921,82 @@
             cursor: pointer;
         }
 
+        /* Reward History Styles */
+        .reward-history-item {
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+            border-left: 4px solid var(--primary-purple);
+        }
+
+        .reward-history-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .reward-history-date {
+            font-size: 0.8em;
+            color: #666;
+        }
+
+        .reward-history-count {
+            margin-top: 5px;
+            font-weight: bold;
+        }
+
+        /* Login Form Styles */
+        .login-form {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .login-form h3 {
+            margin-top: 0;
+            color: var(--accent-purple);
+            text-align: center;
+        }
+
+        .login-form input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1em;
+        }
+
+        .login-form button {
+            width: 100%;
+            padding: 10px;
+            background-color: var(--accent-purple);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            margin-top: 10px;
+        }
+
+        .login-form button:hover {
+            background-color: var(--primary-purple);
+        }
+
+        .login-form .form-footer {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 0.9em;
+        }
+
+        .login-form .form-footer a {
+            color: var(--accent-purple);
+            text-decoration: none;
+        }
+
         /* Mobile responsiveness */
         @media (max-width: 768px) {
             .dropdown-btn {
@@ -1039,6 +1065,15 @@
             #closeCalendarPanel {
                 display: none;
             }
+
+            .reward-history-item {
+                padding: 8px;
+                font-size: 0.9em;
+            }
+
+            .reward-history-title {
+                font-size: 1em;
+            }
         }
 
         /* Desktop specific styles */
@@ -1093,6 +1128,9 @@
             </div>
             <div class="dropdown-item" id="calendarMenuItem">
                 <i>📅</i> Calendar
+            </div>
+            <div class="dropdown-item" id="loginMenuItem">
+                <i>🔒</i> Login
             </div>
             <div class="dropdown-item" id="donateMenuItem">
                 <i>☕</i> Buy Creator a Coffee
@@ -1187,6 +1225,7 @@
             <li><strong>Demonstrate work-life balance</strong> with proper break tracking</li>
             <li><strong>Show initiative</strong> by presenting your self-tracking system</li>
             <li><strong>Connect to business outcomes</strong> - link your time to measurable results</li>
+            <li><strong>Request raises annually</strong> if performance and productivity metrics show consistent improvement</li>
         </ul>
         
         <p>This data provides objective evidence to support your case for career advancement.</p>
@@ -1205,7 +1244,7 @@
             <li>Work focused until the timer rings</li>
             <li>Take a <strong>5-minute break</strong></li>
             <li>After 4 work sessions, take a <strong>30-minute break</strong></li>
-            <li><strong>Change tasks periodically</strong> to ensure too much time isn't spent on one task</li>
+            <li><strong>Change tasks periodically</strong> to ensure you don't spend too much time on one task and maintain balanced productivity</li>
         </ol>
         
         <h4>Key Productivity Tips:</h4>
@@ -1297,26 +1336,23 @@
         <h3 style="margin-top: 0; color: var(--accent-purple);">Your Rewards</h3>
         
         <div class="reward-tabs">
-            <div class="reward-tab active" data-tab="daily">Daily</div>
-            <div class="reward-tab" data-tab="weekly">Weekly</div>
-            <div class="reward-tab" data-tab="monthly">Monthly</div>
+            <div class="reward-tab active" data-tab="available">Available</div>
             <div class="reward-tab" data-tab="history">History</div>
         </div>
         
-        <div class="reward-tab-content active" id="dailyRewards">
+        <div class="reward-tab-content active" id="availableRewards">
+            <h4>Daily Rewards</h4>
             <div id="dailyRewardsList"></div>
-        </div>
-        
-        <div class="reward-tab-content" id="weeklyRewards">
+            
+            <h4>Weekly Rewards</h4>
             <div id="weeklyRewardsList"></div>
-        </div>
-        
-        <div class="reward-tab-content" id="monthlyRewards">
+            
+            <h4>Monthly Rewards</h4>
             <div id="monthlyRewardsList"></div>
         </div>
         
         <div class="reward-tab-content" id="historyRewards">
-            <div id="historyRewardsList"></div>
+            <div id="rewardHistoryList"></div>
         </div>
         
         <div class="reward-controls">
@@ -1326,7 +1362,7 @@
 
     <!-- Calendar Panel -->
     <div class="panel calendar-panel" id="calendarPanel">
-        <button class="close-panel-btn" id="closeCalendarPanel">×</button>
+        <button class="close-panel-btn" id="closeCalendarPanel" style="display: none;">×</button>
         <div class="calendar-header">
             <div class="calendar-title" id="calendarTitle">March 2023</div>
             <div class="calendar-nav">
@@ -1353,6 +1389,21 @@
         </div>
         
         <button id="exportCalendarBtn" class="calendar-export-btn">Export Calendar Data</button>
+    </div>
+
+    <!-- Login Panel -->
+    <div class="panel" id="loginPanel">
+        <button class="close-panel-btn" id="closeLoginPanel">×</button>
+        <div class="login-form">
+            <h3>Login</h3>
+            <input type="text" id="usernameInput" placeholder="Username">
+            <input type="password" id="passwordInput" placeholder="Password">
+            <button id="loginBtn">Login</button>
+            <button id="registerBtn">Register</button>
+            <div class="form-footer">
+                <p>Login to sync your data across devices</p>
+            </div>
+        </div>
     </div>
 
     <!-- Confetti Container -->
@@ -1407,7 +1458,7 @@
             dailyRewardsList: document.getElementById('dailyRewardsList'),
             weeklyRewardsList: document.getElementById('weeklyRewardsList'),
             monthlyRewardsList: document.getElementById('monthlyRewardsList'),
-            historyRewardsList: document.getElementById('historyRewardsList'),
+            rewardHistoryList: document.getElementById('rewardHistoryList'),
             resetRewards: document.getElementById('resetRewards'),
             confettiContainer: document.getElementById('confettiContainer'),
             leftAnimalGif: document.getElementById('leftAnimalGif'),
@@ -1420,6 +1471,7 @@
             closeHistoryPanel: document.getElementById('closeHistoryPanel'),
             closeRewardsPanel: document.getElementById('closeRewardsPanel'),
             closeCalendarPanel: document.getElementById('closeCalendarPanel'),
+            closeLoginPanel: document.getElementById('closeLoginPanel'),
             body: document.body,
             dropdownBtn: document.getElementById('dropdownBtn'),
             dropdownContent: document.getElementById('dropdownContent'),
@@ -1430,6 +1482,7 @@
             historyMenuItem: document.getElementById('historyMenuItem'),
             rewardsMenuItem: document.getElementById('rewardsMenuItem'),
             calendarMenuItem: document.getElementById('calendarMenuItem'),
+            loginMenuItem: document.getElementById('loginMenuItem'),
             donateMenuItem: document.getElementById('donateMenuItem'),
             noisePlayBtn: document.getElementById('noisePlayBtn'),
             noisePanel: document.getElementById('noisePanel'),
@@ -1437,12 +1490,17 @@
             historyPanel: document.getElementById('historyPanel'),
             rewardsPanel: document.getElementById('rewardsPanel'),
             calendarPanel: document.getElementById('calendarPanel'),
+            loginPanel: document.getElementById('loginPanel'),
             calendarTitle: document.getElementById('calendarTitle'),
             calendarGrid: document.getElementById('calendarGrid'),
             calendarSessions: document.getElementById('calendarSessions'),
             prevMonthBtn: document.getElementById('prevMonthBtn'),
             nextMonthBtn: document.getElementById('nextMonthBtn'),
-            exportCalendarBtn: document.getElementById('exportCalendarBtn')
+            exportCalendarBtn: document.getElementById('exportCalendarBtn'),
+            usernameInput: document.getElementById('usernameInput'),
+            passwordInput: document.getElementById('passwordInput'),
+            loginBtn: document.getElementById('loginBtn'),
+            registerBtn: document.getElementById('registerBtn')
         };
 
         // ========== State Management ==========
@@ -1480,7 +1538,8 @@
                         goal: 1,
                         current: 0,
                         reward: '☕',
-                        earned: false
+                        earned: false,
+                        timesEarned: 0
                     },
                     {
                         id: 'daily_2',
@@ -1490,7 +1549,8 @@
                         goal: 4,
                         current: 0,
                         reward: '🏅',
-                        earned: false
+                        earned: false,
+                        timesEarned: 0
                     },
                     {
                         id: 'daily_3',
@@ -1500,7 +1560,8 @@
                         goal: 8,
                         current: 0,
                         reward: '🌟',
-                        earned: false
+                        earned: false,
+                        timesEarned: 0
                     },
                     {
                         id: 'daily_4',
@@ -1510,7 +1571,8 @@
                         goal: 1,
                         current: 0,
                         reward: '🌞',
-                        earned: false
+                        earned: false,
+                        timesEarned: 0
                     },
                     {
                         id: 'daily_5',
@@ -1520,7 +1582,8 @@
                         goal: 1,
                         current: 0,
                         reward: '🌙',
-                        earned: false
+                        earned: false,
+                        timesEarned: 0
                     }
                 ],
                 weekly: [
@@ -1532,7 +1595,8 @@
                         goal: 5,
                         current: 0,
                         reward: '🌱',
-                        earned: false
+                        earned: false,
+                        timesEarned: 0
                     },
                     {
                         id: 'weekly_2',
@@ -1542,7 +1606,8 @@
                         goal: 20,
                         current: 0,
                         reward: '🏆',
-                        earned: false
+                        earned: false,
+                        timesEarned: 0
                     },
                     {
                         id: 'weekly_3',
@@ -1552,7 +1617,8 @@
                         goal: 35,
                         current: 0,
                         reward: '💎',
-                        earned: false
+                        earned: false,
+                        timesEarned: 0
                     },
                     {
                         id: 'weekly_4',
@@ -1562,7 +1628,8 @@
                         goal: 7,
                         current: 0,
                         reward: '🏅',
-                        earned: false
+                        earned: false,
+                        timesEarned: 0
                     },
                     {
                         id: 'weekly_5',
@@ -1572,7 +1639,8 @@
                         goal: 5,
                         current: 0,
                         reward: '🛡️',
-                        earned: false
+                        earned: false,
+                        timesEarned: 0
                     }
                 ],
                 monthly: [
@@ -1584,7 +1652,8 @@
                         goal: 20,
                         current: 0,
                         reward: '🌞',
-                        earned: false
+                        earned: false,
+                        timesEarned: 0
                     },
                     {
                         id: 'monthly_2',
@@ -1594,7 +1663,8 @@
                         goal: 80,
                         current: 0,
                         reward: '🚀',
-                        earned: false
+                        earned: false,
+                        timesEarned: 0
                     },
                     {
                         id: 'monthly_3',
@@ -1604,7 +1674,8 @@
                         goal: 120,
                         current: 0,
                         reward: '💎',
-                        earned: false
+                        earned: false,
+                        timesEarned: 0
                     },
                     {
                         id: 'monthly_4',
@@ -1614,7 +1685,8 @@
                         goal: 30,
                         current: 0,
                         reward: '✨',
-                        earned: false
+                        earned: false,
+                        timesEarned: 0
                     },
                     {
                         id: 'monthly_5',
@@ -1624,7 +1696,8 @@
                         goal: 1,
                         current: 0,
                         reward: '🧘',
-                        earned: false
+                        earned: false,
+                        timesEarned: 0
                     }
                 ]
             },
@@ -1635,17 +1708,15 @@
             weeklyCompletedSessions: 0,
             monthlyCompletedSessions: 0,
             lastSessionDate: null,
-            rewardHistory: {
-                daily: [],
-                weekly: [],
-                monthly: []
-            },
+            rewardHistory: [],
             calendar: {
                 currentMonth: new Date().getMonth(),
                 currentYear: new Date().getFullYear(),
                 selectedDate: null
             },
-            calendarOpen: false
+            calendarOpen: false,
+            user: null,
+            authToken: null
         };
 
         // ========== Timer Functions ==========
@@ -1988,7 +2059,8 @@
                     periodName = now.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
                 }
                 
-                STATE.rewardHistory[type].push({
+                STATE.rewardHistory.push({
+                    type: type,
                     date: now,
                     periodName: periodName,
                     completedSessions: count,
@@ -2006,8 +2078,10 @@
                             reward.current = STATE.dailyCompletedSessions;
                             if (reward.current >= reward.goal) {
                                 reward.earned = true;
+                                reward.timesEarned++;
                                 this.showRewardNotification(reward);
                                 celebrationActions.showBigReward(reward);
+                                this.addRewardToHistory(reward);
                             }
                         }
                     });
@@ -2017,8 +2091,10 @@
                             reward.current = STATE.weeklyCompletedSessions;
                             if (reward.current >= reward.goal) {
                                 reward.earned = true;
+                                reward.timesEarned++;
                                 this.showRewardNotification(reward);
                                 celebrationActions.showBigReward(reward);
+                                this.addRewardToHistory(reward);
                             }
                         }
                     });
@@ -2028,8 +2104,10 @@
                             reward.current = STATE.monthlyCompletedSessions;
                             if (reward.current >= reward.goal) {
                                 reward.earned = true;
+                                reward.timesEarned++;
                                 this.showRewardNotification(reward);
                                 celebrationActions.showBigReward(reward);
+                                this.addRewardToHistory(reward);
                             }
                         }
                     });
@@ -2037,6 +2115,19 @@
                 
                 this.saveRewards();
                 this.renderRewards();
+            },
+            
+            addRewardToHistory(reward) {
+                STATE.rewardHistory.push({
+                    type: 'reward',
+                    rewardId: reward.id,
+                    title: reward.title,
+                    reward: reward.reward,
+                    date: new Date()
+                });
+                
+                this.saveRewards();
+                this.renderRewardHistory();
             },
             
             showRewardNotification(reward) {
@@ -2090,6 +2181,11 @@
                 localStorage.setItem('monthlyCompletedSessions', STATE.monthlyCompletedSessions.toString());
                 localStorage.setItem('lastSessionDate', STATE.lastSessionDate ? STATE.lastSessionDate.getTime() : '');
                 localStorage.setItem('rewardHistory', JSON.stringify(STATE.rewardHistory));
+                
+                // Sync with server if logged in
+                if (STATE.authToken) {
+                    authActions.syncData();
+                }
             },
             
             loadRewards() {
@@ -2112,20 +2208,10 @@
                 const savedRewardHistory = localStorage.getItem('rewardHistory');
                 if (savedRewardHistory) {
                     STATE.rewardHistory = JSON.parse(savedRewardHistory);
-                    STATE.rewardHistory.daily = STATE.rewardHistory.daily.map(item => ({
+                    STATE.rewardHistory = STATE.rewardHistory.map(item => ({
                         ...item,
                         date: new Date(item.date),
-                        archivedAt: new Date(item.archivedAt)
-                    }));
-                    STATE.rewardHistory.weekly = STATE.rewardHistory.weekly.map(item => ({
-                        ...item,
-                        date: new Date(item.date),
-                        archivedAt: new Date(item.archivedAt)
-                    }));
-                    STATE.rewardHistory.monthly = STATE.rewardHistory.monthly.map(item => ({
-                        ...item,
-                        date: new Date(item.date),
-                        archivedAt: new Date(item.archivedAt)
+                        archivedAt: item.archivedAt ? new Date(item.archivedAt) : null
                     }));
                 }
                 
@@ -2169,7 +2255,9 @@
                                     <div class="progress-bar" style="width: ${progressPercent}%"></div>
                                 </div>
                                 <div class="reward-status">${reward.current}/${reward.goal} sessions</div>
-                            ` : ''}
+                            ` : `
+                                <div class="reward-status">Earned ${reward.timesEarned} times</div>
+                            `}
                         </div>
                         ${reward.earned ? `<div class="reward-emoji">${reward.reward}</div>` : ''}
                     `;
@@ -2193,7 +2281,9 @@
                                     <div class="progress-bar" style="width: ${progressPercent}%"></div>
                                 </div>
                                 <div class="reward-status">${reward.current}/${reward.goal} sessions</div>
-                            ` : ''}
+                            ` : `
+                                <div class="reward-status">Earned ${reward.timesEarned} times</div>
+                            `}
                         </div>
                         ${reward.earned ? `<div class="reward-emoji">${reward.reward}</div>` : ''}
                     `;
@@ -2217,7 +2307,9 @@
                                     <div class="progress-bar" style="width: ${progressPercent}%"></div>
                                 </div>
                                 <div class="reward-status">${reward.current}/${reward.goal} sessions</div>
-                            ` : ''}
+                            ` : `
+                                <div class="reward-status">Earned ${reward.timesEarned} times</div>
+                            `}
                         </div>
                         ${reward.earned ? `<div class="reward-emoji">${reward.reward}</div>` : ''}
                     `;
@@ -2227,71 +2319,54 @@
             },
             
             renderRewardHistory() {
-                DOM.historyRewardsList.innerHTML = '';
+                DOM.rewardHistoryList.innerHTML = '';
                 
-                if (STATE.rewardHistory.daily.length > 0) {
-                    const dailyHeader = document.createElement('h4');
-                    dailyHeader.textContent = 'Daily Progress History';
-                    DOM.historyRewardsList.appendChild(dailyHeader);
-                    
-                    STATE.rewardHistory.daily.forEach(item => {
-                        const historyItem = document.createElement('div');
-                        historyItem.className = 'history-item';
-                        historyItem.innerHTML = `
-                            <div><strong>${item.periodName}</strong></div>
-                            <div>Completed: ${item.completedSessions} sessions</div>
-                            <div style="font-size: 0.8em; color: #666;">${item.archivedAt.toLocaleDateString()}</div>
-                        `;
-                        DOM.historyRewardsList.appendChild(historyItem);
-                    });
-                }
-                
-                if (STATE.rewardHistory.weekly.length > 0) {
-                    const weeklyHeader = document.createElement('h4');
-                    weeklyHeader.textContent = 'Weekly Progress History';
-                    weeklyHeader.style.marginTop = '20px';
-                    DOM.historyRewardsList.appendChild(weeklyHeader);
-                    
-                    STATE.rewardHistory.weekly.forEach(item => {
-                        const historyItem = document.createElement('div');
-                        historyItem.className = 'history-item';
-                        historyItem.innerHTML = `
-                            <div><strong>${item.periodName}</strong></div>
-                            <div>Completed: ${item.completedSessions} sessions</div>
-                            <div style="font-size: 0.8em; color: #666;">${item.archivedAt.toLocaleDateString()}</div>
-                        `;
-                        DOM.historyRewardsList.appendChild(historyItem);
-                    });
-                }
-                
-                if (STATE.rewardHistory.monthly.length > 0) {
-                    const monthlyHeader = document.createElement('h4');
-                    monthlyHeader.textContent = 'Monthly Progress History';
-                    monthlyHeader.style.marginTop = '20px';
-                    DOM.historyRewardsList.appendChild(monthlyHeader);
-                    
-                    STATE.rewardHistory.monthly.forEach(item => {
-                        const historyItem = document.createElement('div');
-                        historyItem.className = 'history-item';
-                        historyItem.innerHTML = `
-                            <div><strong>${item.periodName}</strong></div>
-                            <div>Completed: ${item.completedSessions} sessions</div>
-                            <div style="font-size: 0.8em; color: #666;">${item.archivedAt.toLocaleDateString()}</div>
-                        `;
-                        DOM.historyRewardsList.appendChild(historyItem);
-                    });
-                }
-                
-                if (STATE.rewardHistory.daily.length === 0 && 
-                    STATE.rewardHistory.weekly.length === 0 && 
-                    STATE.rewardHistory.monthly.length === 0) {
+                if (STATE.rewardHistory.length === 0) {
                     const emptyMessage = document.createElement('p');
                     emptyMessage.textContent = 'No reward history yet';
                     emptyMessage.style.textAlign = 'center';
                     emptyMessage.style.padding = '20px';
                     emptyMessage.style.color = '#666';
-                    DOM.historyRewardsList.appendChild(emptyMessage);
+                    DOM.rewardHistoryList.appendChild(emptyMessage);
+                    return;
                 }
+                
+                // Sort by date (newest first)
+                STATE.rewardHistory.sort((a, b) => new Date(b.date) - new Date(a.date));
+                
+                STATE.rewardHistory.forEach(item => {
+                    const historyItem = document.createElement('div');
+                    historyItem.className = 'reward-history-item';
+                    
+                    if (item.type === 'reward') {
+                        const reward = this.findRewardById(item.rewardId);
+                        if (reward) {
+                            historyItem.innerHTML = `
+                                <div class="reward-history-title">${reward.title} ${reward.reward}</div>
+                                <div class="reward-history-date">${item.date.toLocaleDateString()}</div>
+                            `;
+                        }
+                    } else {
+                        historyItem.innerHTML = `
+                            <div class="reward-history-title">${item.periodName}</div>
+                            <div class="reward-history-date">${item.date.toLocaleDateString()}</div>
+                            <div class="reward-history-count">Completed: ${item.completedSessions} sessions</div>
+                        `;
+                    }
+                    
+                    DOM.rewardHistoryList.appendChild(historyItem);
+                });
+            },
+            
+            findRewardById(id) {
+                for (const type of ['daily', 'weekly', 'monthly']) {
+                    for (const reward of STATE.rewards[type]) {
+                        if (reward.id === id) {
+                            return reward;
+                        }
+                    }
+                }
+                return null;
             },
             
             resetRewards() {
@@ -2299,14 +2374,17 @@
                     STATE.rewards.daily.forEach(reward => {
                         reward.current = 0;
                         reward.earned = false;
+                        reward.timesEarned = 0;
                     });
                     STATE.rewards.weekly.forEach(reward => {
                         reward.current = 0;
                         reward.earned = false;
+                        reward.timesEarned = 0;
                     });
                     STATE.rewards.monthly.forEach(reward => {
                         reward.current = 0;
                         reward.earned = false;
+                        reward.timesEarned = 0;
                     });
                     
                     STATE.dailyCompletedSessions = 0;
@@ -2383,6 +2461,11 @@
 
             saveToStorage() {
                 localStorage.setItem('notes', JSON.stringify(STATE.notes));
+                
+                // Sync with server if logged in
+                if (STATE.authToken) {
+                    authActions.syncData();
+                }
             },
 
             loadFromStorage() {
@@ -2458,6 +2541,11 @@
 
             saveHistory() {
                 localStorage.setItem('sessionHistory', JSON.stringify(STATE.sessionHistory));
+                
+                // Sync with server if logged in
+                if (STATE.authToken) {
+                    authActions.syncData();
+                }
             },
 
             loadHistory() {
@@ -2753,10 +2841,128 @@
             }
         };
 
+        // ========== Authentication Functions ==========
+        const authActions = {
+            login(username, password) {
+                // In a real app, this would be an API call to your backend
+                // For demo purposes, we'll use localStorage
+                const users = JSON.parse(localStorage.getItem('pomodoroUsers')) || {};
+                
+                if (users[username] && users[username].password === password) {
+                    STATE.user = username;
+                    STATE.authToken = 'demo-token-' + Math.random().toString(36).substring(2);
+                    localStorage.setItem('pomodoroAuthToken', STATE.authToken);
+                    localStorage.setItem('pomodoroCurrentUser', username);
+                    
+                    // Load user data
+                    this.loadUserData();
+                    
+                    // Close login panel
+                    DOM.loginPanel.classList.remove('show');
+                    
+                    // Update UI
+                    DOM.loginMenuItem.innerHTML = '<i>👋</i> Logout';
+                    
+                    return true;
+                } else {
+                    alert('Invalid username or password');
+                    return false;
+                }
+            },
+            
+            register(username, password) {
+                const users = JSON.parse(localStorage.getItem('pomodoroUsers')) || {};
+                
+                if (users[username]) {
+                    alert('Username already exists');
+                    return false;
+                }
+                
+                users[username] = { password };
+                localStorage.setItem('pomodoroUsers', JSON.stringify(users));
+                
+                // Auto-login after registration
+                return this.login(username, password);
+            },
+            
+            logout() {
+                STATE.user = null;
+                STATE.authToken = null;
+                localStorage.removeItem('pomodoroAuthToken');
+                localStorage.removeItem('pomodoroCurrentUser');
+                
+                // Update UI
+                DOM.loginMenuItem.innerHTML = '<i>🔒</i> Login';
+                
+                // Close any open panels
+                DOM.loginPanel.classList.remove('show');
+            },
+            
+            checkAuth() {
+                const token = localStorage.getItem('pomodoroAuthToken');
+                const username = localStorage.getItem('pomodoroCurrentUser');
+                
+                if (token && username) {
+                    STATE.user = username;
+                    STATE.authToken = token;
+                    DOM.loginMenuItem.innerHTML = '<i>👋</i> Logout';
+                    
+                    // Load user data
+                    this.loadUserData();
+                }
+            },
+            
+            loadUserData() {
+                if (!STATE.user) return;
+                
+                const userData = JSON.parse(localStorage.getItem(`pomodoroUserData_${STATE.user}`));
+                if (userData) {
+                    // Merge user data with current state
+                    STATE.totalWorkSeconds = userData.totalWorkSeconds || STATE.totalWorkSeconds;
+                    STATE.totalBreakSeconds = userData.totalBreakSeconds || STATE.totalBreakSeconds;
+                    STATE.sessionHistory = userData.sessionHistory || STATE.sessionHistory;
+                    STATE.notes = userData.notes || STATE.notes;
+                    STATE.rewards = userData.rewards || STATE.rewards;
+                    STATE.rewardHistory = userData.rewardHistory || STATE.rewardHistory;
+                    STATE.completedSessions = userData.completedSessions || STATE.completedSessions;
+                    STATE.dailyCompletedSessions = userData.dailyCompletedSessions || STATE.dailyCompletedSessions;
+                    STATE.weeklyCompletedSessions = userData.weeklyCompletedSessions || STATE.weeklyCompletedSessions;
+                    STATE.monthlyCompletedSessions = userData.monthlyCompletedSessions || STATE.monthlyCompletedSessions;
+                    STATE.lastSessionDate = userData.lastSessionDate ? new Date(userData.lastSessionDate) : STATE.lastSessionDate;
+                    
+                    // Update UI
+                    trackingActions.updateDisplay();
+                    noteActions.loadFromStorage();
+                    historyActions.loadHistory();
+                    rewardActions.loadRewards();
+                }
+            },
+            
+            syncData() {
+                if (!STATE.user) return;
+                
+                const userData = {
+                    totalWorkSeconds: STATE.totalWorkSeconds,
+                    totalBreakSeconds: STATE.totalBreakSeconds,
+                    sessionHistory: STATE.sessionHistory,
+                    notes: STATE.notes,
+                    rewards: STATE.rewards,
+                    rewardHistory: STATE.rewardHistory,
+                    completedSessions: STATE.completedSessions,
+                    dailyCompletedSessions: STATE.dailyCompletedSessions,
+                    weeklyCompletedSessions: STATE.weeklyCompletedSessions,
+                    monthlyCompletedSessions: STATE.monthlyCompletedSessions,
+                    lastSessionDate: STATE.lastSessionDate ? STATE.lastSessionDate.getTime() : null
+                };
+                
+                localStorage.setItem(`pomodoroUserData_${STATE.user}`, JSON.stringify(userData));
+            }
+        };
+
         // ========== Sound Control Functions ==========
         const soundActions = {
             togglePanel(panel) {
-                const panels = [DOM.infoPanel, DOM.noisePanel, DOM.lofiPanel, DOM.historyPanel, DOM.rewardsPanel, DOM.productivityPanel, DOM.calendarPanel];
+                const panels = [DOM.infoPanel, DOM.noisePanel, DOM.lofiPanel, DOM.historyPanel, DOM.rewardsPanel, DOM.productivityPanel, DOM.calendarPanel, DOM.loginPanel];
                 panels.forEach(p => {
                     if (p === panel) {
                         p.classList.toggle('show');
@@ -2889,6 +3095,17 @@
                     this.closeDropdown();
                 });
                 
+                DOM.loginMenuItem.addEventListener('click', () => {
+                    if (STATE.user) {
+                        // Logout
+                        authActions.logout();
+                    } else {
+                        // Show login panel
+                        soundActions.togglePanel(DOM.loginPanel);
+                    }
+                    this.closeDropdown();
+                });
+                
                 DOM.donateMenuItem.addEventListener('click', () => {
                     window.open('https://www.paypal.com/donate?business=YOUR_PAYPAL_EMAIL&item_name=Support+Pomodoro+Timer+Creator', '_blank');
                     this.closeDropdown();
@@ -2951,11 +3168,37 @@
                 STATE.calendarOpen = false;
             });
 
+            DOM.closeLoginPanel.addEventListener('click', () => {
+                DOM.loginPanel.classList.remove('show');
+            });
+
             DOM.resetRewards.addEventListener('click', rewardActions.resetRewards);
 
             DOM.prevMonthBtn.addEventListener('click', () => calendarActions.changeMonth(-1));
             DOM.nextMonthBtn.addEventListener('click', () => calendarActions.changeMonth(1));
             DOM.exportCalendarBtn.addEventListener('click', calendarActions.exportCalendarData);
+
+            DOM.loginBtn.addEventListener('click', () => {
+                const username = DOM.usernameInput.value.trim();
+                const password = DOM.passwordInput.value.trim();
+                
+                if (username && password) {
+                    authActions.login(username, password);
+                } else {
+                    alert('Please enter both username and password');
+                }
+            });
+            
+            DOM.registerBtn.addEventListener('click', () => {
+                const username = DOM.usernameInput.value.trim();
+                const password = DOM.passwordInput.value.trim();
+                
+                if (username && password) {
+                    authActions.register(username, password);
+                } else {
+                    alert('Please enter both username and password');
+                }
+            });
 
             DOM.dropdownBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
@@ -2966,7 +3209,7 @@
 
             document.addEventListener('click', (e) => {
                 const panels = [DOM.infoPanel, DOM.noisePanel, DOM.lofiPanel, DOM.historyPanel, 
-                               DOM.rewardsPanel, DOM.productivityPanel, DOM.calendarPanel];
+                               DOM.rewardsPanel, DOM.productivityPanel, DOM.calendarPanel, DOM.loginPanel];
                 
                 if (!panels.some(panel => panel.contains(e.target)) && 
                     !DOM.dropdownBtn.contains(e.target) && 
@@ -2982,6 +3225,11 @@
                 noteActions.saveToStorage();
                 historyActions.saveHistory();
                 rewardActions.saveRewards();
+                
+                // Sync data if logged in
+                if (STATE.authToken) {
+                    authActions.syncData();
+                }
             });
 
             rewardTabActions.setupTabs();
@@ -3024,6 +3272,9 @@
                 content.style.maxHeight = '400px';
                 content.style.overflowY = 'auto';
             });
+            
+            // Check if user is already logged in
+            authActions.checkAuth();
         }
 
         init();
