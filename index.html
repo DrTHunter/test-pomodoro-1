@@ -1236,7 +1236,7 @@
         <div class="timer-container">
             <div class="timer-progress" id="timerProgress"></div>
             <div class="timer-circle"></div>
-            <div class="timer-display" id="timer" contenteditable="true">25:00</div>
+            <div class="timer-display" id="timer" contenteditable="true" tabindex="0">25:00</div>
         </div>
         
         <div class="buttons">
@@ -3436,6 +3436,28 @@
                 STATE.initialSeconds = STATE.totalSeconds;
                 
                 DOM.timerProgress.style.background = `conic-gradient(var(--primary-blue) 0%, transparent 0%)`;
+            });
+
+            // Add Tab key handler for timer display
+            DOM.timer.addEventListener('keydown', function(e) {
+                if (e.key === 'Tab') {
+                    e.preventDefault();
+                    
+                    // Get all focusable elements
+                    const focusableElements = Array.from(document.querySelectorAll(
+                        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+                    )).filter(el => !el.disabled && el.offsetParent !== null);
+                    
+                    // Find current index
+                    const currentIndex = focusableElements.indexOf(document.activeElement);
+                    
+                    // Focus next element (or first if at end)
+                    if (currentIndex >= 0 && currentIndex < focusableElements.length - 1) {
+                        focusableElements[currentIndex + 1].focus();
+                    } else {
+                        focusableElements[0].focus();
+                    }
+                }
             });
         }
 
