@@ -117,14 +117,6 @@
             backdrop-filter: blur(5px);
             position: relative;
             z-index: 2;
-            display: grid;
-            grid-template-areas: 
-                "header header"
-                "timer timer"
-                "buttons buttons"
-                "calendar notes";
-            grid-template-columns: 1fr 2fr;
-            gap: 20px;
         }
 
         h1 {
@@ -133,7 +125,6 @@
             font-size: 2.5em;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
             font-weight: 600;
-            grid-area: header;
         }
 
         .header-buttons {
@@ -141,8 +132,6 @@
             justify-content: center;
             gap: 10px;
             margin-bottom: 15px;
-            grid-area: header;
-            align-self: end;
         }
 
         .timer-container {
@@ -150,7 +139,6 @@
             width: 300px;
             height: 300px;
             margin: 20px auto;
-            grid-area: timer;
         }
 
         .timer-display {
@@ -196,7 +184,6 @@
             justify-content: center;
             gap: 10px;
             margin-bottom: 20px;
-            grid-area: buttons;
         }
 
         button {
@@ -224,7 +211,6 @@
             justify-content: center;
             gap: 10px;
             margin-bottom: 20px;
-            grid-area: buttons;
         }
 
         .quick-btn {
@@ -246,7 +232,6 @@
             background-color: rgba(255, 255, 255, 0.7);
             padding: 15px;
             border-radius: 10px;
-            grid-area: notes;
         }
 
         .stats {
@@ -284,7 +269,6 @@
 
         .notes-container {
             margin-top: 20px;
-            grid-area: notes;
         }
 
         .notes-column {
@@ -390,7 +374,6 @@
             padding: 8px 15px;
             border-radius: 50px;
             display: inline-block;
-            grid-area: timer;
         }
 
         .work-mode { background-color: var(--work-bg); color: var(--work-text); }
@@ -856,23 +839,20 @@
             pointer-events: none;
         }
 
-        /* Calendar Page Styles - Made more compact */
-        .calendar-page {
-            display: none;
+        /* Calendar styles */
+        .calendar-panel {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
             background-color: white;
-            z-index: 1000;
+            border-radius: 15px;
+            padding: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            display: none;
+            max-height: 80vh;
             overflow-y: auto;
-            padding: 20px;
-            box-sizing: border-box;
-        }
-
-        .calendar-page.show {
-            display: block;
+            z-index: 101;
+            width: 350px;
+            left: 50%;
+            transform: translateX(-50%);
         }
 
         .calendar-header {
@@ -891,42 +871,35 @@
         .calendar-nav {
             display: flex;
             gap: 10px;
+            margin-left: 20px; /* Added to move arrows left */
         }
 
         .calendar-nav button {
             background: none;
             border: none;
-            font-size: 1em;
+            font-size: 1.2em;
             cursor: pointer;
             color: var(--accent-purple);
-            padding: 5px 10px;
         }
 
         .calendar-grid {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
-            gap: 3px;
-            font-size: 0.9em;
+            gap: 5px;
         }
 
         .calendar-day-header {
             text-align: center;
             font-weight: bold;
-            padding: 8px 5px;
+            padding: 5px;
             color: var(--accent-purple);
-            background-color: #f5f5f5;
-            border-radius: 3px;
-            font-size: 0.8em;
         }
 
         .calendar-day {
             text-align: center;
-            padding: 8px 5px;
-            border-radius: 3px;
+            padding: 8px;
+            border-radius: 5px;
             cursor: pointer;
-            border: 1px solid #eee;
-            transition: all 0.2s;
-            font-size: 0.8em;
         }
 
         .calendar-day:hover {
@@ -954,26 +927,24 @@
         }
 
         .calendar-sessions {
-            margin-top: 20px;
+            margin-top: 15px;
             max-height: 300px;
             overflow-y: auto;
-            font-size: 0.9em;
         }
 
         .calendar-session-item {
-            padding: 10px;
-            margin-bottom: 6px;
+            padding: 8px;
+            margin-bottom: 5px;
             border-radius: 5px;
             background-color: #f5f5f5;
-            font-size: 0.9em;
         }
 
         .calendar-session-item.work {
-            border-left: 4px solid var(--primary-pink);
+            border-left: 3px solid var(--primary-pink);
         }
 
         .calendar-session-item.break {
-            border-left: 4px solid var(--primary-green);
+            border-left: 3px solid var(--primary-green);
         }
 
         .calendar-session-time {
@@ -983,150 +954,25 @@
 
         .calendar-session-duration {
             font-weight: bold;
-            font-size: 0.9em;
         }
 
         .calendar-session-notes {
-            margin-top: 5px;
-            font-size: 0.85em;
+            margin-top: 3px;
+            font-size: 0.9em;
         }
 
         .calendar-export-btn {
             background-color: var(--primary-blue);
             color: white;
             border: none;
-            padding: 10px 20px;
+            padding: 8px 15px;
             border-radius: 5px;
-            margin-top: 15px;
+            margin-top: 10px;
             cursor: pointer;
-            font-size: 0.9em;
-        }
-
-        .back-to-timer-btn {
-            background-color: var(--primary-purple);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            margin-top: 15px;
-            cursor: pointer;
-            font-size: 0.9em;
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-        }
-
-        /* Mini calendar in main view */
-        .mini-calendar {
-            grid-area: calendar;
-            background-color: rgba(255, 255, 255, 0.7);
-            padding: 10px;
-            border-radius: 10px;
-            height: fit-content;
-        }
-
-        .mini-calendar-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 8px;
-        }
-
-        .mini-calendar-title {
-            font-size: 0.9em;
-            font-weight: bold;
-            color: var(--accent-purple);
-        }
-
-        .mini-calendar-nav {
-            display: flex;
-            gap: 5px;
-        }
-
-        .mini-calendar-nav button {
-            background: none;
-            border: none;
-            font-size: 0.8em;
-            cursor: pointer;
-            color: var(--accent-purple);
-            padding: 2px 5px;
-        }
-
-        .mini-calendar-grid {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 2px;
-            font-size: 0.7em;
-        }
-
-        .mini-calendar-day-header {
-            text-align: center;
-            font-weight: bold;
-            padding: 5px 2px;
-            color: var(--accent-purple);
-            background-color: #f5f5f5;
-            border-radius: 2px;
-        }
-
-        .mini-calendar-day {
-            text-align: center;
-            padding: 5px 2px;
-            border-radius: 2px;
-            cursor: pointer;
-            border: 1px solid #eee;
-            transition: all 0.1s;
-        }
-
-        .mini-calendar-day:hover {
-            background-color: #f0f0f0;
-        }
-
-        .mini-calendar-day.empty {
-            visibility: hidden;
-        }
-
-        .mini-calendar-day.today {
-            background-color: var(--accent-purple);
-            color: white;
-            font-weight: bold;
-        }
-
-        .mini-calendar-day.has-sessions {
-            background-color: #e1bee7;
-            font-weight: bold;
-        }
-
-        .mini-calendar-day.selected {
-            background-color: var(--primary-blue);
-            color: white;
-        }
-
-        .mini-calendar-view-full {
-            display: block;
-            width: 100%;
-            margin-top: 8px;
-            padding: 5px;
-            background-color: var(--primary-purple);
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 0.8em;
         }
 
         /* Mobile responsiveness */
         @media (max-width: 768px) {
-            .container {
-                grid-template-areas: 
-                    "header"
-                    "timer"
-                    "buttons"
-                    "calendar"
-                    "notes";
-                grid-template-columns: 1fr;
-                padding: 20px;
-            }
-
             .dropdown-btn {
                 width: 40px;
                 height: 40px;
@@ -1193,15 +1039,9 @@
                 }
             }
 
-            /* Calendar page adjustments for mobile */
-            .calendar-day {
-                padding: 8px;
-                font-size: 0.9em;
-            }
-            
-            .calendar-day-header {
-                padding: 8px;
-                font-size: 0.9em;
+            /* Remove close button from calendar panel */
+            #closeCalendarPanel {
+                display: none;
             }
         }
 
@@ -1214,12 +1054,11 @@
                 transform: none;
             }
             
-            .calendar-page {
-                padding: 40px;
-            }
-            
-            .calendar-grid {
-                gap: 10px;
+            .calendar-panel {
+                top: 90px;
+                left: auto;
+                right: 20px;
+                transform: none;
             }
         }
 
@@ -1230,7 +1069,6 @@
     </style>
 </head>
 <body>
-    <!-- Pomodoro Timer Page -->
     <div class="animal-side animal-left">
         <img class="animal-gif" id="leftAnimalGif" src="assets/working-dog-animation.gif" alt="Working animal">
     </div>
@@ -1294,32 +1132,6 @@
             <button class="quick-btn" id="break30">Long Break (30:00)</button>
         </div>
         
-        <!-- Mini Calendar -->
-        <div class="mini-calendar">
-            <div class="mini-calendar-header">
-                <div class="mini-calendar-title" id="miniCalendarTitle">March 2023</div>
-                <div class="mini-calendar-nav">
-                    <button id="miniPrevMonthBtn">&lt;</button>
-                    <button id="miniNextMonthBtn">&gt;</button>
-                </div>
-            </div>
-            
-            <div class="mini-calendar-grid" id="miniCalendarGrid">
-                <!-- Calendar headers -->
-                <div class="mini-calendar-day-header">S</div>
-                <div class="mini-calendar-day-header">M</div>
-                <div class="mini-calendar-day-header">T</div>
-                <div class="mini-calendar-day-header">W</div>
-                <div class="mini-calendar-day-header">T</div>
-                <div class="mini-calendar-day-header">F</div>
-                <div class="mini-calendar-day-header">S</div>
-                
-                <!-- Calendar days will be inserted here by JavaScript -->
-            </div>
-            
-            <button id="viewFullCalendar" class="mini-calendar-view-full">View Full Calendar</button>
-        </div>
-        
         <div class="tracking">
             <h2>Tracking</h2>
             
@@ -1356,37 +1168,6 @@
 
     <div class="animal-side animal-right">
         <img class="animal-gif" id="rightAnimalGif" src="assets/working-dog-animation.gif" alt="Working animal">
-    </div>
-
-    <!-- Calendar Page -->
-    <div class="calendar-page" id="calendarPage">
-        <div class="calendar-header">
-            <div class="calendar-title" id="calendarTitle">March 2023</div>
-            <div class="calendar-nav">
-                <button id="prevMonthBtn">&lt;</button>
-                <button id="nextMonthBtn">&gt;</button>
-            </div>
-        </div>
-        
-        <div class="calendar-grid" id="calendarGrid">
-            <!-- Calendar headers -->
-            <div class="calendar-day-header">Sun</div>
-            <div class="calendar-day-header">Mon</div>
-            <div class="calendar-day-header">Tue</div>
-            <div class="calendar-day-header">Wed</div>
-            <div class="calendar-day-header">Thu</div>
-            <div class="calendar-day-header">Fri</div>
-            <div class="calendar-day-header">Sat</div>
-            
-            <!-- Calendar days will be inserted here by JavaScript -->
-        </div>
-        
-        <div class="calendar-sessions" id="calendarSessions">
-            <p style="text-align: center; padding: 20px; color: #666;">Select a date to view sessions</p>
-        </div>
-        
-        <button id="exportCalendarBtn" class="calendar-export-btn">Export Calendar Data</button>
-        <button id="backToTimerBtn" class="back-to-timer-btn">Back to Timer</button>
     </div>
 
     <!-- Productivity Info Panel -->
@@ -1547,6 +1328,37 @@
         </div>
     </div>
 
+    <!-- Calendar Panel -->
+    <div class="panel calendar-panel" id="calendarPanel">
+        <button class="close-panel-btn" id="closeCalendarPanel">×</button>
+        <div class="calendar-header">
+            <div class="calendar-title" id="calendarTitle">March 2023</div>
+            <div class="calendar-nav">
+                <button id="prevMonthBtn">&lt;</button>
+                <button id="nextMonthBtn">&gt;</button>
+            </div>
+        </div>
+        
+        <div class="calendar-grid" id="calendarGrid">
+            <!-- Calendar headers -->
+            <div class="calendar-day-header">Sun</div>
+            <div class="calendar-day-header">Mon</div>
+            <div class="calendar-day-header">Tue</div>
+            <div class="calendar-day-header">Wed</div>
+            <div class="calendar-day-header">Thu</div>
+            <div class="calendar-day-header">Fri</div>
+            <div class="calendar-day-header">Sat</div>
+            
+            <!-- Calendar days will be inserted here by JavaScript -->
+        </div>
+        
+        <div class="calendar-sessions" id="calendarSessions">
+            <p style="text-align: center; padding: 20px; color: #666;">Select a date to view sessions</p>
+        </div>
+        
+        <button id="exportCalendarBtn" class="calendar-export-btn">Export Calendar Data</button>
+    </div>
+
     <!-- Confetti Container -->
     <div class="confetti-container" id="confettiContainer"></div>
 
@@ -1611,6 +1423,7 @@
             closeLofiPanel: document.getElementById('closeLofiPanel'),
             closeHistoryPanel: document.getElementById('closeHistoryPanel'),
             closeRewardsPanel: document.getElementById('closeRewardsPanel'),
+            closeCalendarPanel: document.getElementById('closeCalendarPanel'),
             body: document.body,
             dropdownBtn: document.getElementById('dropdownBtn'),
             dropdownContent: document.getElementById('dropdownContent'),
@@ -1627,19 +1440,13 @@
             lofiPanel: document.getElementById('lofiPanel'),
             historyPanel: document.getElementById('historyPanel'),
             rewardsPanel: document.getElementById('rewardsPanel'),
-            calendarPage: document.getElementById('calendarPage'),
+            calendarPanel: document.getElementById('calendarPanel'),
             calendarTitle: document.getElementById('calendarTitle'),
             calendarGrid: document.getElementById('calendarGrid'),
             calendarSessions: document.getElementById('calendarSessions'),
             prevMonthBtn: document.getElementById('prevMonthBtn'),
             nextMonthBtn: document.getElementById('nextMonthBtn'),
-            exportCalendarBtn: document.getElementById('exportCalendarBtn'),
-            backToTimerBtn: document.getElementById('backToTimerBtn'),
-            miniCalendarTitle: document.getElementById('miniCalendarTitle'),
-            miniCalendarGrid: document.getElementById('miniCalendarGrid'),
-            miniPrevMonthBtn: document.getElementById('miniPrevMonthBtn'),
-            miniNextMonthBtn: document.getElementById('miniNextMonthBtn'),
-            viewFullCalendar: document.getElementById('viewFullCalendar')
+            exportCalendarBtn: document.getElementById('exportCalendarBtn')
         };
 
         // ========== State Management ==========
@@ -1841,7 +1648,8 @@
                 currentMonth: new Date().getMonth(),
                 currentYear: new Date().getFullYear(),
                 selectedDate: null
-            }
+            },
+            calendarOpen: false // Track if calendar is open
         };
 
         // ========== Timer Functions ==========
@@ -2878,15 +2686,10 @@
                 const monthNames = ["January", "February", "March", "April", "May", "June",
                     "July", "August", "September", "October", "November", "December"];
                 DOM.calendarTitle.textContent = `${monthNames[month]} ${year}`;
-                DOM.miniCalendarTitle.textContent = `${monthNames[month].substring(0, 3)} ${year}`;
                 
                 // Clear previous calendar days
                 while (DOM.calendarGrid.children.length > 7) {
                     DOM.calendarGrid.removeChild(DOM.calendarGrid.lastChild);
-                }
-                
-                while (DOM.miniCalendarGrid.children.length > 7) {
-                    DOM.miniCalendarGrid.removeChild(DOM.miniCalendarGrid.lastChild);
                 }
                 
                 // Get first day of month and total days in month
@@ -2898,10 +2701,6 @@
                     const emptyCell = document.createElement('div');
                     emptyCell.className = 'calendar-day empty';
                     DOM.calendarGrid.appendChild(emptyCell);
-                    
-                    const miniEmptyCell = document.createElement('div');
-                    miniEmptyCell.className = 'mini-calendar-day empty';
-                    DOM.miniCalendarGrid.appendChild(miniEmptyCell);
                 }
                 
                 // Add cells for each day of the month
@@ -2915,10 +2714,6 @@
                     dayCell.className = 'calendar-day';
                     dayCell.textContent = day;
                     
-                    const miniDayCell = document.createElement('div');
-                    miniDayCell.className = 'mini-calendar-day';
-                    miniDayCell.textContent = day;
-                    
                     // Check if this day has any sessions
                     const hasSessions = STATE.sessionHistory.some(session => {
                         const sessionDate = new Date(session.timestamp);
@@ -2929,13 +2724,11 @@
                     
                     if (hasSessions) {
                         dayCell.classList.add('has-sessions');
-                        miniDayCell.classList.add('has-sessions');
                     }
                     
                     // Highlight today
                     if (day === currentDate && month === currentMonth && year === currentYear) {
                         dayCell.classList.add('today');
-                        miniDayCell.classList.add('today');
                     }
                     
                     // Highlight selected date
@@ -2944,7 +2737,6 @@
                         month === STATE.calendar.selectedDate.getMonth() && 
                         year === STATE.calendar.selectedDate.getFullYear()) {
                         dayCell.classList.add('selected');
-                        miniDayCell.classList.add('selected');
                     }
                     
                     dayCell.addEventListener('click', () => {
@@ -2954,15 +2746,7 @@
                         calendarActions.showSessionsForDate(selectedDate);
                     });
                     
-                    miniDayCell.addEventListener('click', () => {
-                        const selectedDate = new Date(year, month, day);
-                        STATE.calendar.selectedDate = selectedDate;
-                        calendarActions.renderCalendar();
-                        calendarActions.showSessionsForDate(selectedDate);
-                    });
-                    
                     DOM.calendarGrid.appendChild(dayCell);
-                    DOM.miniCalendarGrid.appendChild(miniDayCell);
                 }
             },
             
@@ -3072,9 +2856,12 @@
             },
             
             toggleCalendar() {
-                DOM.calendarPage.classList.toggle('show');
-                if (DOM.calendarPage.classList.contains('show')) {
+                STATE.calendarOpen = !STATE.calendarOpen;
+                if (STATE.calendarOpen) {
+                    DOM.calendarPanel.classList.add('show');
                     this.renderCalendar();
+                } else {
+                    DOM.calendarPanel.classList.remove('show');
                 }
             }
         };
@@ -3082,10 +2869,16 @@
         // ========== Sound Control Functions ==========
         const soundActions = {
             togglePanel(panel) {
-                const panels = [DOM.infoPanel, DOM.noisePanel, DOM.lofiPanel, DOM.historyPanel, DOM.rewardsPanel, DOM.productivityPanel];
+                const panels = [DOM.infoPanel, DOM.noisePanel, DOM.lofiPanel, DOM.historyPanel, DOM.rewardsPanel, DOM.productivityPanel, DOM.calendarPanel];
                 panels.forEach(p => {
                     if (p === panel) {
                         p.classList.toggle('show');
+                        if (p === DOM.calendarPanel) {
+                            STATE.calendarOpen = p.classList.contains('show');
+                            if (STATE.calendarOpen) {
+                                calendarActions.renderCalendar();
+                            }
+                        }
                     } else {
                         p.classList.remove('show');
                     }
@@ -3207,7 +3000,7 @@
                 });
                 
                 DOM.calendarMenuItem.addEventListener('click', () => {
-                    calendarActions.toggleCalendar();
+                    soundActions.togglePanel(DOM.calendarPanel);
                     this.closeDropdown();
                 });
                 
@@ -3267,21 +3060,18 @@
             DOM.closeRewardsPanel.addEventListener('click', () => {
                 DOM.rewardsPanel.classList.remove('show');
             });
+            
+            DOM.closeCalendarPanel.addEventListener('click', () => {
+                DOM.calendarPanel.classList.remove('show');
+                STATE.calendarOpen = false;
+            });
 
             DOM.resetRewards.addEventListener('click', rewardActions.resetRewards);
 
             // Calendar navigation
             DOM.prevMonthBtn.addEventListener('click', () => calendarActions.changeMonth(-1));
             DOM.nextMonthBtn.addEventListener('click', () => calendarActions.changeMonth(1));
-            DOM.miniPrevMonthBtn.addEventListener('click', () => calendarActions.changeMonth(-1));
-            DOM.miniNextMonthBtn.addEventListener('click', () => calendarActions.changeMonth(1));
             DOM.exportCalendarBtn.addEventListener('click', calendarActions.exportCalendarData);
-            DOM.backToTimerBtn.addEventListener('click', () => {
-                DOM.calendarPage.classList.remove('show');
-            });
-            DOM.viewFullCalendar.addEventListener('click', () => {
-                calendarActions.toggleCalendar();
-            });
 
             // Dropdown menu events
             DOM.dropdownBtn.addEventListener('click', (e) => {
@@ -3293,7 +3083,7 @@
 
             document.addEventListener('click', (e) => {
                 const panels = [DOM.infoPanel, DOM.noisePanel, DOM.lofiPanel, DOM.historyPanel, 
-                               DOM.rewardsPanel, DOM.productivityPanel];
+                               DOM.rewardsPanel, DOM.productivityPanel, DOM.calendarPanel];
                 
                 if (!panels.some(panel => panel.contains(e.target)) && 
                     !DOM.dropdownBtn.contains(e.target) && 
@@ -3360,9 +3150,6 @@
                 content.style.maxHeight = '400px';
                 content.style.overflowY = 'auto';
             });
-            
-            // Render mini calendar
-            calendarActions.renderCalendar();
         }
 
         init();
