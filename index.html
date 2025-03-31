@@ -204,7 +204,6 @@
 
         #start { background-color: var(--primary-green); color: white; }
         #stop { background-color: #f44336; color: white; display: none; }
-        #pause { background-color: var(--primary-orange); color: white; display: none; }
         #reset { background-color: var(--primary-blue); color: white; }
 
         .quick-buttons {
@@ -268,44 +267,15 @@
             display: block;
         }
 
-        /* Tabbed interface for notes/history */
-        .tabs-container {
+        .notes-container {
             margin-top: 20px;
         }
 
-        .tabs-header {
-            display: flex;
-            border-bottom: 1px solid #ddd;
-            margin-bottom: 15px;
-        }
-
-        .tab-btn {
-            padding: 10px 20px;
-            background: none;
-            border: none;
-            border-bottom: 2px solid transparent;
-            cursor: pointer;
-            font-weight: 500;
-            color: #666;
-            transition: all 0.3s;
-        }
-
-        .tab-btn.active {
-            color: var(--primary-purple);
-            border-bottom: 2px solid var(--primary-purple);
-            font-weight: bold;
-        }
-
-        .tab-content {
-            display: none;
+        .notes-column {
             background-color: rgba(255, 255, 255, 0.7);
             padding: 15px;
             border-radius: 10px;
             min-height: 200px;
-        }
-
-        .tab-content.active {
-            display: block;
         }
 
         .notes-column h3 {
@@ -334,7 +304,7 @@
             margin-bottom: 10px;
         }
 
-        .note-list, .history-list {
+        .note-list {
             text-align: left;
             max-height: 300px;
             overflow-y: auto;
@@ -343,7 +313,7 @@
             border-radius: 8px;
         }
 
-        .note-item, .history-item {
+        .note-item {
             padding: 10px;
             margin-bottom: 10px;
             border-radius: 8px;
@@ -355,23 +325,23 @@
         .work-note { border-left: 4px solid var(--primary-pink); }
         .break-note { border-left: 4px solid var(--primary-green); }
 
-        .note-time, .history-time {
+        .note-time {
             font-weight: bold;
             font-size: 0.9em;
             color: #666;
             margin-bottom: 5px;
         }
 
-        .note-text, .history-text { margin: 5px 0; }
+        .note-text { margin: 5px 0; }
 
-        .note-actions, .history-actions {
+        .note-actions {
             display: flex;
             justify-content: flex-end;
             gap: 5px;
             margin-top: 5px;
         }
 
-        .note-action-btn, .history-action-btn {
+        .note-action-btn {
             padding: 3px 8px;
             font-size: 0.8em;
             border-radius: 4px;
@@ -379,20 +349,20 @@
             border: 1px solid #ddd;
         }
 
-        .note-action-btn:hover, .history-action-btn:hover { background-color: #e0e0e0; }
+        .note-action-btn:hover { background-color: #e0e0e0; }
 
-        .notes-actions, .history-actions-container {
+        .notes-actions {
             display: flex;
             justify-content: space-between;
             margin-top: 10px;
         }
 
-        .copy-notes-btn, .export-history-btn {
+        .copy-notes-btn {
             background-color: var(--primary-purple);
             color: white;
         }
 
-        .delete-all-notes-btn, .clear-history-btn {
+        .delete-all-notes-btn {
             background-color: #f44336;
             color: white;
         }
@@ -408,140 +378,6 @@
 
         .work-mode { background-color: var(--work-bg); color: var(--work-text); }
         .break-mode { background-color: var(--break-bg); color: var(--break-text); }
-
-        /* Task input styling */
-        .task-input-container {
-            margin-bottom: 15px;
-        }
-
-        .task-input {
-            width: 100%;
-            padding: 10px;
-            border-radius: 8px;
-            border: 2px solid var(--primary-purple);
-            font-family: inherit;
-            margin-bottom: 5px;
-        }
-
-        .tag-selector {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 5px;
-            margin-bottom: 10px;
-        }
-
-        .tag-btn {
-            padding: 5px 10px;
-            background-color: #f0f0f0;
-            border: 1px solid #ddd;
-            border-radius: 15px;
-            cursor: pointer;
-            font-size: 0.8em;
-        }
-
-        .tag-btn.selected {
-            background-color: var(--primary-purple);
-            color: white;
-            border-color: var(--primary-purple);
-        }
-
-        .tag-btn.work { background-color: var(--work-bg); }
-        .tag-btn.study { background-color: #e1f5fe; }
-        .tag-btn.meeting { background-color: #f3e5f5; }
-        .tag-btn.creative { background-color: #fff8e1; }
-        .tag-btn.other { background-color: #e8f5e9; }
-
-        /* Report styling */
-        .report-container {
-            background-color: rgba(255, 255, 255, 0.7);
-            padding: 15px;
-            border-radius: 10px;
-            margin-top: 15px;
-        }
-
-        .report-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-
-        .report-period-selector {
-            padding: 5px;
-            border-radius: 5px;
-            border: 1px solid #ddd;
-        }
-
-        .report-content {
-            background-color: white;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 10px;
-        }
-
-        .report-stats {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 10px;
-        }
-
-        .report-stat {
-            text-align: center;
-            padding: 10px;
-            border-radius: 8px;
-            background-color: #f5f5f5;
-            flex: 1;
-            margin: 0 5px;
-        }
-
-        .report-stat-value {
-            font-size: 1.5em;
-            font-weight: bold;
-            color: var(--primary-purple);
-        }
-
-        .report-stat-label {
-            font-size: 0.8em;
-            color: #666;
-        }
-
-        .report-tags {
-            margin-top: 15px;
-        }
-
-        .tag-distribution {
-            margin-top: 10px;
-        }
-
-        .tag-bar {
-            height: 20px;
-            background-color: #e0e0e0;
-            border-radius: 10px;
-            margin-bottom: 5px;
-            overflow: hidden;
-        }
-
-        .tag-progress {
-            height: 100%;
-            background-color: var(--primary-purple);
-        }
-
-        .tag-label {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.8em;
-            margin-bottom: 5px;
-        }
-
-        .share-report-btn {
-            background-color: var(--primary-green);
-            color: white;
-            width: 100%;
-            padding: 10px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
 
         /* Top right dropdown menu */
         .dropdown-menu {
@@ -1287,7 +1123,6 @@
         <div class="buttons">
             <button id="start">Start</button>
             <button id="stop">Stop</button>
-            <button id="pause">Pause</button>
             <button id="reset">Reset</button>
         </div>
         
@@ -1313,26 +1148,9 @@
             
             <button id="resetTracking" class="reset-tracking-btn">Reset Tracking Time</button>
             
-            <!-- Tabbed interface for notes/history -->
-            <div class="tabs-container">
-                <div class="tabs-header">
-                    <button class="tab-btn active" data-tab="notes">Notes</button>
-                    <button class="tab-btn" data-tab="history">History</button>
-                    <button class="tab-btn" data-tab="report">Report</button>
-                </div>
-                
-                <!-- Notes Tab -->
-                <div class="tab-content active" id="notesTab">
-                    <div class="task-input-container">
-                        <input type="text" id="taskInput" class="task-input" placeholder="Enter task/project name...">
-                        <div class="tag-selector">
-                            <button class="tag-btn work" data-tag="work">Work</button>
-                            <button class="tag-btn study" data-tag="study">Study</button>
-                            <button class="tag-btn meeting" data-tag="meeting">Meeting</button>
-                            <button class="tag-btn creative" data-tag="creative">Creative</button>
-                            <button class="tag-btn other" data-tag="other">Other</button>
-                        </div>
-                    </div>
+            <div class="notes-container">
+                <div class="notes-column">
+                    <h3>Session Notes</h3>
                     <textarea id="noteInput" placeholder="Add notes about your session..."></textarea>
                     <div class="save-buttons">
                         <button id="saveWorkNote" class="quick-btn" style="background-color: var(--primary-pink);">Save Work Note</button>
@@ -1343,53 +1161,6 @@
                         <button id="deleteAllNotes" class="delete-all-notes-btn">Delete All Notes</button>
                     </div>
                     <div class="note-list" id="noteList"></div>
-                </div>
-                
-                <!-- History Tab -->
-                <div class="tab-content" id="historyTab">
-                    <div class="history-actions-container">
-                        <button id="exportHistory" class="export-history-btn">Export History</button>
-                        <button id="clearHistory" class="clear-history-btn">Clear History</button>
-                    </div>
-                    <div class="history-list" id="historyList"></div>
-                </div>
-                
-                <!-- Report Tab -->
-                <div class="tab-content" id="reportTab">
-                    <div class="report-container">
-                        <div class="report-header">
-                            <h3>Productivity Report</h3>
-                            <select class="report-period-selector" id="reportPeriod">
-                                <option value="today">Today</option>
-                                <option value="week">This Week</option>
-                                <option value="month">This Month</option>
-                            </select>
-                        </div>
-                        <div class="report-content">
-                            <div class="report-stats">
-                                <div class="report-stat">
-                                    <div class="report-stat-value" id="reportWorkTime">00:00:00</div>
-                                    <div class="report-stat-label">Work Time</div>
-                                </div>
-                                <div class="report-stat">
-                                    <div class="report-stat-value" id="reportBreakTime">00:00:00</div>
-                                    <div class="report-stat-label">Break Time</div>
-                                </div>
-                                <div class="report-stat">
-                                    <div class="report-stat-value" id="reportSessions">0</div>
-                                    <div class="report-stat-label">Sessions</div>
-                                </div>
-                            </div>
-                            
-                            <div class="report-tags">
-                                <h4>Tag Distribution</h4>
-                                <div class="tag-distribution" id="tagDistribution">
-                                    <!-- Will be filled by JavaScript -->
-                                </div>
-                            </div>
-                        </div>
-                        <button id="shareReport" class="share-report-btn">Share Report</button>
-                    </div>
                 </div>
             </div>
         </div>
@@ -1606,7 +1377,6 @@
             timerProgress: document.getElementById('timerProgress'),
             startButton: document.getElementById('start'),
             stopButton: document.getElementById('stop'),
-            pauseButton: document.getElementById('pause'),
             resetButton: document.getElementById('reset'),
             work25Button: document.getElementById('work25'),
             break5Button: document.getElementById('break5'),
@@ -1617,13 +1387,11 @@
             totalBreakDisplay: document.getElementById('totalBreak'),
             resetTracking: document.getElementById('resetTracking'),
             noteInput: document.getElementById('noteInput'),
-            taskInput: document.getElementById('taskInput'),
             saveWorkNoteButton: document.getElementById('saveWorkNote'),
             saveBreakNoteButton: document.getElementById('saveBreakNote'),
             copyNotesButton: document.getElementById('copyNotes'),
             deleteAllNotes: document.getElementById('deleteAllNotes'),
             noteList: document.getElementById('noteList'),
-            historyList: document.getElementById('historyList'),
             alarmSound: document.getElementById('alarmSound'),
             applauseSound: document.getElementById('applauseSound'),
             modeIndicator: document.getElementById('modeIndicator'),
@@ -1637,6 +1405,7 @@
             coffeeSound: document.getElementById('coffeeSound'),
             noiseOptions: document.querySelectorAll('.noise-option input'),
             infoPanel: document.getElementById('infoPanel'),
+            historyList: document.getElementById('historyList'),
             clearHistory: document.getElementById('clearHistory'),
             exportHistory: document.getElementById('exportHistory'),
             dailyRewardsList: document.getElementById('dailyRewardsList'),
@@ -1677,26 +1446,13 @@
             calendarSessions: document.getElementById('calendarSessions'),
             prevMonthBtn: document.getElementById('prevMonthBtn'),
             nextMonthBtn: document.getElementById('nextMonthBtn'),
-            exportCalendarBtn: document.getElementById('exportCalendarBtn'),
-            // Tab elements
-            tabBtns: document.querySelectorAll('.tab-btn'),
-            tabContents: document.querySelectorAll('.tab-content'),
-            // Report elements
-            reportPeriod: document.getElementById('reportPeriod'),
-            reportWorkTime: document.getElementById('reportWorkTime'),
-            reportBreakTime: document.getElementById('reportBreakTime'),
-            reportSessions: document.getElementById('reportSessions'),
-            tagDistribution: document.getElementById('tagDistribution'),
-            shareReport: document.getElementById('shareReport'),
-            // Tag elements
-            tagBtns: document.querySelectorAll('.tag-btn')
+            exportCalendarBtn: document.getElementById('exportCalendarBtn')
         };
 
         // ========== State Management ==========
         const STATE = {
             timer: null,
             isRunning: false,
-            isPaused: false,
             isWorkMode: true,
             totalSeconds: 25 * 60,
             initialSeconds: 25 * 60,
@@ -1893,10 +1649,7 @@
                 currentYear: new Date().getFullYear(),
                 selectedDate: null
             },
-            calendarOpen: false, // Track if calendar is open
-            currentTask: '',
-            currentTag: 'work',
-            pausedTime: 0
+            calendarOpen: false // Track if calendar is open
         };
 
         // ========== Timer Functions ==========
@@ -1907,23 +1660,21 @@
                 let minutes = parseInt(timeParts[0]) || 0;
                 let seconds = parseInt(timeParts[1]) || 0;
                 
-                if (STATE.isPaused) {
-                    // Resuming from pause
-                    STATE.totalSeconds = minutes * 60 + seconds;
-                } else {
-                    // Starting fresh
-                    STATE.totalSeconds = minutes * 60 + seconds;
+                STATE.totalSeconds = minutes * 60 + seconds;
+                
+                // Only set initialSeconds if we're starting fresh (not resuming)
+                if (!STATE.isRunning) {
                     STATE.initialSeconds = STATE.totalSeconds;
-                    STATE.sessionStartTime = new Date();
                 }
                 
                 STATE.isRunning = true;
-                STATE.isPaused = false;
+                if (!STATE.sessionStartTime) {
+                    STATE.sessionStartTime = new Date();
+                }
                 STATE.lastTrackingUpdate = Date.now();
                 
                 DOM.startButton.style.display = 'none';
                 DOM.stopButton.style.display = 'inline-block';
-                DOM.pauseButton.style.display = 'inline-block';
                 
                 DOM.body.classList.remove('work-mode', 'break-mode');
                 DOM.body.classList.add(STATE.isWorkMode ? 'work-mode' : 'break-mode');
@@ -1996,8 +1747,7 @@
                             historyActions.addSession({
                                 type: 'work',
                                 duration: sessionDuration,
-                                notes: DOM.noteInput.value.trim() || STATE.currentTask || 'Enter work/project here',
-                                tag: STATE.currentTag,
+                                notes: DOM.noteInput.value.trim() || 'Enter work/project here',
                                 timestamp: STATE.sessionStartTime
                             });
                             rewardActions.updateRewards('work', sessionDuration);
@@ -2007,7 +1757,6 @@
                                 type: 'break',
                                 duration: sessionDuration,
                                 notes: DOM.noteInput.value.trim() || 'Enter work/project here',
-                                tag: 'break',
                                 timestamp: STATE.sessionStartTime
                             });
                         }
@@ -2045,45 +1794,17 @@
                         // Reset the start/stop button
                         DOM.startButton.style.display = 'inline-block';
                         DOM.stopButton.style.display = 'none';
-                        DOM.pauseButton.style.display = 'none';
                         STATE.sessionStartTime = null;
-                        STATE.isPaused = false;
                     }
                 }, 1000);
             },
 
-            pause() {
+            stop() {
                 if (STATE.isRunning) {
                     clearInterval(STATE.timer);
                     STATE.isRunning = false;
-                    STATE.isPaused = true;
-                    DOM.startButton.style.display = 'inline-block';
-                    DOM.pauseButton.style.display = 'none';
-                    
-                    // Store the remaining time
-                    STATE.pausedTime = STATE.totalSeconds;
-                    
-                    // Update tracking time
-                    const sessionEndTime = new Date();
-                    const sessionDuration = Math.floor((sessionEndTime - STATE.sessionStartTime) / 1000);
-                    
-                    if (STATE.isWorkMode) {
-                        STATE.totalWorkSeconds += sessionDuration;
-                    } else {
-                        STATE.totalBreakSeconds += sessionDuration;
-                    }
-                    trackingActions.updateDisplay();
-                }
-            },
-
-            stop() {
-                if (STATE.isRunning || STATE.isPaused) {
-                    clearInterval(STATE.timer);
-                    STATE.isRunning = false;
-                    STATE.isPaused = false;
                     DOM.startButton.style.display = 'inline-block';
                     DOM.stopButton.style.display = 'none';
-                    DOM.pauseButton.style.display = 'none';
                     
                     const sessionEndTime = new Date();
                     const sessionDuration = Math.floor((sessionEndTime - STATE.sessionStartTime) / 1000);
@@ -2095,8 +1816,7 @@
                         historyActions.addSession({
                             type: 'work',
                             duration: sessionDuration,
-                            notes: DOM.noteInput.value.trim() || STATE.currentTask || 'Enter work/project here',
-                            tag: STATE.currentTag,
+                            notes: DOM.noteInput.value.trim() || 'Enter work/project here',
                             timestamp: STATE.sessionStartTime
                         });
                         rewardActions.updateRewards('work', sessionDuration);
@@ -2106,13 +1826,11 @@
                             type: 'break',
                             duration: sessionDuration,
                             notes: DOM.noteInput.value.trim() || 'Enter work/project here',
-                            tag: 'break',
                             timestamp: STATE.sessionStartTime
                         });
                     }
                     trackingActions.updateDisplay();
                     STATE.sessionStartTime = null;
-                    STATE.pausedTime = 0;
                 }
             },
 
@@ -2697,9 +2415,8 @@
         const noteActions = {
             saveNote(isWorkNote) {
                 const noteText = DOM.noteInput.value.trim();
-                const taskName = DOM.taskInput.value.trim();
                 
-                if (noteText || taskName) {
+                if (noteText) {
                     const now = new Date();
                     const timeString = now.toLocaleTimeString();
                     const dateString = now.toLocaleDateString();
@@ -2709,9 +2426,7 @@
                     
                     noteItem.innerHTML = `
                         <div class="note-time" contenteditable="true" data-type="time">${dateString} ${timeString}</div>
-                        ${taskName ? `<div class="note-task" contenteditable="true" data-type="task">${taskName}</div>` : ''}
                         <div class="note-text" contenteditable="true" data-type="text">${noteText}</div>
-                        <div class="note-tag">${STATE.currentTag}</div>
                         <div class="note-actions">
                             <button class="note-action-btn" onclick="noteActions.deleteNote(this)">Delete</button>
                         </div>
@@ -2719,14 +2434,11 @@
                     
                     DOM.noteList.insertBefore(noteItem, DOM.noteList.firstChild);
                     DOM.noteInput.value = '';
-                    DOM.taskInput.value = '';
                     
                     // Save to state
                     STATE.notes.unshift({
                         type: isWorkNote ? 'work' : 'break',
                         text: noteText,
-                        task: taskName,
-                        tag: STATE.currentTag,
                         time: `${dateString} ${timeString}`,
                         timestamp: now.getTime()
                     });
@@ -2736,8 +2448,7 @@
                         historyActions.addSession({
                             type: isWorkNote ? 'work' : 'break',
                             duration: 0,
-                            notes: noteText || taskName || 'Enter work/project here',
-                            tag: STATE.currentTag,
+                            notes: noteText,
                             timestamp: now
                         });
                     }
@@ -2784,9 +2495,7 @@
                         
                         noteItem.innerHTML = `
                             <div class="note-time" contenteditable="true" data-type="time">${note.time}</div>
-                            ${note.task ? `<div class="note-task" contenteditable="true" data-type="task">${note.task}</div>` : ''}
                             <div class="note-text" contenteditable="true" data-type="text">${note.text}</div>
-                            <div class="note-tag">${note.tag}</div>
                             <div class="note-actions">
                                 <button class="note-action-btn" onclick="noteActions.deleteNote(this)">Delete</button>
                             </div>
@@ -2797,7 +2506,7 @@
                 }
                 
                 // Add event listeners for editable fields
-                document.querySelectorAll('.note-time, .note-text, .note-task').forEach(element => {
+                document.querySelectorAll('.note-time, .note-text').forEach(element => {
                     element.addEventListener('blur', function() {
                         const noteItem = this.closest('.note-item');
                         const index = Array.from(DOM.noteList.children).indexOf(noteItem);
@@ -2808,8 +2517,6 @@
                                 STATE.notes[index].time = this.textContent;
                             } else if (type === 'text') {
                                 STATE.notes[index].text = this.textContent;
-                            } else if (type === 'task') {
-                                STATE.notes[index].task = this.textContent;
                             }
                             noteActions.saveToStorage();
                         }
@@ -2826,15 +2533,9 @@
                 
                 DOM.noteList.querySelectorAll('.note-item').forEach(item => {
                     const time = item.querySelector('.note-time').textContent;
-                    const task = item.querySelector('.note-task') ? item.querySelector('.note-task').textContent : '';
                     const text = item.querySelector('.note-text').textContent;
                     const type = item.classList.contains('work-note') ? 'WORK' : 'BREAK';
-                    const tag = item.querySelector('.note-tag').textContent;
-                    
-                    notesText += `${type} - ${time}\n`;
-                    if (task) notesText += `Task: ${task}\n`;
-                    notesText += `Tag: ${tag}\n`;
-                    notesText += `Notes: ${text}\n\n`;
+                    notesText += `${type} - ${time}\n${text}\n\n`;
                 });
                 
                 navigator.clipboard.writeText(notesText.trim()).then(() => {
@@ -2851,7 +2552,6 @@
                 STATE.sessionHistory.push(session);
                 this.saveHistory();
                 this.renderHistory();
-                reportActions.updateReport();
             },
 
             saveHistory() {
@@ -2863,7 +2563,6 @@
                 if (savedHistory) {
                     STATE.sessionHistory = JSON.parse(savedHistory);
                     this.renderHistory();
-                    reportActions.updateReport();
                 }
             },
 
@@ -2875,7 +2574,6 @@
                     // Force immediate UI update
                     setTimeout(() => {
                         historyActions.renderHistory();
-                        reportActions.updateReport();
                     }, 0);
                 }
             },
@@ -2892,7 +2590,6 @@
                     historyText += `Type: ${session.type.toUpperCase()}\n`;
                     historyText += `Date: ${dateString} ${timeString}\n`;
                     historyText += `Duration: ${durationString}\n`;
-                    historyText += `Tag: ${session.tag || 'none'}\n`;
                     historyText += `Notes: ${session.notes || 'Enter work/project here'}\n\n`;
                 });
                 
@@ -2933,7 +2630,6 @@
                             <span class="history-type ${session.type}-history">${session.type.charAt(0).toUpperCase() + session.type.slice(1)}</span>
                             <span class="history-time" contenteditable="true" data-type="time" data-index="${index}">${dateString} ${timeString}</span>
                         </div>
-                        <div class="history-tag">Tag: ${session.tag || 'none'}</div>
                         <div class="history-duration editable" contenteditable="true" data-type="duration" data-index="${index}">Duration: ${durationString}</div>
                         <div class="history-notes editable" contenteditable="true" data-type="notes" data-index="${index}">${session.notes || 'Enter work/project here'}</div>
                         <div class="history-actions">
@@ -2969,7 +2665,6 @@
                         }
                         
                         historyActions.saveHistory();
-                        reportActions.updateReport();
                     });
                 });
             },
@@ -2978,141 +2673,6 @@
                 STATE.sessionHistory.splice(index, 1);
                 this.saveHistory();
                 this.renderHistory();
-                reportActions.updateReport();
-            }
-        };
-
-        // ========== Report Functions ==========
-        const reportActions = {
-            updateReport() {
-                const period = DOM.reportPeriod.value;
-                const now = new Date();
-                let startDate, endDate;
-                
-                switch (period) {
-                    case 'today':
-                        startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-                        endDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
-                        break;
-                    case 'week':
-                        const day = now.getDay(); // 0 (Sunday) to 6 (Saturday)
-                        startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() - day);
-                        endDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() + (6 - day) + 1);
-                        break;
-                    case 'month':
-                        startDate = new Date(now.getFullYear(), now.getMonth(), 1);
-                        endDate = new Date(now.getFullYear(), now.getMonth() + 1, 1);
-                        break;
-                }
-                
-                // Filter sessions for the selected period
-                const filteredSessions = STATE.sessionHistory.filter(session => {
-                    const sessionDate = new Date(session.timestamp);
-                    return sessionDate >= startDate && sessionDate < endDate;
-                });
-                
-                // Calculate totals
-                let totalWork = 0;
-                let totalBreak = 0;
-                const tagCounts = {};
-                
-                filteredSessions.forEach(session => {
-                    if (session.type === 'work') {
-                        totalWork += session.duration;
-                        
-                        // Count tags
-                        if (session.tag) {
-                            tagCounts[session.tag] = (tagCounts[session.tag] || 0) + session.duration;
-                        }
-                    } else {
-                        totalBreak += session.duration;
-                    }
-                });
-                
-                // Update report display
-                DOM.reportWorkTime.textContent = trackingActions.formatTime(totalWork);
-                DOM.reportBreakTime.textContent = trackingActions.formatTime(totalBreak);
-                DOM.reportSessions.textContent = filteredSessions.filter(s => s.type === 'work').length;
-                
-                // Update tag distribution
-                DOM.tagDistribution.innerHTML = '';
-                
-                // Calculate total tagged time
-                const totalTaggedTime = Object.values(tagCounts).reduce((sum, time) => sum + time, 0);
-                
-                // Sort tags by duration (descending)
-                const sortedTags = Object.entries(tagCounts).sort((a, b) => b[1] - a[1]);
-                
-                sortedTags.forEach(([tag, duration]) => {
-                    const percentage = Math.round((duration / totalTaggedTime) * 100);
-                    
-                    const tagContainer = document.createElement('div');
-                    tagContainer.className = 'tag-distribution-item';
-                    
-                    tagContainer.innerHTML = `
-                        <div class="tag-label">
-                            <span>${tag}</span>
-                            <span>${percentage}% (${trackingActions.formatTime(duration)})</span>
-                        </div>
-                        <div class="tag-bar">
-                            <div class="tag-progress" style="width: ${percentage}%"></div>
-                        </div>
-                    `;
-                    
-                    DOM.tagDistribution.appendChild(tagContainer);
-                });
-                
-                if (sortedTags.length === 0) {
-                    DOM.tagDistribution.innerHTML = '<p style="text-align: center; color: #666;">No tagged sessions</p>';
-                }
-            },
-            
-            shareReport() {
-                const period = DOM.reportPeriod.value;
-                const periodText = {
-                    'today': 'today',
-                    'week': 'this week',
-                    'month': 'this month'
-                }[period];
-                
-                let reportText = `My Pomodoro Productivity Report for ${periodText}:\n\n`;
-                reportText += `⏱️ Work Time: ${DOM.reportWorkTime.textContent}\n`;
-                reportText += `☕ Break Time: ${DOM.reportBreakTime.textContent}\n`;
-                reportText += `✅ Completed Sessions: ${DOM.reportSessions.textContent}\n\n`;
-                
-                // Add tag distribution if available
-                const tagItems = DOM.tagDistribution.querySelectorAll('.tag-distribution-item');
-                if (tagItems.length > 0) {
-                    reportText += `🏷️ Tag Distribution:\n`;
-                    tagItems.forEach(item => {
-                        const tagName = item.querySelector('.tag-label span:first-child').textContent;
-                        const tagValue = item.querySelector('.tag-label span:last-child').textContent;
-                        reportText += `- ${tagName}: ${tagValue}\n`;
-                    });
-                }
-                
-                reportText += `\n#Pomodoro #Productivity`;
-                
-                // Try to use Web Share API if available
-                if (navigator.share) {
-                    navigator.share({
-                        title: 'My Pomodoro Productivity Report',
-                        text: reportText
-                    }).catch(err => {
-                        console.log('Error sharing:', err);
-                        this.copyReportToClipboard(reportText);
-                    });
-                } else {
-                    this.copyReportToClipboard(reportText);
-                }
-            },
-            
-            copyReportToClipboard(reportText) {
-                navigator.clipboard.writeText(reportText).then(() => {
-                    alert('Report copied to clipboard! You can now paste it anywhere.');
-                }).catch(err => {
-                    console.error('Failed to copy report: ', err);
-                });
             }
         };
 
@@ -3218,7 +2778,6 @@
                     sessionItem.innerHTML = `
                         <div class="calendar-session-time">${timeString}</div>
                         <div class="calendar-session-duration">${durationString}</div>
-                        <div class="calendar-session-tag">Tag: ${session.tag || 'none'}</div>
                         <div class="calendar-session-notes" contenteditable="true" data-index="${index}">${session.notes || 'Enter work/project here'}</div>
                     `;
                     
@@ -3275,12 +2834,12 @@
                 });
                 
                 // Create CSV content
-                let csvContent = "Date,Type,Duration (seconds),Tag,Notes\n";
+                let csvContent = "Date,Type,Duration (seconds),Notes\n";
                 
                 Object.keys(sessionsByDate).sort().forEach(date => {
                     sessionsByDate[date].forEach(session => {
                         const notes = session.notes ? `"${session.notes.replace(/"/g, '""')}"` : '';
-                        csvContent += `${date},${session.type},${session.duration},${session.tag || ''},${notes}\n`;
+                        csvContent += `${date},${session.type},${session.duration},${notes}\n`;
                     });
                 });
                 
@@ -3377,63 +2936,6 @@
             }
         };
 
-        // ========== Tab Functions ==========
-        const tabActions = {
-            setupTabs() {
-                DOM.tabBtns.forEach(btn => {
-                    btn.addEventListener('click', () => {
-                        // Set active tab button
-                        DOM.tabBtns.forEach(b => b.classList.remove('active'));
-                        btn.classList.add('active');
-                        
-                        // Show corresponding content
-                        const tabId = btn.getAttribute('data-tab') + 'Tab';
-                        DOM.tabContents.forEach(content => content.classList.remove('active'));
-                        document.getElementById(tabId).classList.add('active');
-                        
-                        // If showing history tab, make sure it's updated
-                        if (tabId === 'historyTab') {
-                            historyActions.renderHistory();
-                        }
-                        
-                        // If showing report tab, update it
-                        if (tabId === 'reportTab') {
-                            reportActions.updateReport();
-                        }
-                    });
-                });
-            }
-        };
-
-        // ========== Tag Functions ==========
-        const tagActions = {
-            setupTagButtons() {
-                DOM.tagBtns.forEach(btn => {
-                    btn.addEventListener('click', () => {
-                        // Set active tag
-                        DOM.tagBtns.forEach(b => b.classList.remove('selected'));
-                        btn.classList.add('selected');
-                        
-                        // Update current tag in state
-                        STATE.currentTag = btn.getAttribute('data-tag');
-                        
-                        // Update task input placeholder based on tag
-                        const tagPlaceholders = {
-                            'work': 'Enter work task...',
-                            'study': 'Enter study topic...',
-                            'meeting': 'Enter meeting name...',
-                            'creative': 'Enter creative project...',
-                            'other': 'Enter task...'
-                        };
-                        DOM.taskInput.placeholder = tagPlaceholders[STATE.currentTag] || 'Enter task...';
-                    });
-                });
-                
-                // Set default selected tag
-                document.querySelector('.tag-btn[data-tag="work"]').classList.add('selected');
-            }
-        };
-
         // ========== Reward Tab Functions ==========
         const rewardTabActions = {
             setupTabs() {
@@ -3513,7 +3015,6 @@
         function setupEventListeners() {
             DOM.startButton.addEventListener('click', timerActions.start);
             DOM.stopButton.addEventListener('click', timerActions.stop);
-            DOM.pauseButton.addEventListener('click', timerActions.pause);
             DOM.resetButton.addEventListener('click', timerActions.reset);
             DOM.work25Button.addEventListener('click', () => timerActions.setQuickTime(25, 0, true));
             DOM.break5Button.addEventListener('click', () => timerActions.setQuickTime(5, 0, false));
@@ -3600,8 +3101,6 @@
                 rewardActions.saveRewards();
             });
 
-            tabActions.setupTabs();
-            tagActions.setupTagButtons();
             rewardTabActions.setupTabs();
             
             // Timer display edit handling
@@ -3627,17 +3126,6 @@
                 // Reset progress circle
                 DOM.timerProgress.style.background = `conic-gradient(var(--primary-blue) 0%, transparent 0%)`;
             });
-            
-            // Task input handling
-            DOM.taskInput.addEventListener('input', function() {
-                STATE.currentTask = this.value.trim();
-            });
-            
-            // Report period selector
-            DOM.reportPeriod.addEventListener('change', reportActions.updateReport);
-            
-            // Share report button
-            DOM.shareReport.addEventListener('click', reportActions.shareReport);
         }
 
         // ========== Initialization ==========
@@ -3662,9 +3150,6 @@
                 content.style.maxHeight = '400px';
                 content.style.overflowY = 'auto';
             });
-            
-            // Initialize report
-            reportActions.updateReport();
         }
 
         init();
