@@ -21,6 +21,15 @@
             --break-bg: #e8f5e9;
             --work-text: #e91e63;
             --break-text: #4caf50;
+            
+            /* Dark mode variables */
+            --dark-bg: #121212;
+            --dark-surface: #1e1e1e;
+            --dark-text: #ffffff;
+            --dark-secondary-text: #bbbbbb;
+            --dark-primary: #bb86fc;
+            --dark-secondary: #03dac6;
+            --dark-error: #cf6679;
         }
 
         body {
@@ -39,7 +48,13 @@
                 var(--background-gradient-4));
             background-size: 400% 400%;
             animation: gradientBG 15s ease infinite;
-            transition: background-color 0.5s ease;
+            transition: background-color 0.5s ease, color 0.3s ease;
+        }
+
+        body.dark-mode {
+            background: var(--dark-bg);
+            color: var(--dark-text);
+            animation: none;
         }
 
         body.work-mode {
@@ -50,6 +65,14 @@
         body.break-mode {
             background-color: var(--break-bg);
             animation: none;
+        }
+
+        body.dark-mode.work-mode {
+            background-color: var(--dark-surface);
+        }
+
+        body.dark-mode.break-mode {
+            background-color: var(--dark-surface);
         }
 
         @keyframes gradientBG {
@@ -117,6 +140,12 @@
             backdrop-filter: blur(5px);
             position: relative;
             z-index: 2;
+            transition: background-color 0.3s ease;
+        }
+
+        body.dark-mode .container {
+            background-color: rgba(30, 30, 30, 0.9);
+            color: var(--dark-text);
         }
 
         h1 {
@@ -125,6 +154,10 @@
             font-size: 2.5em;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
             font-weight: 600;
+        }
+
+        body.dark-mode h1 {
+            color: var(--dark-primary);
         }
 
         .header-buttons {
@@ -157,6 +190,10 @@
             text-align: center;
         }
 
+        body.dark-mode .timer-display {
+            color: var(--dark-primary);
+        }
+
         .timer-progress {
             position: absolute;
             top: 0;
@@ -168,6 +205,10 @@
             z-index: 1;
         }
 
+        body.dark-mode .timer-progress {
+            background: conic-gradient(var(--dark-secondary) 0%, transparent 0%);
+        }
+
         .timer-circle {
             position: absolute;
             top: 0;
@@ -177,6 +218,10 @@
             border-radius: 50%;
             border: 10px solid rgba(0, 0, 0, 0.1);
             box-sizing: border-box;
+        }
+
+        body.dark-mode .timer-circle {
+            border-color: rgba(255, 255, 255, 0.1);
         }
 
         .buttons {
@@ -197,6 +242,10 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
+        body.dark-mode button {
+            color: var(--dark-text);
+        }
+
         button:hover {
             transform: translateY(-3px);
             box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
@@ -205,6 +254,11 @@
         #start { background-color: var(--primary-green); color: white; }
         #stop { background-color: #f44336; color: white; display: none; }
         #reset { background-color: var(--primary-blue); color: white; }
+        #pause { background-color: var(--primary-orange); color: white; display: none; }
+
+        body.dark-mode #start { background-color: var(--dark-secondary); }
+        body.dark-mode #reset { background-color: var(--dark-primary); }
+        body.dark-mode #pause { background-color: #ff7043; }
 
         .quick-buttons {
             display: flex;
@@ -226,12 +280,22 @@
 
         #setWorkMode { background-color: var(--primary-pink); color: white; }
         #setBreakMode { background-color: var(--primary-green); color: white; }
+        #darkModeToggle { background-color: #333; color: white; }
+
+        body.dark-mode #setWorkMode { background-color: var(--dark-primary); }
+        body.dark-mode #setBreakMode { background-color: var(--dark-secondary); }
+        body.dark-mode #darkModeToggle { background-color: #555; }
 
         .tracking {
             margin-top: 30px;
             background-color: rgba(255, 255, 255, 0.7);
             padding: 15px;
             border-radius: 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        body.dark-mode .tracking {
+            background-color: rgba(30, 30, 30, 0.7);
         }
 
         .stats {
@@ -246,6 +310,11 @@
             border-radius: 8px;
             min-width: 120px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: background-color 0.3s ease;
+        }
+
+        body.dark-mode .stat-box {
+            background-color: rgba(50, 50, 50, 0.8);
         }
 
         .stat-box div:first-child {
@@ -258,6 +327,10 @@
             font-size: 1.3em;
             font-weight: bold;
             color: var(--primary-purple);
+        }
+
+        body.dark-mode .stat-box div:last-child {
+            color: var(--dark-primary);
         }
 
         .reset-tracking-btn {
@@ -276,6 +349,11 @@
             padding: 15px;
             border-radius: 10px;
             min-height: 200px;
+            transition: background-color 0.3s ease;
+        }
+
+        body.dark-mode .notes-column {
+            background-color: rgba(50, 50, 50, 0.7);
         }
 
         .notes-column h3 {
@@ -284,6 +362,10 @@
             padding: 8px;
             border-radius: 5px;
             background-color: var(--primary-purple);
+        }
+
+        body.dark-mode .notes-column h3 {
+            background-color: var(--dark-primary);
         }
 
         .save-buttons {
@@ -302,6 +384,15 @@
             resize: vertical;
             font-family: inherit;
             margin-bottom: 10px;
+            background-color: white;
+            color: #333;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+
+        body.dark-mode textarea {
+            background-color: var(--dark-surface);
+            color: var(--dark-text);
+            border-color: var(--dark-primary);
         }
 
         .note-list {
@@ -311,6 +402,11 @@
             padding: 10px;
             background-color: rgba(255, 255, 255, 0.8);
             border-radius: 8px;
+            transition: background-color 0.3s ease;
+        }
+
+        body.dark-mode .note-list {
+            background-color: rgba(50, 50, 50, 0.8);
         }
 
         .note-item {
@@ -320,16 +416,28 @@
             background-color: white;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             position: relative;
+            transition: background-color 0.3s ease;
+        }
+
+        body.dark-mode .note-item {
+            background-color: var(--dark-surface);
         }
 
         .work-note { border-left: 4px solid var(--primary-pink); }
         .break-note { border-left: 4px solid var(--primary-green); }
+
+        body.dark-mode .work-note { border-left: 4px solid var(--dark-primary); }
+        body.dark-mode .break-note { border-left: 4px solid var(--dark-secondary); }
 
         .note-time {
             font-weight: bold;
             font-size: 0.9em;
             color: #666;
             margin-bottom: 5px;
+        }
+
+        body.dark-mode .note-time {
+            color: var(--dark-secondary-text);
         }
 
         .note-text { margin: 5px 0; }
@@ -347,9 +455,17 @@
             border-radius: 4px;
             background-color: #f5f5f5;
             border: 1px solid #ddd;
+            transition: background-color 0.3s ease;
+        }
+
+        body.dark-mode .note-action-btn {
+            background-color: #333;
+            border-color: #444;
+            color: var(--dark-text);
         }
 
         .note-action-btn:hover { background-color: #e0e0e0; }
+        body.dark-mode .note-action-btn:hover { background-color: #444; }
 
         .notes-actions {
             display: flex;
@@ -367,6 +483,10 @@
             color: white;
         }
 
+        body.dark-mode .copy-notes-btn {
+            background-color: var(--dark-primary);
+        }
+
         .mode-indicator {
             font-size: 1.5em;
             margin-bottom: 10px;
@@ -378,6 +498,175 @@
 
         .work-mode { background-color: var(--work-bg); color: var(--work-text); }
         .break-mode { background-color: var(--break-bg); color: var(--break-text); }
+
+        body.dark-mode .work-mode { 
+            background-color: var(--dark-surface); 
+            color: var(--dark-primary);
+        }
+        body.dark-mode .break-mode { 
+            background-color: var(--dark-surface); 
+            color: var(--dark-secondary);
+        }
+
+        /* Task management styles */
+        .task-management {
+            margin: 20px 0;
+            padding: 15px;
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        body.dark-mode .task-management {
+            background-color: rgba(50, 50, 50, 0.7);
+        }
+
+        .task-list {
+            max-height: 200px;
+            overflow-y: auto;
+            margin-top: 10px;
+            text-align: left;
+        }
+
+        .task-item {
+            padding: 10px;
+            margin-bottom: 8px;
+            background-color: white;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: background-color 0.3s ease;
+        }
+
+        body.dark-mode .task-item {
+            background-color: var(--dark-surface);
+        }
+
+        .task-info {
+            flex: 1;
+        }
+
+        .task-name {
+            font-weight: bold;
+        }
+
+        .task-time {
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        body.dark-mode .task-time {
+            color: var(--dark-secondary-text);
+        }
+
+        .task-actions {
+            display: flex;
+            gap: 5px;
+        }
+
+        .task-btn {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8em;
+        }
+
+        .start-task-btn {
+            background-color: var(--primary-green);
+            color: white;
+        }
+
+        .delete-task-btn {
+            background-color: #f44336;
+            color: white;
+        }
+
+        .active-task {
+            border-left: 4px solid var(--primary-blue);
+        }
+
+        body.dark-mode .active-task {
+            border-left: 4px solid var(--dark-secondary);
+        }
+
+        /* Tag styles */
+        .tag-selector {
+            margin-top: 10px;
+        }
+
+        .tag-input {
+            display: flex;
+            gap: 5px;
+            margin-top: 5px;
+        }
+
+        .tag-input input {
+            flex: 1;
+            padding: 8px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+            background-color: white;
+            color: #333;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+
+        body.dark-mode .tag-input input {
+            background-color: var(--dark-surface);
+            color: var(--dark-text);
+            border-color: #444;
+        }
+
+        .tag-input button {
+            padding: 8px 12px;
+            background-color: var(--primary-purple);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        body.dark-mode .tag-input button {
+            background-color: var(--dark-primary);
+        }
+
+        .tag-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-top: 10px;
+        }
+
+        .tag-item {
+            padding: 5px 10px;
+            background-color: #e0e0e0;
+            border-radius: 20px;
+            font-size: 0.8em;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        body.dark-mode .tag-item {
+            background-color: #333;
+        }
+
+        .tag-item.selected {
+            background-color: var(--primary-blue);
+            color: white;
+        }
+
+        body.dark-mode .tag-item.selected {
+            background-color: var(--dark-secondary);
+        }
+
+        .remove-tag {
+            cursor: pointer;
+            font-size: 0.9em;
+        }
 
         /* Top right dropdown menu */
         .dropdown-menu {
@@ -402,6 +691,10 @@
             font-size: 1.5em;
         }
 
+        body.dark-mode .dropdown-btn {
+            background-color: var(--dark-primary);
+        }
+
         .dropdown-btn:hover { 
             transform: scale(1.1); 
         }
@@ -415,6 +708,11 @@
             box-shadow: 0 8px 16px rgba(0,0,0,0.2);
             border-radius: 10px;
             z-index: 101;
+            transition: background-color 0.3s ease;
+        }
+
+        body.dark-mode .dropdown-content {
+            background-color: var(--dark-surface);
         }
 
         .dropdown-content.show {
@@ -431,8 +729,16 @@
             transition: background-color 0.2s;
         }
 
+        body.dark-mode .dropdown-item {
+            color: var(--dark-text);
+        }
+
         .dropdown-item:hover {
             background-color: #f1f1f1;
+        }
+
+        body.dark-mode .dropdown-item:hover {
+            background-color: #333;
         }
 
         .dropdown-item i {
@@ -452,6 +758,12 @@
             z-index: 101;
             right: 20px;
             width: 350px;
+            transition: background-color 0.3s ease;
+        }
+
+        body.dark-mode .panel {
+            background-color: var(--dark-surface);
+            color: var(--dark-text);
         }
 
         .panel.show { 
@@ -472,6 +784,10 @@
         .info-panel h3 {
             color: var(--accent-purple);
             margin-top: 0;
+        }
+
+        body.dark-mode .info-panel h3 {
+            color: var(--dark-primary);
         }
 
         .info-panel p {
@@ -501,6 +817,10 @@
             margin-top: 0;
         }
 
+        body.dark-mode .productivity-panel h3 {
+            color: var(--dark-primary);
+        }
+
         .productivity-panel p {
             text-align: left;
             margin-bottom: 10px;
@@ -524,6 +844,10 @@
             color: #666;
         }
 
+        body.dark-mode .close-panel-btn {
+            color: var(--dark-secondary-text);
+        }
+
         .noise-controls {
             display: flex;
             align-items: center;
@@ -540,6 +864,10 @@
             cursor: pointer;
         }
 
+        body.dark-mode .noise-play-btn {
+            background-color: var(--dark-primary);
+        }
+
         .noise-option {
             display: flex;
             align-items: center;
@@ -552,6 +880,9 @@
 
         .noise-option:hover { background-color: #f5f5f5; }
         .noise-option.active { background-color: #e1bee7; }
+
+        body.dark-mode .noise-option:hover { background-color: #333; }
+        body.dark-mode .noise-option.active { background-color: #3700B3; }
 
         .noise-option input {
             margin-right: 10px;
@@ -573,7 +904,13 @@
             transition: background-color 0.2s;
         }
 
+        body.dark-mode .lofi-channel {
+            background-color: #333;
+            color: var(--dark-text);
+        }
+
         .lofi-channel:hover { background-color: #e0e0e0; }
+        body.dark-mode .lofi-channel:hover { background-color: #444; }
 
         .lofi-channel img {
             width: 30px;
@@ -617,6 +954,12 @@
             border-radius: 8px;
             background-color: #f9f9f9;
             border-left: 4px solid var(--primary-purple);
+            transition: background-color 0.3s ease;
+        }
+
+        body.dark-mode .history-item {
+            background-color: var(--dark-surface);
+            border-left-color: var(--dark-primary);
         }
 
         .history-header {
@@ -636,9 +979,22 @@
         .work-history { background-color: var(--work-bg); color: var(--work-text); }
         .break-history { background-color: var(--break-bg); color: var(--break-text); }
 
+        body.dark-mode .work-history { 
+            background-color: var(--dark-surface); 
+            color: var(--dark-primary);
+        }
+        body.dark-mode .break-history { 
+            background-color: var(--dark-surface); 
+            color: var(--dark-secondary);
+        }
+
         .history-time {
             font-size: 0.9em;
             color: #666;
+        }
+
+        body.dark-mode .history-time {
+            color: var(--dark-secondary-text);
         }
 
         .history-duration {
@@ -650,6 +1006,11 @@
             padding: 5px;
             background-color: white;
             border-radius: 4px;
+            transition: background-color 0.3s ease;
+        }
+
+        body.dark-mode .history-notes {
+            background-color: #333;
         }
 
         .history-actions {
@@ -665,9 +1026,17 @@
             border-radius: 4px;
             background-color: #f5f5f5;
             border: 1px solid #ddd;
+            transition: background-color 0.3s ease;
+        }
+
+        body.dark-mode .history-action-btn {
+            background-color: #333;
+            border-color: #444;
+            color: var(--dark-text);
         }
 
         .history-action-btn:hover { background-color: #e0e0e0; }
+        body.dark-mode .history-action-btn:hover { background-color: #444; }
 
         .history-controls {
             display: flex;
@@ -689,6 +1058,10 @@
             margin-top: 10px;
         }
 
+        body.dark-mode .export-btn {
+            background-color: var(--dark-secondary);
+        }
+
         .editable {
             border: 1px dashed #ccc;
             padding: 2px;
@@ -701,6 +1074,11 @@
             background-color: #f5f9ff;
         }
 
+        body.dark-mode .editable:focus {
+            border-color: var(--dark-secondary);
+            background-color: #333;
+        }
+
         .reward-item {
             display: flex;
             align-items: center;
@@ -708,6 +1086,11 @@
             margin-bottom: 10px;
             border-radius: 8px;
             background-color: #f9f9f9;
+            transition: background-color 0.3s ease;
+        }
+
+        body.dark-mode .reward-item {
+            background-color: var(--dark-surface);
         }
 
         .reward-icon {
@@ -734,11 +1117,19 @@
             overflow: hidden;
         }
 
+        body.dark-mode .reward-progress {
+            background-color: #333;
+        }
+
         .progress-bar {
             height: 100%;
             background-color: var(--primary-green);
             width: 0%;
             transition: width 0.5s ease;
+        }
+
+        body.dark-mode .progress-bar {
+            background-color: var(--dark-secondary);
         }
 
         .reward-status {
@@ -747,9 +1138,18 @@
             margin-top: 3px;
         }
 
+        body.dark-mode .reward-status {
+            color: var(--dark-secondary-text);
+        }
+
         .reward-earned {
             background-color: #e8f5e9;
             border-left: 4px solid var(--primary-green);
+        }
+
+        body.dark-mode .reward-earned {
+            background-color: #1B5E20;
+            border-left-color: var(--dark-secondary);
         }
 
         .reward-emoji {
@@ -780,6 +1180,10 @@
             border-bottom: 1px solid #ddd;
         }
 
+        body.dark-mode .reward-tabs {
+            border-bottom-color: #444;
+        }
+
         .reward-tab {
             padding: 8px 15px;
             cursor: pointer;
@@ -791,6 +1195,11 @@
             border-bottom: 2px solid var(--accent-purple);
             color: var(--accent-purple);
             font-weight: bold;
+        }
+
+        body.dark-mode .reward-tab.active {
+            border-bottom-color: var(--dark-primary);
+            color: var(--dark-primary);
         }
 
         .reward-tab-content {
@@ -821,6 +1230,10 @@
         ::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 4px; }
         ::-webkit-scrollbar-thumb { background: #c1c1c1; border-radius: 4px; }
         ::-webkit-scrollbar-thumb:hover { background: #a8a8a8; }
+
+        body.dark-mode ::-webkit-scrollbar-track { background: #333; }
+        body.dark-mode ::-webkit-scrollbar-thumb { background: #555; }
+        body.dark-mode ::-webkit-scrollbar-thumb:hover { background: #666; }
 
         @keyframes bigCelebration {
             0% { transform: scale(1); opacity: 1; }
@@ -853,6 +1266,11 @@
             width: 350px;
             left: 50%;
             transform: translateX(-50%);
+            transition: background-color 0.3s ease;
+        }
+
+        body.dark-mode .calendar-panel {
+            background-color: var(--dark-surface);
         }
 
         .calendar-header {
@@ -866,6 +1284,10 @@
             font-size: 1.2em;
             font-weight: bold;
             color: var(--accent-purple);
+        }
+
+        body.dark-mode .calendar-title {
+            color: var(--dark-primary);
         }
 
         .calendar-nav {
@@ -882,6 +1304,10 @@
             color: var(--accent-purple);
         }
 
+        body.dark-mode .calendar-nav button {
+            color: var(--dark-primary);
+        }
+
         .calendar-grid {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
@@ -895,15 +1321,28 @@
             color: var(--accent-purple);
         }
 
+        body.dark-mode .calendar-day-header {
+            color: var(--dark-primary);
+        }
+
         .calendar-day {
             text-align: center;
             padding: 8px;
             border-radius: 5px;
             cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        body.dark-mode .calendar-day {
+            color: var(--dark-text);
         }
 
         .calendar-day:hover {
             background-color: #f0f0f0;
+        }
+
+        body.dark-mode .calendar-day:hover {
+            background-color: #333;
         }
 
         .calendar-day.empty {
@@ -916,14 +1355,26 @@
             font-weight: bold;
         }
 
+        body.dark-mode .calendar-day.today {
+            background-color: var(--dark-primary);
+        }
+
         .calendar-day.has-sessions {
             background-color: #e1bee7;
             font-weight: bold;
         }
 
+        body.dark-mode .calendar-day.has-sessions {
+            background-color: #3700B3;
+        }
+
         .calendar-day.selected {
             background-color: var(--primary-blue);
             color: white;
+        }
+
+        body.dark-mode .calendar-day.selected {
+            background-color: var(--dark-secondary);
         }
 
         .calendar-sessions {
@@ -937,6 +1388,11 @@
             margin-bottom: 5px;
             border-radius: 5px;
             background-color: #f5f5f5;
+            transition: background-color 0.3s ease;
+        }
+
+        body.dark-mode .calendar-session-item {
+            background-color: #333;
         }
 
         .calendar-session-item.work {
@@ -947,9 +1403,21 @@
             border-left: 3px solid var(--primary-green);
         }
 
+        body.dark-mode .calendar-session-item.work {
+            border-left: 3px solid var(--dark-primary);
+        }
+
+        body.dark-mode .calendar-session-item.break {
+            border-left: 3px solid var(--dark-secondary);
+        }
+
         .calendar-session-time {
             font-size: 0.8em;
             color: #666;
+        }
+
+        body.dark-mode .calendar-session-time {
+            color: var(--dark-secondary-text);
         }
 
         .calendar-session-duration {
@@ -969,6 +1437,56 @@
             border-radius: 5px;
             margin-top: 10px;
             cursor: pointer;
+        }
+
+        body.dark-mode .calendar-export-btn {
+            background-color: var(--dark-secondary);
+        }
+
+        /* Filter controls */
+        .filter-controls {
+            margin: 15px 0;
+            padding: 10px;
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 8px;
+            transition: background-color 0.3s ease;
+        }
+
+        body.dark-mode .filter-controls {
+            background-color: rgba(50, 50, 50, 0.7);
+        }
+
+        .filter-title {
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .filter-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+
+        .filter-tag {
+            padding: 5px 10px;
+            background-color: #e0e0e0;
+            border-radius: 20px;
+            font-size: 0.8em;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        body.dark-mode .filter-tag {
+            background-color: #333;
+        }
+
+        .filter-tag.selected {
+            background-color: var(--primary-blue);
+            color: white;
+        }
+
+        body.dark-mode .filter-tag.selected {
+            background-color: var(--dark-secondary);
         }
 
         /* Mobile responsiveness */
@@ -1110,6 +1628,7 @@
         <div class="header-buttons">
             <button class="mode-btn" id="setWorkMode">Set Work Mode</button>
             <button class="mode-btn" id="setBreakMode">Set Break Mode</button>
+            <button class="mode-btn" id="darkModeToggle">Dark Mode</button>
         </div>
         
         <div class="mode-indicator" id="modeIndicator">Work Time</div>
@@ -1123,6 +1642,7 @@
         <div class="buttons">
             <button id="start">Start</button>
             <button id="stop">Stop</button>
+            <button id="pause">Pause</button>
             <button id="reset">Reset</button>
         </div>
         
@@ -1130,6 +1650,24 @@
             <button class="quick-btn" id="work25">Work (25:00)</button>
             <button class="quick-btn" id="break5">Break (5:00)</button>
             <button class="quick-btn" id="break30">Long Break (30:00)</button>
+        </div>
+
+        <!-- Task Management Section -->
+        <div class="task-management">
+            <h2>Task Management</h2>
+            <div>
+                <input type="text" id="taskNameInput" placeholder="Task name">
+                <input type="number" id="taskPomodoroInput" placeholder="Pomodoros" min="1" value="1">
+                <button id="addTaskBtn">Add Task</button>
+            </div>
+            <div class="tag-selector">
+                <div class="tag-input">
+                    <input type="text" id="tagInput" placeholder="Add tag (e.g. project1)">
+                    <button id="addTagBtn">Add</button>
+                </div>
+                <div class="tag-list" id="tagList"></div>
+            </div>
+            <div class="task-list" id="taskList"></div>
         </div>
         
         <div class="tracking">
@@ -1339,6 +1877,14 @@
             </div>
         </div>
         
+        <div class="filter-controls">
+            <div class="filter-title">Filter by Tag:</div>
+            <div class="filter-tags" id="filterTags">
+                <div class="filter-tag all-tags selected" data-tag="all">All</div>
+                <!-- Tags will be added here dynamically -->
+            </div>
+        </div>
+        
         <div class="calendar-grid" id="calendarGrid">
             <!-- Calendar headers -->
             <div class="calendar-day-header">Sun</div>
@@ -1378,11 +1924,13 @@
             startButton: document.getElementById('start'),
             stopButton: document.getElementById('stop'),
             resetButton: document.getElementById('reset'),
+            pauseButton: document.getElementById('pause'),
             work25Button: document.getElementById('work25'),
             break5Button: document.getElementById('break5'),
             break30Button: document.getElementById('break30'),
             setWorkModeButton: document.getElementById('setWorkMode'),
             setBreakModeButton: document.getElementById('setBreakMode'),
+            darkModeToggle: document.getElementById('darkModeToggle'),
             totalWorkDisplay: document.getElementById('totalWork'),
             totalBreakDisplay: document.getElementById('totalBreak'),
             resetTracking: document.getElementById('resetTracking'),
@@ -1446,13 +1994,24 @@
             calendarSessions: document.getElementById('calendarSessions'),
             prevMonthBtn: document.getElementById('prevMonthBtn'),
             nextMonthBtn: document.getElementById('nextMonthBtn'),
-            exportCalendarBtn: document.getElementById('exportCalendarBtn')
+            exportCalendarBtn: document.getElementById('exportCalendarBtn'),
+            filterTags: document.getElementById('filterTags'),
+            // Task management elements
+            taskNameInput: document.getElementById('taskNameInput'),
+            taskPomodoroInput: document.getElementById('taskPomodoroInput'),
+            addTaskBtn: document.getElementById('addTaskBtn'),
+            taskList: document.getElementById('taskList'),
+            tagInput: document.getElementById('tagInput'),
+            addTagBtn: document.getElementById('addTagBtn'),
+            tagList: document.getElementById('tagList')
         };
 
         // ========== State Management ==========
         const STATE = {
             timer: null,
             isRunning: false,
+            isPaused: false,
+            remainingTime: 0,
             isWorkMode: true,
             totalSeconds: 25 * 60,
             initialSeconds: 25 * 60,
@@ -1647,9 +2206,14 @@
             calendar: {
                 currentMonth: new Date().getMonth(),
                 currentYear: new Date().getFullYear(),
-                selectedDate: null
+                selectedDate: null,
+                selectedTag: 'all'
             },
-            calendarOpen: false // Track if calendar is open
+            calendarOpen: false, // Track if calendar is open
+            tasks: [],
+            activeTask: null,
+            tags: [],
+            selectedTags: []
         };
 
         // ========== Timer Functions ==========
@@ -1663,11 +2227,12 @@
                 STATE.totalSeconds = minutes * 60 + seconds;
                 
                 // Only set initialSeconds if we're starting fresh (not resuming)
-                if (!STATE.isRunning) {
+                if (!STATE.isRunning && !STATE.isPaused) {
                     STATE.initialSeconds = STATE.totalSeconds;
                 }
                 
                 STATE.isRunning = true;
+                STATE.isPaused = false;
                 if (!STATE.sessionStartTime) {
                     STATE.sessionStartTime = new Date();
                 }
@@ -1675,6 +2240,7 @@
                 
                 DOM.startButton.style.display = 'none';
                 DOM.stopButton.style.display = 'inline-block';
+                DOM.pauseButton.style.display = 'inline-block';
                 
                 DOM.body.classList.remove('work-mode', 'break-mode');
                 DOM.body.classList.add(STATE.isWorkMode ? 'work-mode' : 'break-mode');
@@ -1748,7 +2314,9 @@
                                 type: 'work',
                                 duration: sessionDuration,
                                 notes: DOM.noteInput.value.trim() || 'Enter work/project here',
-                                timestamp: STATE.sessionStartTime
+                                timestamp: STATE.sessionStartTime,
+                                tags: STATE.selectedTags,
+                                task: STATE.activeTask ? STATE.activeTask.name : null
                             });
                             rewardActions.updateRewards('work', sessionDuration);
                         } else {
@@ -1757,7 +2325,9 @@
                                 type: 'break',
                                 duration: sessionDuration,
                                 notes: DOM.noteInput.value.trim() || 'Enter work/project here',
-                                timestamp: STATE.sessionStartTime
+                                timestamp: STATE.sessionStartTime,
+                                tags: STATE.selectedTags,
+                                task: null
                             });
                         }
                         
@@ -1794,17 +2364,37 @@
                         // Reset the start/stop button
                         DOM.startButton.style.display = 'inline-block';
                         DOM.stopButton.style.display = 'none';
+                        DOM.pauseButton.style.display = 'none';
                         STATE.sessionStartTime = null;
+                        STATE.isRunning = false;
+                        STATE.isPaused = false;
                     }
                 }, 1000);
+            },
+
+            pause() {
+                if (STATE.isRunning && !STATE.isPaused) {
+                    clearInterval(STATE.timer);
+                    STATE.isPaused = true;
+                    STATE.remainingTime = STATE.totalSeconds;
+                    DOM.pauseButton.textContent = 'Resume';
+                } else if (STATE.isPaused) {
+                    STATE.totalSeconds = STATE.remainingTime;
+                    STATE.isPaused = false;
+                    DOM.pauseButton.textContent = 'Pause';
+                    timerActions.start();
+                }
             },
 
             stop() {
                 if (STATE.isRunning) {
                     clearInterval(STATE.timer);
                     STATE.isRunning = false;
+                    STATE.isPaused = false;
                     DOM.startButton.style.display = 'inline-block';
                     DOM.stopButton.style.display = 'none';
+                    DOM.pauseButton.style.display = 'none';
+                    DOM.pauseButton.textContent = 'Pause';
                     
                     const sessionEndTime = new Date();
                     const sessionDuration = Math.floor((sessionEndTime - STATE.sessionStartTime) / 1000);
@@ -1817,7 +2407,9 @@
                             type: 'work',
                             duration: sessionDuration,
                             notes: DOM.noteInput.value.trim() || 'Enter work/project here',
-                            timestamp: STATE.sessionStartTime
+                            timestamp: STATE.sessionStartTime,
+                            tags: STATE.selectedTags,
+                            task: STATE.activeTask ? STATE.activeTask.name : null
                         });
                         rewardActions.updateRewards('work', sessionDuration);
                     } else {
@@ -1826,7 +2418,9 @@
                             type: 'break',
                             duration: sessionDuration,
                             notes: DOM.noteInput.value.trim() || 'Enter work/project here',
-                            timestamp: STATE.sessionStartTime
+                            timestamp: STATE.sessionStartTime,
+                            tags: STATE.selectedTags,
+                            task: null
                         });
                     }
                     trackingActions.updateDisplay();
@@ -1916,6 +2510,187 @@
                     DOM.modeIndicator.textContent = "Break Time";
                     DOM.modeIndicator.className = "mode-indicator break-mode";
                 }
+            },
+
+            toggleDarkMode() {
+                DOM.body.classList.toggle('dark-mode');
+                localStorage.setItem('darkMode', DOM.body.classList.contains('dark-mode'));
+            }
+        };
+
+        // ========== Task Management Functions ==========
+        const taskActions = {
+            addTask() {
+                const name = DOM.taskNameInput.value.trim();
+                const pomodoroCount = parseInt(DOM.taskPomodoroInput.value) || 1;
+                
+                if (name) {
+                    const task = {
+                        id: Date.now(),
+                        name,
+                        pomodoroCount,
+                        completedPomodoros: 0,
+                        timeSpent: 0, // in seconds
+                        tags: [...STATE.selectedTags]
+                    };
+                    
+                    STATE.tasks.push(task);
+                    this.renderTasks();
+                    this.saveTasks();
+                    
+                    DOM.taskNameInput.value = '';
+                    DOM.taskPomodoroInput.value = '1';
+                }
+            },
+            
+            deleteTask(taskId) {
+                STATE.tasks = STATE.tasks.filter(task => task.id !== taskId);
+                if (STATE.activeTask && STATE.activeTask.id === taskId) {
+                    STATE.activeTask = null;
+                }
+                this.renderTasks();
+                this.saveTasks();
+            },
+            
+            startTask(taskId) {
+                const task = STATE.tasks.find(t => t.id === taskId);
+                if (task) {
+                    STATE.activeTask = task;
+                    this.renderTasks();
+                }
+            },
+            
+            renderTasks() {
+                DOM.taskList.innerHTML = '';
+                
+                STATE.tasks.forEach(task => {
+                    const taskItem = document.createElement('div');
+                    taskItem.className = `task-item ${STATE.activeTask && STATE.activeTask.id === task.id ? 'active-task' : ''}`;
+                    
+                    taskItem.innerHTML = `
+                        <div class="task-info">
+                            <div class="task-name">${task.name}</div>
+                            <div class="task-time">${task.completedPomodoros}/${task.pomodoroCount} pomodoros</div>
+                            ${task.tags.length > 0 ? `
+                                <div class="task-tags">
+                                    ${task.tags.map(tag => `<span class="task-tag">${tag}</span>`).join('')}
+                                </div>
+                            ` : ''}
+                        </div>
+                        <div class="task-actions">
+                            ${!STATE.activeTask || STATE.activeTask.id !== task.id ? `
+                                <button class="task-btn start-task-btn" data-id="${task.id}">Start</button>
+                            ` : ''}
+                            <button class="task-btn delete-task-btn" data-id="${task.id}">Delete</button>
+                        </div>
+                    `;
+                    
+                    DOM.taskList.appendChild(taskItem);
+                });
+                
+                // Add event listeners
+                document.querySelectorAll('.start-task-btn').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const taskId = parseInt(btn.getAttribute('data-id'));
+                        taskActions.startTask(taskId);
+                    });
+                });
+                
+                document.querySelectorAll('.delete-task-btn').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const taskId = parseInt(btn.getAttribute('data-id'));
+                        taskActions.deleteTask(taskId);
+                    });
+                });
+            },
+            
+            addTag() {
+                const tag = DOM.tagInput.value.trim();
+                if (tag && !STATE.tags.includes(tag)) {
+                    STATE.tags.push(tag);
+                    this.renderTags();
+                    this.saveTags();
+                    DOM.tagInput.value = '';
+                }
+            },
+            
+            removeTag(tag) {
+                STATE.tags = STATE.tags.filter(t => t !== tag);
+                STATE.selectedTags = STATE.selectedTags.filter(t => t !== tag);
+                this.renderTags();
+                this.saveTags();
+            },
+            
+            toggleTagSelection(tag) {
+                if (STATE.selectedTags.includes(tag)) {
+                    STATE.selectedTags = STATE.selectedTags.filter(t => t !== tag);
+                } else {
+                    STATE.selectedTags.push(tag);
+                }
+                this.renderTags();
+            },
+            
+            renderTags() {
+                DOM.tagList.innerHTML = '';
+                
+                STATE.tags.forEach(tag => {
+                    const tagItem = document.createElement('div');
+                    tagItem.className = `tag-item ${STATE.selectedTags.includes(tag) ? 'selected' : ''}`;
+                    tagItem.textContent = tag;
+                    
+                    const removeBtn = document.createElement('span');
+                    removeBtn.className = 'remove-tag';
+                    removeBtn.innerHTML = '&times;';
+                    removeBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        taskActions.removeTag(tag);
+                    });
+                    
+                    tagItem.appendChild(removeBtn);
+                    tagItem.addEventListener('click', () => {
+                        taskActions.toggleTagSelection(tag);
+                    });
+                    
+                    DOM.tagList.appendChild(tagItem);
+                });
+            },
+            
+            saveTasks() {
+                localStorage.setItem('tasks', JSON.stringify(STATE.tasks));
+                localStorage.setItem('activeTask', JSON.stringify(STATE.activeTask));
+            },
+            
+            loadTasks() {
+                const savedTasks = localStorage.getItem('tasks');
+                if (savedTasks) {
+                    STATE.tasks = JSON.parse(savedTasks);
+                }
+                
+                const savedActiveTask = localStorage.getItem('activeTask');
+                if (savedActiveTask) {
+                    STATE.activeTask = JSON.parse(savedActiveTask);
+                }
+                
+                this.renderTasks();
+            },
+            
+            saveTags() {
+                localStorage.setItem('tags', JSON.stringify(STATE.tags));
+                localStorage.setItem('selectedTags', JSON.stringify(STATE.selectedTags));
+            },
+            
+            loadTags() {
+                const savedTags = localStorage.getItem('tags');
+                if (savedTags) {
+                    STATE.tags = JSON.parse(savedTags);
+                }
+                
+                const savedSelectedTags = localStorage.getItem('selectedTags');
+                if (savedSelectedTags) {
+                    STATE.selectedTags = JSON.parse(savedSelectedTags);
+                }
+                
+                this.renderTags();
             }
         };
 
@@ -2449,7 +3224,9 @@
                             type: isWorkNote ? 'work' : 'break',
                             duration: 0,
                             notes: noteText,
-                            timestamp: now
+                            timestamp: now,
+                            tags: STATE.selectedTags,
+                            task: isWorkNote && STATE.activeTask ? STATE.activeTask.name : null
                         });
                     }
                     
@@ -2590,6 +3367,8 @@
                     historyText += `Type: ${session.type.toUpperCase()}\n`;
                     historyText += `Date: ${dateString} ${timeString}\n`;
                     historyText += `Duration: ${durationString}\n`;
+                    historyText += `Task: ${session.task || 'N/A'}\n`;
+                    historyText += `Tags: ${session.tags ? session.tags.join(', ') : 'N/A'}\n`;
                     historyText += `Notes: ${session.notes || 'Enter work/project here'}\n\n`;
                 });
                 
@@ -2631,6 +3410,10 @@
                             <span class="history-time" contenteditable="true" data-type="time" data-index="${index}">${dateString} ${timeString}</span>
                         </div>
                         <div class="history-duration editable" contenteditable="true" data-type="duration" data-index="${index}">Duration: ${durationString}</div>
+                        ${session.task ? `<div class="history-task">Task: ${session.task}</div>` : ''}
+                        ${session.tags && session.tags.length > 0 ? `
+                            <div class="history-tags">Tags: ${session.tags.join(', ')}</div>
+                        ` : ''}
                         <div class="history-notes editable" contenteditable="true" data-type="notes" data-index="${index}">${session.notes || 'Enter work/project here'}</div>
                         <div class="history-actions">
                             <button class="history-action-btn" onclick="historyActions.deleteSession(${index})">Delete</button>
@@ -2714,12 +3497,21 @@
                     dayCell.className = 'calendar-day';
                     dayCell.textContent = day;
                     
-                    // Check if this day has any sessions
+                    // Check if this day has any sessions (filtered by selected tag if applicable)
                     const hasSessions = STATE.sessionHistory.some(session => {
                         const sessionDate = new Date(session.timestamp);
-                        return sessionDate.getDate() === day && 
-                               sessionDate.getMonth() === month && 
-                               sessionDate.getFullYear() === year;
+                        const matchesDate = sessionDate.getDate() === day && 
+                                           sessionDate.getMonth() === month && 
+                                           sessionDate.getFullYear() === year;
+                        
+                        // If filtering by tag, check if session has the selected tag
+                        if (STATE.calendar.selectedTag !== 'all') {
+                            return matchesDate && 
+                                   session.tags && 
+                                   session.tags.includes(STATE.calendar.selectedTag);
+                        }
+                        
+                        return matchesDate;
                     });
                     
                     if (hasSessions) {
@@ -2753,12 +3545,19 @@
             showSessionsForDate(date) {
                 DOM.calendarSessions.innerHTML = '';
                 
-                const sessionsForDate = STATE.sessionHistory.filter(session => {
+                let sessionsForDate = STATE.sessionHistory.filter(session => {
                     const sessionDate = new Date(session.timestamp);
                     return sessionDate.getDate() === date.getDate() && 
                            sessionDate.getMonth() === date.getMonth() && 
                            sessionDate.getFullYear() === date.getFullYear();
                 });
+                
+                // Filter by selected tag if not 'all'
+                if (STATE.calendar.selectedTag !== 'all') {
+                    sessionsForDate = sessionsForDate.filter(session => 
+                        session.tags && session.tags.includes(STATE.calendar.selectedTag)
+                    );
+                }
                 
                 if (sessionsForDate.length === 0) {
                     DOM.calendarSessions.innerHTML = '<p style="text-align: center; padding: 20px; color: #666;">No sessions for this date</p>';
@@ -2778,6 +3577,10 @@
                     sessionItem.innerHTML = `
                         <div class="calendar-session-time">${timeString}</div>
                         <div class="calendar-session-duration">${durationString}</div>
+                        ${session.task ? `<div class="calendar-session-task">Task: ${session.task}</div>` : ''}
+                        ${session.tags && session.tags.length > 0 ? `
+                            <div class="calendar-session-tags">Tags: ${session.tags.join(', ')}</div>
+                        ` : ''}
                         <div class="calendar-session-notes" contenteditable="true" data-index="${index}">${session.notes || 'Enter work/project here'}</div>
                     `;
                     
@@ -2834,12 +3637,14 @@
                 });
                 
                 // Create CSV content
-                let csvContent = "Date,Type,Duration (seconds),Notes\n";
+                let csvContent = "Date,Type,Duration (seconds),Task,Tags,Notes\n";
                 
                 Object.keys(sessionsByDate).sort().forEach(date => {
                     sessionsByDate[date].forEach(session => {
                         const notes = session.notes ? `"${session.notes.replace(/"/g, '""')}"` : '';
-                        csvContent += `${date},${session.type},${session.duration},${notes}\n`;
+                        const task = session.task || '';
+                        const tags = session.tags ? session.tags.join(', ') : '';
+                        csvContent += `${date},${session.type},${session.duration},"${task}","${tags}",${notes}\n`;
                     });
                 });
                 
@@ -2860,9 +3665,60 @@
                 if (STATE.calendarOpen) {
                     DOM.calendarPanel.classList.add('show');
                     this.renderCalendar();
+                    this.renderFilterTags();
                 } else {
                     DOM.calendarPanel.classList.remove('show');
                 }
+            },
+            
+            renderFilterTags() {
+                DOM.filterTags.innerHTML = '';
+                
+                // Get all unique tags from session history
+                const allTags = new Set();
+                STATE.sessionHistory.forEach(session => {
+                    if (session.tags) {
+                        session.tags.forEach(tag => allTags.add(tag));
+                    }
+                });
+                
+                // Add "All" option
+                const allTag = document.createElement('div');
+                allTag.className = `filter-tag all-tags ${STATE.calendar.selectedTag === 'all' ? 'selected' : ''}`;
+                allTag.textContent = 'All';
+                allTag.setAttribute('data-tag', 'all');
+                allTag.addEventListener('click', () => {
+                    STATE.calendar.selectedTag = 'all';
+                    calendarActions.renderCalendar();
+                    if (STATE.calendar.selectedDate) {
+                        calendarActions.showSessionsForDate(STATE.calendar.selectedDate);
+                    }
+                    document.querySelectorAll('.filter-tag').forEach(tag => {
+                        tag.classList.remove('selected');
+                    });
+                    allTag.classList.add('selected');
+                });
+                DOM.filterTags.appendChild(allTag);
+                
+                // Add tag filters
+                Array.from(allTags).sort().forEach(tag => {
+                    const tagElement = document.createElement('div');
+                    tagElement.className = `filter-tag ${STATE.calendar.selectedTag === tag ? 'selected' : ''}`;
+                    tagElement.textContent = tag;
+                    tagElement.setAttribute('data-tag', tag);
+                    tagElement.addEventListener('click', () => {
+                        STATE.calendar.selectedTag = tag;
+                        calendarActions.renderCalendar();
+                        if (STATE.calendar.selectedDate) {
+                            calendarActions.showSessionsForDate(STATE.calendar.selectedDate);
+                        }
+                        document.querySelectorAll('.filter-tag').forEach(t => {
+                            t.classList.remove('selected');
+                        });
+                        tagElement.classList.add('selected');
+                    });
+                    DOM.filterTags.appendChild(tagElement);
+                });
             }
         };
 
@@ -3015,12 +3871,14 @@
         function setupEventListeners() {
             DOM.startButton.addEventListener('click', timerActions.start);
             DOM.stopButton.addEventListener('click', timerActions.stop);
+            DOM.pauseButton.addEventListener('click', timerActions.pause);
             DOM.resetButton.addEventListener('click', timerActions.reset);
             DOM.work25Button.addEventListener('click', () => timerActions.setQuickTime(25, 0, true));
             DOM.break5Button.addEventListener('click', () => timerActions.setQuickTime(5, 0, false));
             DOM.break30Button.addEventListener('click', () => timerActions.setQuickTime(30, 0, false));
             DOM.setWorkModeButton.addEventListener('click', () => timerActions.setMode(true));
             DOM.setBreakModeButton.addEventListener('click', () => timerActions.setMode(false));
+            DOM.darkModeToggle.addEventListener('click', timerActions.toggleDarkMode);
             
             DOM.saveWorkNoteButton.addEventListener('click', () => noteActions.saveNote(true));
             DOM.saveBreakNoteButton.addEventListener('click', () => noteActions.saveNote(false));
@@ -3073,6 +3931,10 @@
             DOM.nextMonthBtn.addEventListener('click', () => calendarActions.changeMonth(1));
             DOM.exportCalendarBtn.addEventListener('click', calendarActions.exportCalendarData);
 
+            // Task management
+            DOM.addTaskBtn.addEventListener('click', () => taskActions.addTask());
+            DOM.addTagBtn.addEventListener('click', () => taskActions.addTag());
+
             // Dropdown menu events
             DOM.dropdownBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
@@ -3099,6 +3961,8 @@
                 noteActions.saveToStorage();
                 historyActions.saveHistory();
                 rewardActions.saveRewards();
+                taskActions.saveTasks();
+                taskActions.saveTags();
             });
 
             rewardTabActions.setupTabs();
@@ -3134,6 +3998,8 @@
             noteActions.loadFromStorage();
             historyActions.loadHistory();
             rewardActions.loadRewards();
+            taskActions.loadTasks();
+            taskActions.loadTags();
             timerActions.updateModeIndicator();
             soundActions.updateVolume();
             DOM.nowPlaying.textContent = STATE.noiseNames['none'];
@@ -3150,6 +4016,12 @@
                 content.style.maxHeight = '400px';
                 content.style.overflowY = 'auto';
             });
+            
+            // Check for dark mode preference
+            if (localStorage.getItem('darkMode') === 'true' || 
+                (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                DOM.body.classList.add('dark-mode');
+            }
         }
 
         init();
