@@ -152,7 +152,7 @@
             left: 50%;
             transform: translate(-50%, -50%);
             z-index: 2;
-            transition: none;
+            transition: none; /* Remove transition to prevent movement during celebration */
             width: 100%;
             text-align: center;
         }
@@ -611,6 +611,96 @@
             background-color: #ff7043;
         }
 
+        .history-item {
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+            border-left: 4px solid var(--primary-purple);
+        }
+
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+
+        .history-type {
+            font-weight: bold;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        .work-history { background-color: var(--work-bg); color: var(--work-text); }
+        .break-history { background-color: var(--break-bg); color: var(--break-text); }
+
+        .history-time {
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        .history-duration {
+            font-weight: bold;
+        }
+
+        .history-notes {
+            margin-top: 5px;
+            padding: 5px;
+            background-color: white;
+            border-radius: 4px;
+        }
+
+        .history-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 5px;
+            margin-top: 5px;
+        }
+
+        .history-action-btn {
+            padding: 3px 8px;
+            font-size: 0.8em;
+            border-radius: 4px;
+            background-color: #f5f5f5;
+            border: 1px solid #ddd;
+        }
+
+        .history-action-btn:hover { background-color: #e0e0e0; }
+
+        .history-controls {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .clear-history-btn {
+            background-color: #f44336;
+            color: white;
+            padding: 8px 15px;
+            margin-top: 10px;
+        }
+
+        .export-btn {
+            background-color: var(--primary-blue);
+            color: white;
+            padding: 8px 15px;
+            margin-top: 10px;
+        }
+
+        .editable {
+            border: 1px dashed #ccc;
+            padding: 2px;
+            min-height: 1em;
+        }
+
+        .editable:focus {
+            outline: none;
+            border: 1px solid var(--primary-blue);
+            background-color: #f5f9ff;
+        }
+
         .reward-item {
             display: flex;
             align-items: center;
@@ -749,12 +839,7 @@
             pointer-events: none;
         }
 
-        /* Negative timer styling */
-        .negative-timer {
-            color: #f44336 !important;
-        }
-
-        /* ===== Improved Calendar Styles ===== */
+        /* Calendar styles */
         .calendar-panel {
             position: fixed;
             background-color: white;
@@ -768,11 +853,6 @@
             width: 350px;
             left: 50%;
             transform: translateX(-50%);
-            top: 20px;
-        }
-
-        .calendar-panel.show {
-            display: block;
         }
 
         .calendar-header {
@@ -791,7 +871,6 @@
         .calendar-nav {
             display: flex;
             gap: 10px;
-            margin-left: 20px;
         }
 
         .calendar-nav button {
@@ -800,19 +879,12 @@
             font-size: 1.2em;
             cursor: pointer;
             color: var(--accent-purple);
-            padding: 5px 10px;
-            border-radius: 5px;
-        }
-
-        .calendar-nav button:hover {
-            background-color: #f0f0f0;
         }
 
         .calendar-grid {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
             gap: 5px;
-            margin-bottom: 15px;
         }
 
         .calendar-day-header {
@@ -820,7 +892,6 @@
             font-weight: bold;
             padding: 5px;
             color: var(--accent-purple);
-            font-size: 0.9em;
         }
 
         .calendar-day {
@@ -828,9 +899,6 @@
             padding: 8px;
             border-radius: 5px;
             cursor: pointer;
-            transition: all 0.2s;
-            position: relative;
-            min-height: 30px;
         }
 
         .calendar-day:hover {
@@ -839,33 +907,21 @@
 
         .calendar-day.empty {
             visibility: hidden;
-            pointer-events: none;
         }
 
         .calendar-day.today {
-            background-color: rgba(156, 39, 176, 0.2);
+            background-color: var(--accent-purple);
+            color: white;
             font-weight: bold;
         }
 
         .calendar-day.has-sessions {
-            background-color: rgba(156, 39, 176, 0.1);
+            background-color: #e1bee7;
             font-weight: bold;
         }
 
-        .calendar-day.has-sessions::after {
-            content: '';
-            position: absolute;
-            bottom: 3px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 5px;
-            height: 5px;
-            border-radius: 50%;
-            background-color: var(--accent-purple);
-        }
-
         .calendar-day.selected {
-            background-color: var(--accent-purple);
+            background-color: var(--primary-blue);
             color: white;
         }
 
@@ -873,74 +929,35 @@
             margin-top: 15px;
             max-height: 300px;
             overflow-y: auto;
-            border-top: 1px solid #eee;
-            padding-top: 10px;
         }
 
         .calendar-session-item {
-            padding: 10px;
-            margin-bottom: 8px;
-            border-radius: 8px;
-            background-color: #f9f9f9;
-            transition: all 0.2s;
-            position: relative;
-        }
-
-        .calendar-session-item:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            padding: 8px;
+            margin-bottom: 5px;
+            border-radius: 5px;
+            background-color: #f5f5f5;
         }
 
         .calendar-session-item.work {
-            border-left: 4px solid var(--primary-pink);
+            border-left: 3px solid var(--primary-pink);
         }
 
         .calendar-session-item.break {
-            border-left: 4px solid var(--primary-green);
-        }
-
-        .calendar-session-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 5px;
+            border-left: 3px solid var(--primary-green);
         }
 
         .calendar-session-time {
-            font-size: 0.85em;
+            font-size: 0.8em;
             color: #666;
-            font-weight: bold;
         }
 
         .calendar-session-duration {
             font-weight: bold;
-            color: var(--accent-purple);
-            font-size: 0.9em;
         }
 
         .calendar-session-notes {
-            margin-top: 5px;
+            margin-top: 3px;
             font-size: 0.9em;
-            line-height: 1.4;
-            padding: 5px;
-            background-color: white;
-            border-radius: 5px;
-        }
-
-        .calendar-session-delete {
-            position: absolute;
-            top: 5px;
-            right: 5px;
-            background: none;
-            border: none;
-            color: #999;
-            cursor: pointer;
-            font-size: 0.8em;
-            padding: 2px;
-        }
-
-        .calendar-session-delete:hover {
-            color: #f44336;
         }
 
         .calendar-export-btn {
@@ -950,140 +967,6 @@
             padding: 8px 15px;
             border-radius: 5px;
             margin-top: 10px;
-            cursor: pointer;
-            width: 100%;
-            transition: all 0.2s;
-        }
-
-        .calendar-export-btn:hover {
-            background-color: #1976d2;
-        }
-
-        .calendar-empty {
-            text-align: center;
-            padding: 20px;
-            color: #666;
-            font-style: italic;
-        }
-
-        /* ===== Improved Session History Styles ===== */
-        .history-item {
-            padding: 15px;
-            margin-bottom: 12px;
-            border-radius: 8px;
-            background-color: #f9f9f9;
-            transition: all 0.2s;
-            position: relative;
-        }
-
-        .history-item:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-
-        .history-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 8px;
-        }
-
-        .history-type {
-            font-weight: bold;
-            padding: 3px 8px;
-            border-radius: 4px;
-            font-size: 0.85em;
-        }
-
-        .history-type.work-history {
-            background-color: rgba(233, 30, 99, 0.1);
-            color: var(--primary-pink);
-        }
-
-        .history-type.break-history {
-            background-color: rgba(76, 175, 80, 0.1);
-            color: var(--primary-green);
-        }
-
-        .history-time {
-            font-size: 0.85em;
-            color: #666;
-            padding: 3px 6px;
-            border-radius: 4px;
-            transition: all 0.2s;
-        }
-
-        .history-time:hover {
-            background-color: #f0f0f0;
-        }
-
-        .history-duration {
-            font-size: 0.9em;
-            color: #555;
-            margin-bottom: 8px;
-        }
-
-        .history-notes {
-            font-size: 0.9em;
-            line-height: 1.4;
-            padding: 8px;
-            background-color: white;
-            border-radius: 5px;
-            margin-bottom: 8px;
-            transition: all 0.2s;
-        }
-
-        .history-notes:hover {
-            background-color: #f5f5f5;
-        }
-
-        .history-actions {
-            display: flex;
-            justify-content: flex-end;
-        }
-
-        .history-action-btn {
-            padding: 5px 10px;
-            font-size: 0.85em;
-            background-color: #f5f5f5;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .history-action-btn:hover {
-            background-color: #e0e0e0;
-        }
-
-        .history-empty {
-            text-align: center;
-            padding: 20px;
-            color: #666;
-            font-style: italic;
-        }
-
-        .history-controls {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 15px;
-        }
-
-        .export-btn {
-            background-color: var(--primary-blue);
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .clear-history-btn {
-            background-color: #f44336;
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 5px;
             cursor: pointer;
         }
 
@@ -1129,6 +1012,7 @@
                 font-size: 0.9em;
             }
             
+            /* Center tab bubbles on mobile */
             .reward-tabs {
                 justify-content: center;
                 flex-wrap: wrap;
@@ -1139,12 +1023,14 @@
                 font-size: 0.9em;
             }
             
+            /* Make rewards panel taller on desktop */
             @media (min-width: 769px) {
                 #rewardsPanel {
                     height: 500px;
                 }
             }
             
+            /* Show rewards on mobile */
             @media (max-width: 768px) {
                 #rewardsPanel {
                     max-height: 70vh;
@@ -1152,34 +1038,9 @@
                 }
             }
 
+            /* Remove close button from calendar panel */
             #closeCalendarPanel {
                 display: none;
-            }
-
-            .reward-history-item {
-                padding: 8px;
-                font-size: 0.9em;
-            }
-
-            .reward-history-title {
-                font-size: 1em;
-            }
-        }
-
-        /* Desktop specific styles */
-        @media (min-width: 769px) {
-            .panel {
-                top: 90px;
-                right: 20px;
-                left: auto;
-                transform: none;
-            }
-            
-            .calendar-panel {
-                top: 90px;
-                left: auto;
-                right: 20px;
-                transform: none;
             }
         }
     </style>
@@ -1214,9 +1075,6 @@
             <div class="dropdown-item" id="calendarMenuItem">
                 <i>📅</i> Calendar
             </div>
-            <div class="dropdown-item" id="loginMenuItem">
-                <i>🔒</i> Login
-            </div>
             <div class="dropdown-item" id="donateMenuItem">
                 <i>☕</i> Buy Creator a Coffee
             </div>
@@ -1236,7 +1094,7 @@
         <div class="timer-container">
             <div class="timer-progress" id="timerProgress"></div>
             <div class="timer-circle"></div>
-            <div class="timer-display" id="timer" contenteditable="true" tabindex="0">25:00</div>
+            <div class="timer-display" id="timer" contenteditable="true">25:00</div>
         </div>
         
         <div class="buttons">
@@ -1310,7 +1168,6 @@
             <li><strong>Demonstrate work-life balance</strong> with proper break tracking</li>
             <li><strong>Show initiative</strong> by presenting your self-tracking system</li>
             <li><strong>Connect to business outcomes</strong> - link your time to measurable results</li>
-            <li><strong>Request raises annually</strong> if performance and productivity metrics show consistent improvement</li>
         </ul>
         
         <p>This data provides objective evidence to support your case for career advancement.</p>
@@ -1329,7 +1186,7 @@
             <li>Work focused until the timer rings</li>
             <li>Take a <strong>5-minute break</strong></li>
             <li>After 4 work sessions, take a <strong>30-minute break</strong></li>
-            <li><strong>Change tasks periodically</strong> to ensure you don't spend too much time on one task and maintain balanced productivity</li>
+            <li><strong>Change tasks periodically</strong> to ensure too much time isn't spent on one task</li>
         </ol>
         
         <h4>Key Productivity Tips:</h4>
@@ -1421,23 +1278,26 @@
         <h3 style="margin-top: 0; color: var(--accent-purple);">Your Rewards</h3>
         
         <div class="reward-tabs">
-            <div class="reward-tab active" data-tab="available">Available</div>
+            <div class="reward-tab active" data-tab="daily">Daily</div>
+            <div class="reward-tab" data-tab="weekly">Weekly</div>
+            <div class="reward-tab" data-tab="monthly">Monthly</div>
             <div class="reward-tab" data-tab="history">History</div>
         </div>
         
-        <div class="reward-tab-content active" id="availableRewards">
-            <h4>Daily Rewards</h4>
+        <div class="reward-tab-content active" id="dailyRewards">
             <div id="dailyRewardsList"></div>
-            
-            <h4>Weekly Rewards</h4>
+        </div>
+        
+        <div class="reward-tab-content" id="weeklyRewards">
             <div id="weeklyRewardsList"></div>
-            
-            <h4>Monthly Rewards</h4>
+        </div>
+        
+        <div class="reward-tab-content" id="monthlyRewards">
             <div id="monthlyRewardsList"></div>
         </div>
         
         <div class="reward-tab-content" id="historyRewards">
-            <div id="rewardHistoryList"></div>
+            <div id="historyRewardsList"></div>
         </div>
         
         <div class="reward-controls">
@@ -1447,6 +1307,7 @@
 
     <!-- Calendar Panel -->
     <div class="panel calendar-panel" id="calendarPanel">
+        <button class="close-panel-btn" id="closeCalendarPanel">×</button>
         <div class="calendar-header">
             <div class="calendar-title" id="calendarTitle">March 2023</div>
             <div class="calendar-nav">
@@ -1469,25 +1330,10 @@
         </div>
         
         <div class="calendar-sessions" id="calendarSessions">
-            <p class="calendar-empty">Select a date to view sessions</p>
+            <p style="text-align: center; padding: 20px; color: #666;">Select a date to view sessions</p>
         </div>
         
         <button id="exportCalendarBtn" class="calendar-export-btn">Export Calendar Data</button>
-    </div>
-
-    <!-- Login Panel -->
-    <div class="panel" id="loginPanel">
-        <button class="close-panel-btn" id="closeLoginPanel">×</button>
-        <div class="login-form">
-            <h3>Login</h3>
-            <input type="text" id="usernameInput" placeholder="Username">
-            <input type="password" id="passwordInput" placeholder="Password">
-            <button id="loginBtn">Login</button>
-            <button id="registerBtn">Register</button>
-            <div class="form-footer">
-                <p>Login to sync your data across devices</p>
-            </div>
-        </div>
     </div>
 
     <!-- Confetti Container -->
@@ -1542,7 +1388,7 @@
             dailyRewardsList: document.getElementById('dailyRewardsList'),
             weeklyRewardsList: document.getElementById('weeklyRewardsList'),
             monthlyRewardsList: document.getElementById('monthlyRewardsList'),
-            rewardHistoryList: document.getElementById('rewardHistoryList'),
+            historyRewardsList: document.getElementById('historyRewardsList'),
             resetRewards: document.getElementById('resetRewards'),
             confettiContainer: document.getElementById('confettiContainer'),
             leftAnimalGif: document.getElementById('leftAnimalGif'),
@@ -1555,7 +1401,6 @@
             closeHistoryPanel: document.getElementById('closeHistoryPanel'),
             closeRewardsPanel: document.getElementById('closeRewardsPanel'),
             closeCalendarPanel: document.getElementById('closeCalendarPanel'),
-            closeLoginPanel: document.getElementById('closeLoginPanel'),
             body: document.body,
             dropdownBtn: document.getElementById('dropdownBtn'),
             dropdownContent: document.getElementById('dropdownContent'),
@@ -1566,7 +1411,6 @@
             historyMenuItem: document.getElementById('historyMenuItem'),
             rewardsMenuItem: document.getElementById('rewardsMenuItem'),
             calendarMenuItem: document.getElementById('calendarMenuItem'),
-            loginMenuItem: document.getElementById('loginMenuItem'),
             donateMenuItem: document.getElementById('donateMenuItem'),
             noisePlayBtn: document.getElementById('noisePlayBtn'),
             noisePanel: document.getElementById('noisePanel'),
@@ -1574,17 +1418,12 @@
             historyPanel: document.getElementById('historyPanel'),
             rewardsPanel: document.getElementById('rewardsPanel'),
             calendarPanel: document.getElementById('calendarPanel'),
-            loginPanel: document.getElementById('loginPanel'),
             calendarTitle: document.getElementById('calendarTitle'),
             calendarGrid: document.getElementById('calendarGrid'),
             calendarSessions: document.getElementById('calendarSessions'),
             prevMonthBtn: document.getElementById('prevMonthBtn'),
             nextMonthBtn: document.getElementById('nextMonthBtn'),
-            exportCalendarBtn: document.getElementById('exportCalendarBtn'),
-            usernameInput: document.getElementById('usernameInput'),
-            passwordInput: document.getElementById('passwordInput'),
-            loginBtn: document.getElementById('loginBtn'),
-            registerBtn: document.getElementById('registerBtn')
+            exportCalendarBtn: document.getElementById('exportCalendarBtn')
         };
 
         // ========== State Management ==========
@@ -1622,8 +1461,7 @@
                         goal: 1,
                         current: 0,
                         reward: '☕',
-                        earned: false,
-                        timesEarned: 0
+                        earned: false
                     },
                     {
                         id: 'daily_2',
@@ -1633,8 +1471,7 @@
                         goal: 4,
                         current: 0,
                         reward: '🏅',
-                        earned: false,
-                        timesEarned: 0
+                        earned: false
                     },
                     {
                         id: 'daily_3',
@@ -1644,8 +1481,7 @@
                         goal: 8,
                         current: 0,
                         reward: '🌟',
-                        earned: false,
-                        timesEarned: 0
+                        earned: false
                     },
                     {
                         id: 'daily_4',
@@ -1655,8 +1491,7 @@
                         goal: 1,
                         current: 0,
                         reward: '🌞',
-                        earned: false,
-                        timesEarned: 0
+                        earned: false
                     },
                     {
                         id: 'daily_5',
@@ -1666,8 +1501,7 @@
                         goal: 1,
                         current: 0,
                         reward: '🌙',
-                        earned: false,
-                        timesEarned: 0
+                        earned: false
                     }
                 ],
                 weekly: [
@@ -1679,8 +1513,7 @@
                         goal: 5,
                         current: 0,
                         reward: '🌱',
-                        earned: false,
-                        timesEarned: 0
+                        earned: false
                     },
                     {
                         id: 'weekly_2',
@@ -1690,8 +1523,7 @@
                         goal: 20,
                         current: 0,
                         reward: '🏆',
-                        earned: false,
-                        timesEarned: 0
+                        earned: false
                     },
                     {
                         id: 'weekly_3',
@@ -1701,8 +1533,7 @@
                         goal: 35,
                         current: 0,
                         reward: '💎',
-                        earned: false,
-                        timesEarned: 0
+                        earned: false
                     },
                     {
                         id: 'weekly_4',
@@ -1712,8 +1543,7 @@
                         goal: 7,
                         current: 0,
                         reward: '🏅',
-                        earned: false,
-                        timesEarned: 0
+                        earned: false
                     },
                     {
                         id: 'weekly_5',
@@ -1723,8 +1553,7 @@
                         goal: 5,
                         current: 0,
                         reward: '🛡️',
-                        earned: false,
-                        timesEarned: 0
+                        earned: false
                     }
                 ],
                 monthly: [
@@ -1736,8 +1565,7 @@
                         goal: 20,
                         current: 0,
                         reward: '🌞',
-                        earned: false,
-                        timesEarned: 0
+                        earned: false
                     },
                     {
                         id: 'monthly_2',
@@ -1747,8 +1575,7 @@
                         goal: 80,
                         current: 0,
                         reward: '🚀',
-                        earned: false,
-                        timesEarned: 0
+                        earned: false
                     },
                     {
                         id: 'monthly_3',
@@ -1758,8 +1585,7 @@
                         goal: 120,
                         current: 0,
                         reward: '💎',
-                        earned: false,
-                        timesEarned: 0
+                        earned: false
                     },
                     {
                         id: 'monthly_4',
@@ -1769,8 +1595,7 @@
                         goal: 30,
                         current: 0,
                         reward: '✨',
-                        earned: false,
-                        timesEarned: 0
+                        earned: false
                     },
                     {
                         id: 'monthly_5',
@@ -1780,8 +1605,7 @@
                         goal: 1,
                         current: 0,
                         reward: '🧘',
-                        earned: false,
-                        timesEarned: 0
+                        earned: false
                     }
                 ]
             },
@@ -1792,29 +1616,34 @@
             weeklyCompletedSessions: 0,
             monthlyCompletedSessions: 0,
             lastSessionDate: null,
-            rewardHistory: [],
+            rewardHistory: {
+                daily: [],
+                weekly: [],
+                monthly: []
+            },
             calendar: {
                 currentMonth: new Date().getMonth(),
                 currentYear: new Date().getFullYear(),
                 selectedDate: null
-            },
-            calendarOpen: false,
-            user: null,
-            authToken: null
+            }
         };
 
         // ========== Timer Functions ==========
         const timerActions = {
             start() {
+                // Parse time from the editable timer display
                 const timeParts = DOM.timer.textContent.split(':');
                 let minutes = parseInt(timeParts[0]) || 0;
                 let seconds = parseInt(timeParts[1]) || 0;
                 
                 STATE.totalSeconds = minutes * 60 + seconds;
                 
+                // Only set initialSeconds if we're starting fresh (not resuming)
                 if (!STATE.isRunning) {
                     STATE.initialSeconds = STATE.totalSeconds;
                 }
+                
+                if (STATE.totalSeconds <= 0) return;
                 
                 STATE.isRunning = true;
                 if (!STATE.sessionStartTime) {
@@ -1828,6 +1657,7 @@
                 DOM.body.classList.remove('work-mode', 'break-mode');
                 DOM.body.classList.add(STATE.isWorkMode ? 'work-mode' : 'break-mode');
                 
+                // Update animal GIFs based on mode
                 if (STATE.isWorkMode) {
                     DOM.leftAnimalGif.src = 'assets/working-dog-animation.gif';
                     DOM.rightAnimalGif.src = 'assets/working-dog-animation.gif';
@@ -1840,9 +1670,11 @@
                     STATE.totalSeconds--;
                     timerActions.updateDisplay();
                     
+                    // Update progress circle
                     const progressPercent = 100 - (STATE.totalSeconds / STATE.initialSeconds * 100);
                     DOM.timerProgress.style.background = `conic-gradient(var(--primary-blue) ${progressPercent}%, transparent ${progressPercent}%)`;
                     
+                    // Update tracking time in real-time
                     const now = Date.now();
                     const elapsedSeconds = Math.floor((now - STATE.lastTrackingUpdate) / 1000);
                     
@@ -1856,26 +1688,70 @@
                         trackingActions.updateDisplay();
                     }
                     
-                    if (STATE.totalSeconds === 0) {
+                    if (STATE.totalSeconds <= 0) {
+                        clearInterval(STATE.timer);
+                        STATE.isRunning = false;
                         DOM.alarmSound.play();
                         celebrationActions.triggerCelebration();
-                    }
-                    
-                    if (STATE.totalSeconds <= 0) {
-                        if (Math.abs(STATE.totalSeconds) % 60 === 0) {
-                            const now = Date.now();
-                            const elapsedSeconds = Math.floor((now - STATE.lastTrackingUpdate) / 1000);
-                            
-                            if (elapsedSeconds >= 1) {
-                                if (STATE.isWorkMode) {
-                                    STATE.totalWorkSeconds += elapsedSeconds;
-                                } else {
-                                    STATE.totalBreakSeconds += elapsedSeconds;
-                                }
-                                STATE.lastTrackingUpdate = now;
-                                trackingActions.updateDisplay();
+                        
+                        const sessionEndTime = new Date();
+                        const sessionDuration = Math.floor((sessionEndTime - STATE.sessionStartTime) / 1000);
+                        
+                        if (STATE.isWorkMode) {
+                            STATE.totalWorkSeconds += sessionDuration;
+                            STATE.completedSessions++;
+                            rewardActions.updateSessionCounters();
+                            historyActions.addSession({
+                                type: 'work',
+                                duration: sessionDuration,
+                                notes: DOM.noteInput.value.trim() || 'Enter work/project here',
+                                timestamp: STATE.sessionStartTime
+                            });
+                            rewardActions.updateRewards('work', sessionDuration);
+                        } else {
+                            STATE.totalBreakSeconds += sessionDuration;
+                            historyActions.addSession({
+                                type: 'break',
+                                duration: sessionDuration,
+                                notes: DOM.noteInput.value.trim() || 'Enter work/project here',
+                                timestamp: STATE.sessionStartTime
+                            });
+                        }
+                        
+                        trackingActions.updateDisplay();
+                        
+                        STATE.isWorkMode = !STATE.isWorkMode;
+                        timerActions.updateModeIndicator();
+                        
+                        DOM.body.classList.remove('work-mode', 'break-mode');
+                        DOM.body.classList.add(STATE.isWorkMode ? 'work-mode' : 'break-mode');
+                        
+                        // Update animal GIFs based on new mode
+                        if (STATE.isWorkMode) {
+                            DOM.leftAnimalGif.src = 'assets/working-dog-animation.gif';
+                            DOM.rightAnimalGif.src = 'assets/working-dog-animation.gif';
+                        } else {
+                            DOM.leftAnimalGif.src = STATE.breakGif;
+                            DOM.rightAnimalGif.src = STATE.breakGif;
+                        }
+                        
+                        if (STATE.isWorkMode) {
+                            timerActions.setQuickTime(25, 0, true);
+                        } else {
+                            const lastBreakWasShort = localStorage.getItem('lastBreakWasShort') === 'true';
+                            if (lastBreakWasShort) {
+                                timerActions.setQuickTime(30, 0, false);
+                                localStorage.setItem('lastBreakWasShort', 'false');
+                            } else {
+                                timerActions.setQuickTime(5, 0, false);
+                                localStorage.setItem('lastBreakWasShort', 'true');
                             }
                         }
+                        
+                        // Reset the start/stop button
+                        DOM.startButton.style.display = 'inline-block';
+                        DOM.stopButton.style.display = 'none';
+                        STATE.sessionStartTime = null;
                     }
                 }, 1000);
             },
@@ -1897,6 +1773,7 @@
                         historyActions.addSession({
                             type: 'work',
                             duration: sessionDuration,
+                            notes: DOM.noteInput.value.trim() || 'Enter work/project here',
                             timestamp: STATE.sessionStartTime
                         });
                         rewardActions.updateRewards('work', sessionDuration);
@@ -1905,10 +1782,10 @@
                         historyActions.addSession({
                             type: 'break',
                             duration: sessionDuration,
+                            notes: DOM.noteInput.value.trim() || 'Enter work/project here',
                             timestamp: STATE.sessionStartTime
                         });
                     }
-                    
                     trackingActions.updateDisplay();
                     STATE.sessionStartTime = null;
                 }
@@ -1926,25 +1803,19 @@
             },
 
             updateDisplay() {
-                const minutes = Math.floor(Math.abs(STATE.totalSeconds) / 60);
-                const seconds = Math.abs(STATE.totalSeconds) % 60;
-                const sign = STATE.totalSeconds < 0 ? '-' : '';
-                DOM.timer.textContent = `${sign}${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                const minutes = Math.floor(STATE.totalSeconds / 60);
+                const seconds = STATE.totalSeconds % 60;
+                DOM.timer.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
                 
-                if (STATE.totalSeconds < 0) {
-                    DOM.timer.classList.add('negative-timer');
+                if (STATE.totalSeconds <= 60) {
+                    DOM.timer.style.color = '#f44336';
+                    DOM.timer.style.animation = 'pulse 1s infinite';
+                } else if (STATE.totalSeconds <= 300) {
+                    DOM.timer.style.color = '#ff9800';
+                    DOM.timer.style.animation = 'none';
                 } else {
-                    DOM.timer.classList.remove('negative-timer');
-                    if (STATE.totalSeconds <= 60) {
-                        DOM.timer.style.color = '#f44336';
-                        DOM.timer.style.animation = 'pulse 1s infinite';
-                    } else if (STATE.totalSeconds <= 300) {
-                        DOM.timer.style.color = '#ff9800';
-                        DOM.timer.style.animation = 'none';
-                    } else {
-                        DOM.timer.style.color = STATE.isWorkMode ? 'var(--work-text)' : 'var(--break-text)';
-                        DOM.timer.style.animation = 'none';
-                    }
+                    DOM.timer.style.color = STATE.isWorkMode ? 'var(--work-text)' : 'var(--break-text)';
+                    DOM.timer.style.animation = 'none';
                 }
             },
 
@@ -1961,6 +1832,7 @@
                 DOM.body.classList.remove('work-mode', 'break-mode');
                 DOM.body.classList.add(STATE.isWorkMode ? 'work-mode' : 'break-mode');
                 
+                // Update animal GIFs based on mode
                 if (STATE.isWorkMode) {
                     DOM.leftAnimalGif.src = 'assets/working-dog-animation.gif';
                     DOM.rightAnimalGif.src = 'assets/working-dog-animation.gif';
@@ -1977,6 +1849,7 @@
                 DOM.body.classList.remove('work-mode', 'break-mode');
                 DOM.body.classList.add(STATE.isWorkMode ? 'work-mode' : 'break-mode');
                 
+                // Update animal GIFs based on mode
                 if (STATE.isWorkMode) {
                     DOM.leftAnimalGif.src = 'assets/working-dog-animation.gif';
                     DOM.rightAnimalGif.src = 'assets/working-dog-animation.gif';
@@ -2095,17 +1968,20 @@
             updateSessionCounters() {
                 const now = new Date();
                 const today = now.toDateString();
-                const currentDay = now.getDay();
+                const currentDay = now.getDay(); // 0 (Sunday) to 6 (Saturday)
                 const currentDate = now.getDate();
                 const currentMonth = now.getMonth();
                 const currentYear = now.getFullYear();
                 
+                // Check if we need to reset counters
                 if (!STATE.lastSessionDate || STATE.lastSessionDate.toDateString() !== today) {
+                    // New day, check if we need to archive yesterday's daily progress
                     if (STATE.dailyCompletedSessions > 0) {
                         rewardActions.archiveRewardProgress('daily', STATE.dailyCompletedSessions);
                     }
                     STATE.dailyCompletedSessions = 0;
                     
+                    // Check if new week (Monday)
                     if (currentDay === 1 || !STATE.lastSessionDate) {
                         if (STATE.weeklyCompletedSessions > 0) {
                             rewardActions.archiveRewardProgress('weekly', STATE.weeklyCompletedSessions);
@@ -2113,6 +1989,7 @@
                         STATE.weeklyCompletedSessions = 0;
                     }
                     
+                    // Check if new month
                     if (currentDate === 1 || !STATE.lastSessionDate) {
                         if (STATE.monthlyCompletedSessions > 0) {
                             rewardActions.archiveRewardProgress('monthly', STATE.monthlyCompletedSessions);
@@ -2137,14 +2014,13 @@
                     periodName = now.toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' });
                 } else if (type === 'weekly') {
                     const startOfWeek = new Date(now);
-                    startOfWeek.setDate(now.getDate() - now.getDay() + 1);
+                    startOfWeek.setDate(now.getDate() - now.getDay() + 1); // Get Monday of this week
                     periodName = `Week of ${startOfWeek.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`;
                 } else if (type === 'monthly') {
                     periodName = now.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
                 }
                 
-                STATE.rewardHistory.push({
-                    type: type,
+                STATE.rewardHistory[type].push({
                     date: now,
                     periodName: periodName,
                     completedSessions: count,
@@ -2157,41 +2033,38 @@
             
             updateRewards(type, duration) {
                 if (type === 'work') {
+                    // Update daily rewards
                     STATE.rewards.daily.forEach(reward => {
                         if (!reward.earned) {
                             reward.current = STATE.dailyCompletedSessions;
                             if (reward.current >= reward.goal) {
                                 reward.earned = true;
-                                reward.timesEarned++;
                                 this.showRewardNotification(reward);
                                 celebrationActions.showBigReward(reward);
-                                this.addRewardToHistory(reward);
                             }
                         }
                     });
                     
+                    // Update weekly rewards
                     STATE.rewards.weekly.forEach(reward => {
                         if (!reward.earned) {
                             reward.current = STATE.weeklyCompletedSessions;
                             if (reward.current >= reward.goal) {
                                 reward.earned = true;
-                                reward.timesEarned++;
                                 this.showRewardNotification(reward);
                                 celebrationActions.showBigReward(reward);
-                                this.addRewardToHistory(reward);
                             }
                         }
                     });
                     
+                    // Update monthly rewards
                     STATE.rewards.monthly.forEach(reward => {
                         if (!reward.earned) {
                             reward.current = STATE.monthlyCompletedSessions;
                             if (reward.current >= reward.goal) {
                                 reward.earned = true;
-                                reward.timesEarned++;
                                 this.showRewardNotification(reward);
                                 celebrationActions.showBigReward(reward);
-                                this.addRewardToHistory(reward);
                             }
                         }
                     });
@@ -2199,19 +2072,6 @@
                 
                 this.saveRewards();
                 this.renderRewards();
-            },
-            
-            addRewardToHistory(reward) {
-                STATE.rewardHistory.push({
-                    type: 'reward',
-                    rewardId: reward.id,
-                    title: reward.title,
-                    reward: reward.reward,
-                    date: new Date()
-                });
-                
-                this.saveRewards();
-                this.renderRewardHistory();
             },
             
             showRewardNotification(reward) {
@@ -2265,11 +2125,6 @@
                 localStorage.setItem('monthlyCompletedSessions', STATE.monthlyCompletedSessions.toString());
                 localStorage.setItem('lastSessionDate', STATE.lastSessionDate ? STATE.lastSessionDate.getTime() : '');
                 localStorage.setItem('rewardHistory', JSON.stringify(STATE.rewardHistory));
-                
-                // Sync with server if logged in
-                if (STATE.authToken) {
-                    authActions.syncData();
-                }
             },
             
             loadRewards() {
@@ -2292,13 +2147,25 @@
                 const savedRewardHistory = localStorage.getItem('rewardHistory');
                 if (savedRewardHistory) {
                     STATE.rewardHistory = JSON.parse(savedRewardHistory);
-                    STATE.rewardHistory = STATE.rewardHistory.map(item => ({
+                    // Convert string dates back to Date objects
+                    STATE.rewardHistory.daily = STATE.rewardHistory.daily.map(item => ({
                         ...item,
                         date: new Date(item.date),
-                        archivedAt: item.archivedAt ? new Date(item.archivedAt) : null
+                        archivedAt: new Date(item.archivedAt)
+                    }));
+                    STATE.rewardHistory.weekly = STATE.rewardHistory.weekly.map(item => ({
+                        ...item,
+                        date: new Date(item.date),
+                        archivedAt: new Date(item.archivedAt)
+                    }));
+                    STATE.rewardHistory.monthly = STATE.rewardHistory.monthly.map(item => ({
+                        ...item,
+                        date: new Date(item.date),
+                        archivedAt: new Date(item.archivedAt)
                     }));
                 }
                 
+                // Update earned status for all rewards
                 Object.keys(STATE.rewards).forEach(type => {
                     STATE.rewards[type].forEach(reward => {
                         if (type === 'daily') {
@@ -2323,6 +2190,7 @@
                 DOM.weeklyRewardsList.innerHTML = '';
                 DOM.monthlyRewardsList.innerHTML = '';
                 
+                // Render daily rewards
                 STATE.rewards.daily.forEach(reward => {
                     const rewardItem = document.createElement('div');
                     rewardItem.className = `reward-item ${reward.earned ? 'reward-earned' : ''}`;
@@ -2339,9 +2207,7 @@
                                     <div class="progress-bar" style="width: ${progressPercent}%"></div>
                                 </div>
                                 <div class="reward-status">${reward.current}/${reward.goal} sessions</div>
-                            ` : `
-                                <div class="reward-status">Earned ${reward.timesEarned} times</div>
-                            `}
+                            ` : ''}
                         </div>
                         ${reward.earned ? `<div class="reward-emoji">${reward.reward}</div>` : ''}
                     `;
@@ -2349,6 +2215,7 @@
                     DOM.dailyRewardsList.appendChild(rewardItem);
                 });
                 
+                // Render weekly rewards
                 STATE.rewards.weekly.forEach(reward => {
                     const rewardItem = document.createElement('div');
                     rewardItem.className = `reward-item ${reward.earned ? 'reward-earned' : ''}`;
@@ -2365,9 +2232,7 @@
                                     <div class="progress-bar" style="width: ${progressPercent}%"></div>
                                 </div>
                                 <div class="reward-status">${reward.current}/${reward.goal} sessions</div>
-                            ` : `
-                                <div class="reward-status">Earned ${reward.timesEarned} times</div>
-                            `}
+                            ` : ''}
                         </div>
                         ${reward.earned ? `<div class="reward-emoji">${reward.reward}</div>` : ''}
                     `;
@@ -2375,6 +2240,7 @@
                     DOM.weeklyRewardsList.appendChild(rewardItem);
                 });
                 
+                // Render monthly rewards
                 STATE.rewards.monthly.forEach(reward => {
                     const rewardItem = document.createElement('div');
                     rewardItem.className = `reward-item ${reward.earned ? 'reward-earned' : ''}`;
@@ -2391,9 +2257,7 @@
                                     <div class="progress-bar" style="width: ${progressPercent}%"></div>
                                 </div>
                                 <div class="reward-status">${reward.current}/${reward.goal} sessions</div>
-                            ` : `
-                                <div class="reward-status">Earned ${reward.timesEarned} times</div>
-                            `}
+                            ` : ''}
                         </div>
                         ${reward.earned ? `<div class="reward-emoji">${reward.reward}</div>` : ''}
                     `;
@@ -2403,54 +2267,74 @@
             },
             
             renderRewardHistory() {
-                DOM.rewardHistoryList.innerHTML = '';
+                DOM.historyRewardsList.innerHTML = '';
                 
-                if (STATE.rewardHistory.length === 0) {
+                // Render daily history
+                if (STATE.rewardHistory.daily.length > 0) {
+                    const dailyHeader = document.createElement('h4');
+                    dailyHeader.textContent = 'Daily Progress History';
+                    DOM.historyRewardsList.appendChild(dailyHeader);
+                    
+                    STATE.rewardHistory.daily.forEach(item => {
+                        const historyItem = document.createElement('div');
+                        historyItem.className = 'history-item';
+                        historyItem.innerHTML = `
+                            <div><strong>${item.periodName}</strong></div>
+                            <div>Completed: ${item.completedSessions} sessions</div>
+                            <div style="font-size: 0.8em; color: #666;">${item.archivedAt.toLocaleDateString()}</div>
+                        `;
+                        DOM.historyRewardsList.appendChild(historyItem);
+                    });
+                }
+                
+                // Render weekly history
+                if (STATE.rewardHistory.weekly.length > 0) {
+                    const weeklyHeader = document.createElement('h4');
+                    weeklyHeader.textContent = 'Weekly Progress History';
+                    weeklyHeader.style.marginTop = '20px';
+                    DOM.historyRewardsList.appendChild(weeklyHeader);
+                    
+                    STATE.rewardHistory.weekly.forEach(item => {
+                        const historyItem = document.createElement('div');
+                        historyItem.className = 'history-item';
+                        historyItem.innerHTML = `
+                            <div><strong>${item.periodName}</strong></div>
+                            <div>Completed: ${item.completedSessions} sessions</div>
+                            <div style="font-size: 0.8em; color: #666;">${item.archivedAt.toLocaleDateString()}</div>
+                        `;
+                        DOM.historyRewardsList.appendChild(historyItem);
+                    });
+                }
+                
+                // Render monthly history
+                if (STATE.rewardHistory.monthly.length > 0) {
+                    const monthlyHeader = document.createElement('h4');
+                    monthlyHeader.textContent = 'Monthly Progress History';
+                    monthlyHeader.style.marginTop = '20px';
+                    DOM.historyRewardsList.appendChild(monthlyHeader);
+                    
+                    STATE.rewardHistory.monthly.forEach(item => {
+                        const historyItem = document.createElement('div');
+                        historyItem.className = 'history-item';
+                        historyItem.innerHTML = `
+                            <div><strong>${item.periodName}</strong></div>
+                            <div>Completed: ${item.completedSessions} sessions</div>
+                            <div style="font-size: 0.8em; color: #666;">${item.archivedAt.toLocaleDateString()}</div>
+                        `;
+                        DOM.historyRewardsList.appendChild(historyItem);
+                    });
+                }
+                
+                if (STATE.rewardHistory.daily.length === 0 && 
+                    STATE.rewardHistory.weekly.length === 0 && 
+                    STATE.rewardHistory.monthly.length === 0) {
                     const emptyMessage = document.createElement('p');
                     emptyMessage.textContent = 'No reward history yet';
                     emptyMessage.style.textAlign = 'center';
                     emptyMessage.style.padding = '20px';
                     emptyMessage.style.color = '#666';
-                    DOM.rewardHistoryList.appendChild(emptyMessage);
-                    return;
+                    DOM.historyRewardsList.appendChild(emptyMessage);
                 }
-                
-                // Sort by date (newest first)
-                STATE.rewardHistory.sort((a, b) => new Date(b.date) - new Date(a.date));
-                
-                STATE.rewardHistory.forEach(item => {
-                    const historyItem = document.createElement('div');
-                    historyItem.className = 'reward-history-item';
-                    
-                    if (item.type === 'reward') {
-                        const reward = this.findRewardById(item.rewardId);
-                        if (reward) {
-                            historyItem.innerHTML = `
-                                <div class="reward-history-title">${reward.title} ${reward.reward}</div>
-                                <div class="reward-history-date">${item.date.toLocaleDateString()}</div>
-                            `;
-                        }
-                    } else {
-                        historyItem.innerHTML = `
-                            <div class="reward-history-title">${item.periodName}</div>
-                            <div class="reward-history-date">${item.date.toLocaleDateString()}</div>
-                            <div class="reward-history-count">Completed: ${item.completedSessions} sessions</div>
-                        `;
-                    }
-                    
-                    DOM.rewardHistoryList.appendChild(historyItem);
-                });
-            },
-            
-            findRewardById(id) {
-                for (const type of ['daily', 'weekly', 'monthly']) {
-                    for (const reward of STATE.rewards[type]) {
-                        if (reward.id === id) {
-                            return reward;
-                        }
-                    }
-                }
-                return null;
             },
             
             resetRewards() {
@@ -2458,17 +2342,14 @@
                     STATE.rewards.daily.forEach(reward => {
                         reward.current = 0;
                         reward.earned = false;
-                        reward.timesEarned = 0;
                     });
                     STATE.rewards.weekly.forEach(reward => {
                         reward.current = 0;
                         reward.earned = false;
-                        reward.timesEarned = 0;
                     });
                     STATE.rewards.monthly.forEach(reward => {
                         reward.current = 0;
                         reward.earned = false;
-                        reward.timesEarned = 0;
                     });
                     
                     STATE.dailyCompletedSessions = 0;
@@ -2505,19 +2386,12 @@
                     DOM.noteList.insertBefore(noteItem, DOM.noteList.firstChild);
                     DOM.noteInput.value = '';
                     
+                    // Save to state
                     STATE.notes.unshift({
                         type: isWorkNote ? 'work' : 'break',
                         text: noteText,
                         time: `${dateString} ${timeString}`,
                         timestamp: now.getTime()
-                    });
-                    
-                    historyActions.addSession({
-                        type: isWorkNote ? 'work' : 'break',
-                        duration: 0,
-                        timestamp: now,
-                        isNote: true,
-                        noteText: noteText
                     });
                     
                     noteActions.saveToStorage();
@@ -2545,11 +2419,6 @@
 
             saveToStorage() {
                 localStorage.setItem('notes', JSON.stringify(STATE.notes));
-                
-                // Sync with server if logged in
-                if (STATE.authToken) {
-                    authActions.syncData();
-                }
             },
 
             loadFromStorage() {
@@ -2557,8 +2426,10 @@
                 if (savedNotes) {
                     STATE.notes = JSON.parse(savedNotes);
                     
+                    // Sort notes by timestamp (newest first)
                     STATE.notes.sort((a, b) => b.timestamp - a.timestamp);
                     
+                    // Render notes
                     STATE.notes.forEach(note => {
                         const noteItem = document.createElement('div');
                         noteItem.className = `note-item ${note.type === 'work' ? 'work-note' : 'break-note'}`;
@@ -2575,6 +2446,7 @@
                     });
                 }
                 
+                // Add event listeners for editable fields
                 document.querySelectorAll('.note-time, .note-text').forEach(element => {
                     element.addEventListener('blur', function() {
                         const noteItem = this.closest('.note-item');
@@ -2621,72 +2493,29 @@
                 STATE.sessionHistory.push(session);
                 this.saveHistory();
                 this.renderHistory();
-                
-                // Update calendar if open
-                if (STATE.calendarOpen) {
-                    calendarActions.renderCalendar();
-                    if (STATE.calendar.selectedDate) {
-                        const selectedDate = new Date(STATE.calendar.selectedDate);
-                        calendarActions.showSessionsForDate(selectedDate);
-                    }
-                }
             },
 
             saveHistory() {
-                // Save to localStorage
                 localStorage.setItem('sessionHistory', JSON.stringify(STATE.sessionHistory));
-                
-                // Also save to a separate archive that won't be cleared
-                const archive = JSON.parse(localStorage.getItem('sessionHistoryArchive')) || [];
-                archive.push(...STATE.sessionHistory);
-                localStorage.setItem('sessionHistoryArchive', JSON.stringify(archive));
-                
-                // Sync with server if logged in
-                if (STATE.authToken) {
-                    authActions.syncData();
-                }
             },
 
             loadHistory() {
-                // Load from both current history and archive
                 const savedHistory = localStorage.getItem('sessionHistory');
-                const savedArchive = localStorage.getItem('sessionHistoryArchive');
-                
-                STATE.sessionHistory = savedHistory ? JSON.parse(savedHistory) : [];
-                const archive = savedArchive ? JSON.parse(savedArchive) : [];
-                
-                // Merge archive with current history, removing duplicates
-                const mergedHistory = [...STATE.sessionHistory];
-                archive.forEach(session => {
-                    const exists = mergedHistory.some(s => 
-                        new Date(s.timestamp).getTime() === new Date(session.timestamp).getTime() &&
-                        s.type === session.type &&
-                        s.duration === session.duration &&
-                        (s.isNote ? s.noteText === session.noteText : true)
-                    );
-                    if (!exists) {
-                        mergedHistory.push(session);
-                    }
-                });
-                
-                STATE.sessionHistory = mergedHistory;
-                this.renderHistory();
+                if (savedHistory) {
+                    STATE.sessionHistory = JSON.parse(savedHistory);
+                    this.renderHistory();
+                }
             },
 
             clearHistory() {
-                if (confirm('Are you sure you want to clear all session history? This will not delete archived sessions.')) {
+                if (confirm('Are you sure you want to clear all session history? This cannot be undone.')) {
                     STATE.sessionHistory = [];
                     this.saveHistory();
-                    this.renderHistory();
-                    
-                    // Update calendar if open
-                    if (STATE.calendarOpen) {
-                        calendarActions.renderCalendar();
-                        if (STATE.calendar.selectedDate) {
-                            const selectedDate = new Date(STATE.calendar.selectedDate);
-                            calendarActions.showSessionsForDate(selectedDate);
-                        }
-                    }
+                    DOM.historyList.innerHTML = '';
+                    // Force immediate UI update
+                    setTimeout(() => {
+                        historyActions.renderHistory();
+                    }, 0);
                 }
             },
 
@@ -2697,18 +2526,15 @@
                     const date = new Date(session.timestamp);
                     const dateString = date.toLocaleDateString();
                     const timeString = date.toLocaleTimeString();
-                    const durationString = session.duration > 0 ? trackingActions.formatTime(session.duration) : 'Note';
+                    const durationString = trackingActions.formatTime(session.duration);
                     
                     historyText += `Type: ${session.type.toUpperCase()}\n`;
                     historyText += `Date: ${dateString} ${timeString}\n`;
                     historyText += `Duration: ${durationString}\n`;
-                    if (session.isNote) {
-                        historyText += `Notes: ${session.noteText}\n\n`;
-                    } else {
-                        historyText += `\n`;
-                    }
+                    historyText += `Notes: ${session.notes || 'Enter work/project here'}\n\n`;
                 });
                 
+                // Create a blob and download it
                 const blob = new Blob([historyText], { type: 'text/plain' });
                 const url = URL.createObjectURL(blob);
                 const a = document.createElement('a');
@@ -2724,14 +2550,11 @@
                 DOM.historyList.innerHTML = '';
                 
                 if (STATE.sessionHistory.length === 0) {
-                    const emptyMessage = document.createElement('p');
-                    emptyMessage.className = 'history-empty';
-                    emptyMessage.textContent = 'No session history yet';
-                    DOM.historyList.appendChild(emptyMessage);
+                    DOM.historyList.innerHTML = '<p style="text-align: center; padding: 20px; color: #666;">No session history yet</p>';
                     return;
                 }
                 
-                // Sort by date (newest first)
+                // Sort by timestamp (newest first)
                 STATE.sessionHistory.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
                 
                 STATE.sessionHistory.forEach((session, index) => {
@@ -2740,64 +2563,57 @@
                     
                     const date = new Date(session.timestamp);
                     const dateString = date.toLocaleDateString();
-                    const timeString = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                    const durationString = session.duration > 0 ? trackingActions.formatTime(session.duration) : 'Note';
+                    const timeString = date.toLocaleTimeString();
+                    const durationString = trackingActions.formatTime(session.duration);
                     
                     historyItem.innerHTML = `
                         <div class="history-header">
-                            <span class="history-type ${session.type}-history">${session.type.charAt(0).toUpperCase() + session.type.slice(1)}${session.isNote ? ' NOTE' : ''}</span>
-                            <span class="history-time" data-index="${index}">${dateString} ${timeString}</span>
+                            <span class="history-type ${session.type}-history">${session.type.charAt(0).toUpperCase() + session.type.slice(1)}</span>
+                            <span class="history-time" contenteditable="true" data-type="time" data-index="${index}">${dateString} ${timeString}</span>
+                        </div>
+                        <div class="history-duration editable" contenteditable="true" data-type="duration" data-index="${index}">Duration: ${durationString}</div>
+                        <div class="history-notes editable" contenteditable="true" data-type="notes" data-index="${index}">${session.notes || 'Enter work/project here'}</div>
+                        <div class="history-actions">
+                            <button class="history-action-btn" onclick="historyActions.deleteSession(${index})">Delete</button>
                         </div>
                     `;
-                    
-                    if (session.isNote) {
-                        const notesDiv = document.createElement('div');
-                        notesDiv.className = 'history-notes';
-                        notesDiv.textContent = session.noteText;
-                        historyItem.appendChild(notesDiv);
-                    } else {
-                        const durationDiv = document.createElement('div');
-                        durationDiv.className = 'history-duration';
-                        durationDiv.textContent = `Duration: ${durationString}`;
-                        historyItem.appendChild(durationDiv);
-                    }
-                    
-                    const actionsDiv = document.createElement('div');
-                    actionsDiv.className = 'history-actions';
-                    actionsDiv.innerHTML = `
-                        <button class="history-action-btn" data-index="${index}">Delete</button>
-                    `;
-                    historyItem.appendChild(actionsDiv);
                     
                     DOM.historyList.appendChild(historyItem);
                 });
                 
-                // Add delete button event listeners
-                document.querySelectorAll('.history-action-btn').forEach(button => {
-                    button.addEventListener('click', () => {
-                        const index = parseInt(button.getAttribute('data-index'));
-                        this.deleteSession(index);
+                // Add event listeners for editable fields
+                document.querySelectorAll('.history-time, .history-duration, .history-notes').forEach(element => {
+                    element.addEventListener('blur', function() {
+                        const index = parseInt(this.getAttribute('data-index'));
+                        const type = this.getAttribute('data-type');
+                        
+                        if (type === 'time') {
+                            // Parse the edited time string and update the timestamp
+                            const timeString = this.textContent;
+                            const [datePart, timePart] = timeString.split(' ');
+                            const [month, day, year] = datePart.split('/');
+                            const [hours, minutes, seconds] = timePart.split(':');
+                            
+                            const newDate = new Date(year, month - 1, day, hours, minutes, seconds);
+                            STATE.sessionHistory[index].timestamp = newDate;
+                        } else if (type === 'duration') {
+                            // Parse duration from text like "Duration: 00:05:00"
+                            const durationText = this.textContent.replace('Duration: ', '');
+                            const [hours, minutes, seconds] = durationText.split(':').map(Number);
+                            STATE.sessionHistory[index].duration = hours * 3600 + minutes * 60 + seconds;
+                        } else if (type === 'notes') {
+                            STATE.sessionHistory[index].notes = this.textContent;
+                        }
+                        
+                        historyActions.saveHistory();
                     });
                 });
             },
 
             deleteSession(index) {
-                if (index >= 0 && index < STATE.sessionHistory.length) {
-                    if (confirm('Are you sure you want to delete this session?')) {
-                        STATE.sessionHistory.splice(index, 1);
-                        this.saveHistory();
-                        this.renderHistory();
-                        
-                        // Update calendar if open
-                        if (STATE.calendarOpen) {
-                            calendarActions.renderCalendar();
-                            if (STATE.calendar.selectedDate) {
-                                const selectedDate = new Date(STATE.calendar.selectedDate);
-                                calendarActions.showSessionsForDate(selectedDate);
-                            }
-                        }
-                    }
-                }
+                STATE.sessionHistory.splice(index, 1);
+                this.saveHistory();
+                this.renderHistory();
             }
         };
 
@@ -2807,15 +2623,17 @@
                 const month = STATE.calendar.currentMonth;
                 const year = STATE.calendar.currentYear;
                 
+                // Set calendar title
                 const monthNames = ["January", "February", "March", "April", "May", "June",
                     "July", "August", "September", "October", "November", "December"];
                 DOM.calendarTitle.textContent = `${monthNames[month]} ${year}`;
                 
-                // Clear existing days (keep headers)
+                // Clear previous calendar days
                 while (DOM.calendarGrid.children.length > 7) {
                     DOM.calendarGrid.removeChild(DOM.calendarGrid.lastChild);
                 }
                 
+                // Get first day of month and total days in month
                 const firstDay = new Date(year, month, 1).getDay();
                 const daysInMonth = new Date(year, month + 1, 0).getDate();
                 
@@ -2826,18 +2644,18 @@
                     DOM.calendarGrid.appendChild(emptyCell);
                 }
                 
+                // Add cells for each day of the month
                 const today = new Date();
                 const currentDate = today.getDate();
                 const currentMonth = today.getMonth();
                 const currentYear = today.getFullYear();
                 
-                // Add days of the month
                 for (let day = 1; day <= daysInMonth; day++) {
                     const dayCell = document.createElement('div');
                     dayCell.className = 'calendar-day';
                     dayCell.textContent = day;
                     
-                    // Check if this date has any sessions
+                    // Check if this day has any sessions
                     const hasSessions = STATE.sessionHistory.some(session => {
                         const sessionDate = new Date(session.timestamp);
                         return sessionDate.getDate() === day && 
@@ -2884,14 +2702,10 @@
                 });
                 
                 if (sessionsForDate.length === 0) {
-                    const emptyMessage = document.createElement('p');
-                    emptyMessage.className = 'calendar-empty';
-                    emptyMessage.textContent = 'No sessions for this date';
-                    DOM.calendarSessions.appendChild(emptyMessage);
+                    DOM.calendarSessions.innerHTML = '<p style="text-align: center; padding: 20px; color: #666;">No sessions for this date</p>';
                     return;
                 }
                 
-                // Sort by time (earliest first)
                 sessionsForDate.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
                 
                 sessionsForDate.forEach((session, index) => {
@@ -2899,43 +2713,39 @@
                     sessionItem.className = `calendar-session-item ${session.type}`;
                     
                     const sessionDate = new Date(session.timestamp);
-                    const timeString = sessionDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                    const durationString = session.duration > 0 ? 
-                        trackingActions.formatTime(session.duration) : 'Note';
+                    const timeString = sessionDate.toLocaleTimeString();
+                    const durationString = trackingActions.formatTime(session.duration);
                     
                     sessionItem.innerHTML = `
-                        <button class="calendar-session-delete" data-index="${STATE.sessionHistory.indexOf(session)}">✕</button>
-                        <div class="calendar-session-header">
-                            <div class="calendar-session-time">${timeString}</div>
-                            <div class="calendar-session-duration">${durationString}</div>
-                        </div>
+                        <div class="calendar-session-time">${timeString}</div>
+                        <div class="calendar-session-duration">${durationString}</div>
+                        <div class="calendar-session-notes" contenteditable="true" data-index="${index}">${session.notes || 'Enter work/project here'}</div>
                     `;
                     
-                    if (session.isNote) {
-                        const notesDiv = document.createElement('div');
-                        notesDiv.className = 'calendar-session-notes';
-                        notesDiv.textContent = session.noteText;
-                        sessionItem.appendChild(notesDiv);
-                    }
+                    // Add event listener for editable notes
+                    sessionItem.querySelector('.calendar-session-notes').addEventListener('blur', function() {
+                        const sessionIndex = STATE.sessionHistory.findIndex(s => {
+                            const sDate = new Date(s.timestamp);
+                            return sDate.getDate() === date.getDate() && 
+                                   sDate.getMonth() === date.getMonth() && 
+                                   sDate.getFullYear() === date.getFullYear() &&
+                                   sDate.toLocaleTimeString() === timeString;
+                        });
+                        
+                        if (sessionIndex !== -1) {
+                            STATE.sessionHistory[sessionIndex].notes = this.textContent;
+                            historyActions.saveHistory();
+                        }
+                    });
                     
                     DOM.calendarSessions.appendChild(sessionItem);
-                });
-                
-                // Add delete button event listeners
-                document.querySelectorAll('.calendar-session-delete').forEach(button => {
-                    button.addEventListener('click', (e) => {
-                        e.stopPropagation();
-                        const index = parseInt(button.getAttribute('data-index'));
-                        historyActions.deleteSession(index);
-                        calendarActions.showSessionsForDate(date);
-                        calendarActions.renderCalendar();
-                    });
                 });
             },
             
             changeMonth(offset) {
                 STATE.calendar.currentMonth += offset;
                 
+                // Handle year wrap-around
                 if (STATE.calendar.currentMonth < 0) {
                     STATE.calendar.currentMonth = 11;
                     STATE.calendar.currentYear--;
@@ -2946,17 +2756,16 @@
                 
                 STATE.calendar.selectedDate = null;
                 calendarActions.renderCalendar();
-                
-                // Update the sessions display to show empty state
-                DOM.calendarSessions.innerHTML = '<p class="calendar-empty">Select a date to view sessions</p>';
+                DOM.calendarSessions.innerHTML = '<p style="text-align: center; padding: 20px; color: #666;">Select a date to view sessions</p>';
             },
             
             exportCalendarData() {
+                // Group sessions by date
                 const sessionsByDate = {};
                 
                 STATE.sessionHistory.forEach(session => {
                     const date = new Date(session.timestamp);
-                    const dateKey = date.toISOString().split('T')[0];
+                    const dateKey = date.toISOString().split('T')[0]; // YYYY-MM-DD format
                     
                     if (!sessionsByDate[dateKey]) {
                         sessionsByDate[dateKey] = [];
@@ -2965,15 +2774,17 @@
                     sessionsByDate[dateKey].push(session);
                 });
                 
+                // Create CSV content
                 let csvContent = "Date,Type,Duration (seconds),Notes\n";
                 
                 Object.keys(sessionsByDate).sort().forEach(date => {
                     sessionsByDate[date].forEach(session => {
-                        const notes = session.isNote ? `"${session.noteText.replace(/"/g, '""')}"` : '';
+                        const notes = session.notes ? `"${session.notes.replace(/"/g, '""')}"` : '';
                         csvContent += `${date},${session.type},${session.duration},${notes}\n`;
                     });
                 });
                 
+                // Create download link
                 const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
                 const url = URL.createObjectURL(blob);
                 const link = document.createElement('a');
@@ -2983,179 +2794,16 @@
                 document.body.appendChild(link);
                 link.click();
                 document.body.removeChild(link);
-            },
-            
-            toggleCalendar() {
-                STATE.calendarOpen = !STATE.calendarOpen;
-                if (STATE.calendarOpen) {
-                    DOM.calendarPanel.classList.add('show');
-                    this.renderCalendar();
-                } else {
-                    DOM.calendarPanel.classList.remove('show');
-                }
-            },
-            
-            initCalendar() {
-                // Load calendar data from localStorage
-                const savedCalendar = localStorage.getItem('calendarData');
-                if (savedCalendar) {
-                    const data = JSON.parse(savedCalendar);
-                    STATE.calendar.currentMonth = data.currentMonth;
-                    STATE.calendar.currentYear = data.currentYear;
-                }
-                
-                // Set current month/year if not set
-                const now = new Date();
-                if (STATE.calendar.currentMonth === undefined) {
-                    STATE.calendar.currentMonth = now.getMonth();
-                }
-                if (STATE.calendar.currentYear === undefined) {
-                    STATE.calendar.currentYear = now.getFullYear();
-                }
-                
-                // Render initial calendar
-                this.renderCalendar();
-            },
-            
-            saveCalendarState() {
-                localStorage.setItem('calendarData', JSON.stringify({
-                    currentMonth: STATE.calendar.currentMonth,
-                    currentYear: STATE.calendar.currentYear
-                }));
-            }
-        };
-
-        // ========== Authentication Functions ==========
-        const authActions = {
-            login(username, password) {
-                // In a real app, this would be an API call to your backend
-                // For demo purposes, we'll use localStorage
-                const users = JSON.parse(localStorage.getItem('pomodoroUsers')) || {};
-                
-                if (users[username] && users[username].password === password) {
-                    STATE.user = username;
-                    STATE.authToken = 'demo-token-' + Math.random().toString(36).substring(2);
-                    localStorage.setItem('pomodoroAuthToken', STATE.authToken);
-                    localStorage.setItem('pomodoroCurrentUser', username);
-                    
-                    // Load user data
-                    this.loadUserData();
-                    
-                    // Close login panel
-                    DOM.loginPanel.classList.remove('show');
-                    
-                    // Update UI
-                    DOM.loginMenuItem.innerHTML = '<i>👋</i> Logout';
-                    
-                    return true;
-                } else {
-                    alert('Invalid username or password');
-                    return false;
-                }
-            },
-            
-            register(username, password) {
-                const users = JSON.parse(localStorage.getItem('pomodoroUsers')) || {};
-                
-                if (users[username]) {
-                    alert('Username already exists');
-                    return false;
-                }
-                
-                users[username] = { password };
-                localStorage.setItem('pomodoroUsers', JSON.stringify(users));
-                
-                // Auto-login after registration
-                return this.login(username, password);
-            },
-            
-            logout() {
-                STATE.user = null;
-                STATE.authToken = null;
-                localStorage.removeItem('pomodoroAuthToken');
-                localStorage.removeItem('pomodoroCurrentUser');
-                
-                // Update UI
-                DOM.loginMenuItem.innerHTML = '<i>🔒</i> Login';
-                
-                // Close any open panels
-                DOM.loginPanel.classList.remove('show');
-            },
-            
-            checkAuth() {
-                const token = localStorage.getItem('pomodoroAuthToken');
-                const username = localStorage.getItem('pomodoroCurrentUser');
-                
-                if (token && username) {
-                    STATE.user = username;
-                    STATE.authToken = token;
-                    DOM.loginMenuItem.innerHTML = '<i>👋</i> Logout';
-                    
-                    // Load user data
-                    this.loadUserData();
-                }
-            },
-            
-            loadUserData() {
-                if (!STATE.user) return;
-                
-                const userData = JSON.parse(localStorage.getItem(`pomodoroUserData_${STATE.user}`));
-                if (userData) {
-                    // Merge user data with current state
-                    STATE.totalWorkSeconds = userData.totalWorkSeconds || STATE.totalWorkSeconds;
-                    STATE.totalBreakSeconds = userData.totalBreakSeconds || STATE.totalBreakSeconds;
-                    STATE.sessionHistory = userData.sessionHistory || STATE.sessionHistory;
-                    STATE.notes = userData.notes || STATE.notes;
-                    STATE.rewards = userData.rewards || STATE.rewards;
-                    STATE.rewardHistory = userData.rewardHistory || STATE.rewardHistory;
-                    STATE.completedSessions = userData.completedSessions || STATE.completedSessions;
-                    STATE.dailyCompletedSessions = userData.dailyCompletedSessions || STATE.dailyCompletedSessions;
-                    STATE.weeklyCompletedSessions = userData.weeklyCompletedSessions || STATE.weeklyCompletedSessions;
-                    STATE.monthlyCompletedSessions = userData.monthlyCompletedSessions || STATE.monthlyCompletedSessions;
-                    STATE.lastSessionDate = userData.lastSessionDate ? new Date(userData.lastSessionDate) : STATE.lastSessionDate;
-                    
-                    // Update UI
-                    trackingActions.updateDisplay();
-                    noteActions.loadFromStorage();
-                    historyActions.loadHistory();
-                    rewardActions.loadRewards();
-                }
-            },
-            
-            syncData() {
-                if (!STATE.user) return;
-                
-                const userData = {
-                    totalWorkSeconds: STATE.totalWorkSeconds,
-                    totalBreakSeconds: STATE.totalBreakSeconds,
-                    sessionHistory: STATE.sessionHistory,
-                    notes: STATE.notes,
-                    rewards: STATE.rewards,
-                    rewardHistory: STATE.rewardHistory,
-                    completedSessions: STATE.completedSessions,
-                    dailyCompletedSessions: STATE.dailyCompletedSessions,
-                    weeklyCompletedSessions: STATE.weeklyCompletedSessions,
-                    monthlyCompletedSessions: STATE.monthlyCompletedSessions,
-                    lastSessionDate: STATE.lastSessionDate ? STATE.lastSessionDate.getTime() : null
-                };
-                
-                localStorage.setItem(`pomodoroUserData_${STATE.user}`, JSON.stringify(userData));
             }
         };
 
         // ========== Sound Control Functions ==========
         const soundActions = {
             togglePanel(panel) {
-                const panels = [DOM.infoPanel, DOM.noisePanel, DOM.lofiPanel, DOM.historyPanel, DOM.rewardsPanel, DOM.productivityPanel, DOM.calendarPanel, DOM.loginPanel];
+                const panels = [DOM.infoPanel, DOM.noisePanel, DOM.lofiPanel, DOM.historyPanel, DOM.rewardsPanel, DOM.productivityPanel, DOM.calendarPanel];
                 panels.forEach(p => {
                     if (p === panel) {
                         p.classList.toggle('show');
-                        if (p === DOM.calendarPanel) {
-                            STATE.calendarOpen = p.classList.contains('show');
-                            if (STATE.calendarOpen) {
-                                calendarActions.renderCalendar();
-                            }
-                        }
                     } else {
                         p.classList.remove('show');
                     }
@@ -3218,11 +2866,13 @@
             setupTabs() {
                 document.querySelectorAll('.reward-tab').forEach(tab => {
                     tab.addEventListener('click', () => {
+                        // Set active tab
                         document.querySelectorAll('.reward-tab').forEach(t => {
                             t.classList.remove('active');
                         });
                         tab.classList.add('active');
                         
+                        // Show corresponding content
                         const tabType = tab.getAttribute('data-tab');
                         document.querySelectorAll('.reward-tab-content').forEach(content => {
                             content.classList.remove('active');
@@ -3276,17 +2926,6 @@
                 
                 DOM.calendarMenuItem.addEventListener('click', () => {
                     soundActions.togglePanel(DOM.calendarPanel);
-                    this.closeDropdown();
-                });
-                
-                DOM.loginMenuItem.addEventListener('click', () => {
-                    if (STATE.user) {
-                        // Logout
-                        authActions.logout();
-                    } else {
-                        // Show login panel
-                        soundActions.togglePanel(DOM.loginPanel);
-                    }
                     this.closeDropdown();
                 });
                 
@@ -3349,41 +2988,16 @@
             
             DOM.closeCalendarPanel.addEventListener('click', () => {
                 DOM.calendarPanel.classList.remove('show');
-                STATE.calendarOpen = false;
-            });
-
-            DOM.closeLoginPanel.addEventListener('click', () => {
-                DOM.loginPanel.classList.remove('show');
             });
 
             DOM.resetRewards.addEventListener('click', rewardActions.resetRewards);
 
+            // Calendar navigation
             DOM.prevMonthBtn.addEventListener('click', () => calendarActions.changeMonth(-1));
             DOM.nextMonthBtn.addEventListener('click', () => calendarActions.changeMonth(1));
             DOM.exportCalendarBtn.addEventListener('click', calendarActions.exportCalendarData);
 
-            DOM.loginBtn.addEventListener('click', () => {
-                const username = DOM.usernameInput.value.trim();
-                const password = DOM.passwordInput.value.trim();
-                
-                if (username && password) {
-                    authActions.login(username, password);
-                } else {
-                    alert('Please enter both username and password');
-                }
-            });
-            
-            DOM.registerBtn.addEventListener('click', () => {
-                const username = DOM.usernameInput.value.trim();
-                const password = DOM.passwordInput.value.trim();
-                
-                if (username && password) {
-                    authActions.register(username, password);
-                } else {
-                    alert('Please enter both username and password');
-                }
-            });
-
+            // Dropdown menu events
             DOM.dropdownBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
                 dropdownActions.toggleDropdown();
@@ -3393,7 +3007,7 @@
 
             document.addEventListener('click', (e) => {
                 const panels = [DOM.infoPanel, DOM.noisePanel, DOM.lofiPanel, DOM.historyPanel, 
-                               DOM.rewardsPanel, DOM.productivityPanel, DOM.calendarPanel, DOM.loginPanel];
+                               DOM.rewardsPanel, DOM.productivityPanel, DOM.calendarPanel];
                 
                 if (!panels.some(panel => panel.contains(e.target)) && 
                     !DOM.dropdownBtn.contains(e.target) && 
@@ -3409,55 +3023,32 @@
                 noteActions.saveToStorage();
                 historyActions.saveHistory();
                 rewardActions.saveRewards();
-                calendarActions.saveCalendarState();
-                localStorage.setItem('calendarOpen', STATE.calendarOpen.toString());
-                
-                // Sync data if logged in
-                if (STATE.authToken) {
-                    authActions.syncData();
-                }
             });
 
             rewardTabActions.setupTabs();
             
+            // Timer display edit handling
             DOM.timer.addEventListener('blur', function() {
                 const timeParts = this.textContent.split(':');
                 let minutes = parseInt(timeParts[0]) || 0;
                 let seconds = parseInt(timeParts[1]) || 0;
                 
+                // Validate input
                 if (isNaN(minutes)) minutes = 0;
                 if (isNaN(seconds)) seconds = 0;
                 
+                // Ensure seconds are between 0-59
                 seconds = Math.min(59, Math.max(0, seconds));
                 
+                // Update display with validated values
                 this.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
                 
+                // Update state
                 STATE.totalSeconds = minutes * 60 + seconds;
                 STATE.initialSeconds = STATE.totalSeconds;
                 
+                // Reset progress circle
                 DOM.timerProgress.style.background = `conic-gradient(var(--primary-blue) 0%, transparent 0%)`;
-            });
-
-            // Add Tab key handler for timer display
-            DOM.timer.addEventListener('keydown', function(e) {
-                if (e.key === 'Tab') {
-                    e.preventDefault();
-                    
-                    // Get all focusable elements
-                    const focusableElements = Array.from(document.querySelectorAll(
-                        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-                    )).filter(el => !el.disabled && el.offsetParent !== null);
-                    
-                    // Find current index
-                    const currentIndex = focusableElements.indexOf(document.activeElement);
-                    
-                    // Focus next element (or first if at end)
-                    if (currentIndex >= 0 && currentIndex < focusableElements.length - 1) {
-                        focusableElements[currentIndex + 1].focus();
-                    } else {
-                        focusableElements[0].focus();
-                    }
-                }
             });
         }
 
@@ -3471,28 +3062,11 @@
             soundActions.updateVolume();
             DOM.nowPlaying.textContent = STATE.noiseNames['none'];
             
+            // Set initial progress circle
             DOM.timerProgress.style.background = `conic-gradient(var(--primary-blue) 0%, transparent 0%)`;
             
-            rewardTabActions.setupTabs();
-            
-            const rewardsContents = document.querySelectorAll('.reward-tab-content');
-            rewardsContents.forEach(content => {
-                content.style.maxHeight = '400px';
-                content.style.overflowY = 'auto';
-            });
-            
-            // Check if user is already logged in
-            authActions.checkAuth();
-            
             // Initialize calendar
-            calendarActions.initCalendar();
-            
-            // Check if calendar was open before
-            if (localStorage.getItem('calendarOpen') === 'true') {
-                STATE.calendarOpen = true;
-                DOM.calendarPanel.classList.add('show');
-                calendarActions.renderCalendar();
-            }
+            calendarActions.renderCalendar();
         }
 
         init();
