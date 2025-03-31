@@ -871,6 +871,7 @@
         .calendar-nav {
             display: flex;
             gap: 10px;
+            margin-left: 20px; /* Added to move arrows left */
         }
 
         .calendar-nav button {
@@ -1042,6 +1043,28 @@
             #closeCalendarPanel {
                 display: none;
             }
+        }
+
+        /* Desktop specific styles */
+        @media (min-width: 769px) {
+            .panel {
+                top: 90px;
+                right: 20px;
+                left: auto;
+                transform: none;
+            }
+            
+            .calendar-panel {
+                top: 90px;
+                left: auto;
+                right: 20px;
+                transform: none;
+            }
+        }
+
+        /* Negative timer styling */
+        .negative-timer {
+            color: #f44336 !important;
         }
     </style>
 </head>
@@ -1625,7 +1648,8 @@
                 currentMonth: new Date().getMonth(),
                 currentYear: new Date().getFullYear(),
                 selectedDate: null
-            }
+            },
+            calendarOpen: false // Track if calendar is open
         };
 
         // ========== Timer Functions ==========
@@ -1642,8 +1666,6 @@
                 if (!STATE.isRunning) {
                     STATE.initialSeconds = STATE.totalSeconds;
                 }
-                
-                if (STATE.totalSeconds <= 0) return;
                 
                 STATE.isRunning = true;
                 if (!STATE.sessionStartTime) {
@@ -1688,12 +1710,33 @@
                         trackingActions.updateDisplay();
                     }
                     
-                    if (STATE.totalSeconds <= 0) {
-                        clearInterval(STATE.timer);
-                        STATE.isRunning = false;
+                    if (STATE.totalSeconds === 0) {
+                        // Celebration at 0
                         DOM.alarmSound.play();
                         celebrationActions.triggerCelebration();
-                        
+                    }
+                    
+                    if (STATE.totalSeconds <= 0) {
+                        // Keep counting negative
+                        if (Math.abs(STATE.totalSeconds) % 60 === 0) {
+                            // Every minute after 0, add to tracking
+                            const now = Date.now();
+                            const elapsedSeconds = Math.floor((now - STATE.lastTrackingUpdate) / 1000);
+                            
+                            if (elapsedSeconds >= 1) {
+                                if (STATE.isWorkMode) {
+                                    STATE.totalWorkSeconds += elapsedSeconds;
+                                } else {
+                                    STATE.totalBreakSeconds += elapsedSeconds;
+                                }
+                                STATE.lastTrackingUpdate = now;
+                                trackingActions.updateDisplay();
+                            }
+                        }
+                    }
+                    
+                    // Check if we should end the session (only when coming from positive to negative)
+                    if (STATE.totalSeconds === -1) {
                         const sessionEndTime = new Date();
                         const sessionDuration = Math.floor((sessionEndTime - STATE.sessionStartTime) / 1000);
                         
@@ -1803,19 +1846,25 @@
             },
 
             updateDisplay() {
-                const minutes = Math.floor(STATE.totalSeconds / 60);
-                const seconds = STATE.totalSeconds % 60;
-                DOM.timer.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                const minutes = Math.floor(Math.abs(STATE.totalSeconds) / 60);
+                const seconds = Math.abs(STATE.totalSeconds) % 60;
+                const sign = STATE.totalSeconds < 0 ? '-' : '';
+                DOM.timer.textContent = `${sign}${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
                 
-                if (STATE.totalSeconds <= 60) {
-                    DOM.timer.style.color = '#f44336';
-                    DOM.timer.style.animation = 'pulse 1s infinite';
-                } else if (STATE.totalSeconds <= 300) {
-                    DOM.timer.style.color = '#ff9800';
-                    DOM.timer.style.animation = 'none';
+                if (STATE.totalSeconds < 0) {
+                    DOM.timer.classList.add('negative-timer');
                 } else {
-                    DOM.timer.style.color = STATE.isWorkMode ? 'var(--work-text)' : 'var(--break-text)';
-                    DOM.timer.style.animation = 'none';
+                    DOM.timer.classList.remove('negative-timer');
+                    if (STATE.totalSeconds <= 60) {
+                        DOM.timer.style.color = '#f44336';
+                        DOM.timer.style.animation = 'pulse 1s infinite';
+                    } else if (STATE.totalSeconds <= 300) {
+                        DOM.timer.style.color = '#ff9800';
+                        DOM.timer.style.animation = 'none';
+                    } else {
+                        DOM.timer.style.color = STATE.isWorkMode ? 'var(--work-text)' : 'var(--break-text)';
+                        DOM.timer.style.animation = 'none';
+                    }
                 }
             },
 
@@ -2394,6 +2443,16 @@
                         timestamp: now.getTime()
                     });
                     
+                    // Also add to session history if not during a timer
+                    if (!STATE.isRunning) {
+                        historyActions.addSession({
+                            type: isWorkNote ? 'work' : 'break',
+                            duration: 0,
+                            notes: noteText,
+                            timestamp: now
+                        });
+                    }
+                    
                     noteActions.saveToStorage();
                 }
             },
@@ -2794,6 +2853,16 @@
                 document.body.appendChild(link);
                 link.click();
                 document.body.removeChild(link);
+            },
+            
+            toggleCalendar() {
+                STATE.calendarOpen = !STATE.calendarOpen;
+                if (STATE.calendarOpen) {
+                    DOM.calendarPanel.classList.add('show');
+                    this.renderCalendar();
+                } else {
+                    DOM.calendarPanel.classList.remove('show');
+                }
             }
         };
 
@@ -2804,6 +2873,12 @@
                 panels.forEach(p => {
                     if (p === panel) {
                         p.classList.toggle('show');
+                        if (p === DOM.calendarPanel) {
+                            STATE.calendarOpen = p.classList.contains('show');
+                            if (STATE.calendarOpen) {
+                                calendarActions.renderCalendar();
+                            }
+                        }
                     } else {
                         p.classList.remove('show');
                     }
@@ -2988,6 +3063,7 @@
             
             DOM.closeCalendarPanel.addEventListener('click', () => {
                 DOM.calendarPanel.classList.remove('show');
+                STATE.calendarOpen = false;
             });
 
             DOM.resetRewards.addEventListener('click', rewardActions.resetRewards);
@@ -3065,8 +3141,15 @@
             // Set initial progress circle
             DOM.timerProgress.style.background = `conic-gradient(var(--primary-blue) 0%, transparent 0%)`;
             
-            // Initialize calendar
-            calendarActions.renderCalendar();
+            // Initialize rewards
+            rewardTabActions.setupTabs();
+            
+            // Set up scrollable rewards panel
+            const rewardsContents = document.querySelectorAll('.reward-tab-content');
+            rewardsContents.forEach(content => {
+                content.style.maxHeight = '400px';
+                content.style.overflowY = 'auto';
+            });
         }
 
         init();
