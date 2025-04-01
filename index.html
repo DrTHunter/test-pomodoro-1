@@ -971,6 +971,186 @@
             cursor: pointer;
         }
 
+        /* Project tracking styles */
+        .project-tracking {
+            margin-top: 20px;
+            background-color: rgba(255, 255, 255, 0.7);
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        .project-input {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .project-input input {
+            flex: 1;
+            padding: 8px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+
+        .project-input button {
+            padding: 8px 15px;
+            background-color: var(--primary-purple);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .project-list {
+            max-height: 200px;
+            overflow-y: auto;
+            margin-bottom: 15px;
+        }
+
+        .project-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px;
+            margin-bottom: 5px;
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .project-name {
+            flex: 1;
+        }
+
+        .project-pomodoros {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .project-pomodoros input {
+            width: 40px;
+            padding: 3px;
+            text-align: center;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+        }
+
+        .project-actions {
+            display: flex;
+            gap: 5px;
+        }
+
+        .project-action-btn {
+            padding: 3px 6px;
+            background-color: #f5f5f5;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        .project-action-btn:hover {
+            background-color: #e0e0e0;
+        }
+
+        .project-total {
+            font-weight: bold;
+            text-align: right;
+            padding: 5px;
+            border-top: 1px solid #eee;
+            margin-top: 10px;
+        }
+
+        /* History tabs */
+        .history-tabs {
+            display: flex;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .history-tab {
+            padding: 8px 15px;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .history-tab.active {
+            border-bottom: 2px solid var(--accent-purple);
+            color: var(--accent-purple);
+            font-weight: bold;
+        }
+
+        .history-tab-content {
+            display: none;
+        }
+
+        .history-tab-content.active {
+            display: block;
+        }
+
+        /* Fullscreen calendar */
+        .calendar-fullscreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: white;
+            z-index: 1000;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .calendar-fullscreen .calendar-header {
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .calendar-fullscreen .calendar-grid {
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+        }
+
+        .calendar-fullscreen .calendar-day {
+            padding: 15px;
+            min-height: 80px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .calendar-fullscreen .calendar-day.has-sessions::after {
+            content: '•';
+            color: var(--accent-purple);
+            font-size: 1.5em;
+            margin-top: 5px;
+        }
+
+        .calendar-fullscreen .calendar-sessions {
+            max-height: none;
+            margin-top: 30px;
+        }
+
+        .calendar-fullscreen .calendar-session-item {
+            padding: 15px;
+            margin-bottom: 10px;
+        }
+
+        .back-to-main {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background-color: var(--accent-purple);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            z-index: 1001;
+        }
+
         /* Mobile responsiveness */
         @media (max-width: 768px) {
             .dropdown-btn {
@@ -1288,11 +1468,32 @@
     <div class="panel" id="historyPanel">
         <button class="close-panel-btn" id="closeHistoryPanel">×</button>
         <h3 style="margin-top: 0; color: var(--accent-purple);">Session History</h3>
-        <div class="history-controls">
-            <button id="exportHistory" class="export-btn">Export History</button>
-            <button id="clearHistory" class="clear-history-btn">Clear History</button>
+        
+        <div class="history-tabs">
+            <div class="history-tab active" data-tab="sessions">Sessions</div>
+            <div class="history-tab" data-tab="projects">Projects</div>
         </div>
-        <div id="historyList"></div>
+        
+        <div class="history-tab-content active" id="sessionsHistory">
+            <div class="history-controls">
+                <button id="exportHistory" class="export-btn">Export History</button>
+                <button id="clearHistory" class="clear-history-btn">Clear History</button>
+            </div>
+            <div id="historyList"></div>
+        </div>
+        
+        <div class="history-tab-content" id="projectsHistory">
+            <div class="project-tracking">
+                <div class="project-input">
+                    <input type="text" id="projectNameInput" placeholder="Enter project name">
+                    <button id="addProjectBtn">Add</button>
+                </div>
+                <div class="project-list" id="projectList"></div>
+                <div class="project-total">
+                    Total Pomodoros: <span id="totalPomodoros">0</span>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Rewards Panel -->
@@ -1357,6 +1558,36 @@
         </div>
         
         <button id="exportCalendarBtn" class="calendar-export-btn">Export Calendar Data</button>
+        <button id="fullscreenCalendarBtn" class="calendar-export-btn" style="background-color: var(--primary-purple); margin-left: 10px;">Fullscreen Calendar</button>
+    </div>
+
+    <!-- Fullscreen Calendar -->
+    <div class="calendar-fullscreen" id="fullscreenCalendar" style="display: none;">
+        <button class="back-to-main" id="backToMainBtn">← Back to Timer</button>
+        <div class="calendar-header">
+            <div class="calendar-title" id="fullscreenCalendarTitle">March 2023</div>
+            <div class="calendar-nav">
+                <button id="fullscreenPrevMonthBtn">&lt;</button>
+                <button id="fullscreenNextMonthBtn">&gt;</button>
+            </div>
+        </div>
+        
+        <div class="calendar-grid" id="fullscreenCalendarGrid">
+            <!-- Calendar headers -->
+            <div class="calendar-day-header">Sun</div>
+            <div class="calendar-day-header">Mon</div>
+            <div class="calendar-day-header">Tue</div>
+            <div class="calendar-day-header">Wed</div>
+            <div class="calendar-day-header">Thu</div>
+            <div class="calendar-day-header">Fri</div>
+            <div class="calendar-day-header">Sat</div>
+            
+            <!-- Calendar days will be inserted here by JavaScript -->
+        </div>
+        
+        <div class="calendar-sessions" id="fullscreenCalendarSessions">
+            <p style="text-align: center; padding: 20px; color: #666;">Select a date to view sessions</p>
+        </div>
     </div>
 
     <!-- Confetti Container -->
@@ -1446,7 +1677,22 @@
             calendarSessions: document.getElementById('calendarSessions'),
             prevMonthBtn: document.getElementById('prevMonthBtn'),
             nextMonthBtn: document.getElementById('nextMonthBtn'),
-            exportCalendarBtn: document.getElementById('exportCalendarBtn')
+            exportCalendarBtn: document.getElementById('exportCalendarBtn'),
+            fullscreenCalendarBtn: document.getElementById('fullscreenCalendarBtn'),
+            fullscreenCalendar: document.getElementById('fullscreenCalendar'),
+            fullscreenCalendarTitle: document.getElementById('fullscreenCalendarTitle'),
+            fullscreenCalendarGrid: document.getElementById('fullscreenCalendarGrid'),
+            fullscreenCalendarSessions: document.getElementById('fullscreenCalendarSessions'),
+            fullscreenPrevMonthBtn: document.getElementById('fullscreenPrevMonthBtn'),
+            fullscreenNextMonthBtn: document.getElementById('fullscreenNextMonthBtn'),
+            backToMainBtn: document.getElementById('backToMainBtn'),
+            projectNameInput: document.getElementById('projectNameInput'),
+            addProjectBtn: document.getElementById('addProjectBtn'),
+            projectList: document.getElementById('projectList'),
+            totalPomodoros: document.getElementById('totalPomodoros'),
+            sessionsHistory: document.getElementById('sessionsHistory'),
+            projectsHistory: document.getElementById('projectsHistory'),
+            historyTabs: document.querySelectorAll('.history-tab')
         };
 
         // ========== State Management ==========
@@ -1474,6 +1720,7 @@
             },
             sessionHistory: [],
             notes: [],
+            projects: [],
             rewards: {
                 daily: [
                     {
@@ -1649,7 +1896,8 @@
                 currentYear: new Date().getFullYear(),
                 selectedDate: null
             },
-            calendarOpen: false // Track if calendar is open
+            calendarOpen: false, // Track if calendar is open
+            fullscreenCalendarOpen: false // Track if fullscreen calendar is open
         };
 
         // ========== Timer Functions ==========
@@ -1748,7 +1996,8 @@
                                 type: 'work',
                                 duration: sessionDuration,
                                 notes: DOM.noteInput.value.trim() || 'Enter work/project here',
-                                timestamp: STATE.sessionStartTime
+                                timestamp: STATE.sessionStartTime,
+                                project: projectActions.getCurrentProject()
                             });
                             rewardActions.updateRewards('work', sessionDuration);
                         } else {
@@ -1757,7 +2006,8 @@
                                 type: 'break',
                                 duration: sessionDuration,
                                 notes: DOM.noteInput.value.trim() || 'Enter work/project here',
-                                timestamp: STATE.sessionStartTime
+                                timestamp: STATE.sessionStartTime,
+                                project: projectActions.getCurrentProject()
                             });
                         }
                         
@@ -1817,7 +2067,8 @@
                             type: 'work',
                             duration: sessionDuration,
                             notes: DOM.noteInput.value.trim() || 'Enter work/project here',
-                            timestamp: STATE.sessionStartTime
+                            timestamp: STATE.sessionStartTime,
+                            project: projectActions.getCurrentProject()
                         });
                         rewardActions.updateRewards('work', sessionDuration);
                     } else {
@@ -1826,7 +2077,8 @@
                             type: 'break',
                             duration: sessionDuration,
                             notes: DOM.noteInput.value.trim() || 'Enter work/project here',
-                            timestamp: STATE.sessionStartTime
+                            timestamp: STATE.sessionStartTime,
+                            project: projectActions.getCurrentProject()
                         });
                     }
                     trackingActions.updateDisplay();
@@ -1916,6 +2168,120 @@
                     DOM.modeIndicator.textContent = "Break Time";
                     DOM.modeIndicator.className = "mode-indicator break-mode";
                 }
+            }
+        };
+
+        // ========== Project Tracking Functions ==========
+        const projectActions = {
+            currentProject: null,
+            
+            addProject() {
+                const projectName = DOM.projectNameInput.value.trim();
+                if (projectName) {
+                    const project = {
+                        id: Date.now().toString(),
+                        name: projectName,
+                        pomodoros: 0
+                    };
+                    
+                    STATE.projects.push(project);
+                    this.saveProjects();
+                    this.renderProjects();
+                    DOM.projectNameInput.value = '';
+                }
+            },
+            
+            deleteProject(id) {
+                STATE.projects = STATE.projects.filter(project => project.id !== id);
+                this.saveProjects();
+                this.renderProjects();
+            },
+            
+            updatePomodoroCount(id, count) {
+                const project = STATE.projects.find(p => p.id === id);
+                if (project) {
+                    project.pomodoros = parseInt(count) || 0;
+                    this.saveProjects();
+                    this.renderProjects();
+                }
+            },
+            
+            setCurrentProject(id) {
+                this.currentProject = id;
+                // Highlight the selected project in the UI
+                document.querySelectorAll('.project-item').forEach(item => {
+                    item.style.backgroundColor = item.dataset.id === id ? '#e1bee7' : 'white';
+                });
+            },
+            
+            getCurrentProject() {
+                if (!this.currentProject) return null;
+                return STATE.projects.find(p => p.id === this.currentProject)?.name || null;
+            },
+            
+            saveProjects() {
+                localStorage.setItem('projects', JSON.stringify(STATE.projects));
+                this.updateTotalPomodoros();
+            },
+            
+            loadProjects() {
+                const savedProjects = localStorage.getItem('projects');
+                if (savedProjects) {
+                    STATE.projects = JSON.parse(savedProjects);
+                    this.renderProjects();
+                }
+            },
+            
+            renderProjects() {
+                DOM.projectList.innerHTML = '';
+                
+                STATE.projects.forEach(project => {
+                    const projectItem = document.createElement('div');
+                    projectItem.className = 'project-item';
+                    projectItem.dataset.id = project.id;
+                    
+                    projectItem.innerHTML = `
+                        <div class="project-name">${project.name}</div>
+                        <div class="project-pomodoros">
+                            <input type="number" value="${project.pomodoros}" min="0" 
+                                onchange="projectActions.updatePomodoroCount('${project.id}', this.value)">
+                            <span>pomodoros</span>
+                        </div>
+                        <div class="project-actions">
+                            <button class="project-action-btn" onclick="projectActions.setCurrentProject('${project.id}')">Track</button>
+                            <button class="project-action-btn" onclick="projectActions.deleteProject('${project.id}')">Delete</button>
+                        </div>
+                    `;
+                    
+                    DOM.projectList.appendChild(projectItem);
+                });
+                
+                this.updateTotalPomodoros();
+            },
+            
+            updateTotalPomodoros() {
+                const total = STATE.projects.reduce((sum, project) => sum + project.pomodoros, 0);
+                DOM.totalPomodoros.textContent = total;
+            },
+            
+            updateProjectCountsFromHistory() {
+                // Reset all counts
+                STATE.projects.forEach(project => project.pomodoros = 0);
+                
+                // Count work sessions for each project
+                STATE.sessionHistory.forEach(session => {
+                    if (session.type === 'work' && session.project) {
+                        const project = STATE.projects.find(p => p.name === session.project);
+                        if (project) {
+                            // Count each 25-minute block as one pomodoro
+                            const pomodoros = Math.ceil(session.duration / (25 * 60));
+                            project.pomodoros += pomodoros;
+                        }
+                    }
+                });
+                
+                this.saveProjects();
+                this.renderProjects();
             }
         };
 
@@ -2449,7 +2815,8 @@
                             type: isWorkNote ? 'work' : 'break',
                             duration: 0,
                             notes: noteText,
-                            timestamp: now
+                            timestamp: now,
+                            project: projectActions.getCurrentProject()
                         });
                     }
                     
@@ -2552,6 +2919,7 @@
                 STATE.sessionHistory.push(session);
                 this.saveHistory();
                 this.renderHistory();
+                projectActions.updateProjectCountsFromHistory();
             },
 
             saveHistory() {
@@ -2563,6 +2931,7 @@
                 if (savedHistory) {
                     STATE.sessionHistory = JSON.parse(savedHistory);
                     this.renderHistory();
+                    projectActions.updateProjectCountsFromHistory();
                 }
             },
 
@@ -2571,6 +2940,7 @@
                     STATE.sessionHistory = [];
                     this.saveHistory();
                     DOM.historyList.innerHTML = '';
+                    projectActions.updateProjectCountsFromHistory();
                     // Force immediate UI update
                     setTimeout(() => {
                         historyActions.renderHistory();
@@ -2590,6 +2960,7 @@
                     historyText += `Type: ${session.type.toUpperCase()}\n`;
                     historyText += `Date: ${dateString} ${timeString}\n`;
                     historyText += `Duration: ${durationString}\n`;
+                    historyText += `Project: ${session.project || 'None'}\n`;
                     historyText += `Notes: ${session.notes || 'Enter work/project here'}\n\n`;
                 });
                 
@@ -2631,6 +3002,7 @@
                             <span class="history-time" contenteditable="true" data-type="time" data-index="${index}">${dateString} ${timeString}</span>
                         </div>
                         <div class="history-duration editable" contenteditable="true" data-type="duration" data-index="${index}">Duration: ${durationString}</div>
+                        ${session.project ? `<div class="editable" contenteditable="true" data-type="project" data-index="${index}">Project: ${session.project}</div>` : ''}
                         <div class="history-notes editable" contenteditable="true" data-type="notes" data-index="${index}">${session.notes || 'Enter work/project here'}</div>
                         <div class="history-actions">
                             <button class="history-action-btn" onclick="historyActions.deleteSession(${index})">Delete</button>
@@ -2641,7 +3013,7 @@
                 });
                 
                 // Add event listeners for editable fields
-                document.querySelectorAll('.history-time, .history-duration, .history-notes').forEach(element => {
+                document.querySelectorAll('.history-time, .history-duration, .history-notes, [data-type="project"]').forEach(element => {
                     element.addEventListener('blur', function() {
                         const index = parseInt(this.getAttribute('data-index'));
                         const type = this.getAttribute('data-type');
@@ -2660,11 +3032,14 @@
                             const durationText = this.textContent.replace('Duration: ', '');
                             const [hours, minutes, seconds] = durationText.split(':').map(Number);
                             STATE.sessionHistory[index].duration = hours * 3600 + minutes * 60 + seconds;
+                        } else if (type === 'project') {
+                            STATE.sessionHistory[index].project = this.textContent.replace('Project: ', '');
                         } else if (type === 'notes') {
                             STATE.sessionHistory[index].notes = this.textContent;
                         }
                         
                         historyActions.saveHistory();
+                        projectActions.updateProjectCountsFromHistory();
                     });
                 });
             },
@@ -2673,23 +3048,24 @@
                 STATE.sessionHistory.splice(index, 1);
                 this.saveHistory();
                 this.renderHistory();
+                projectActions.updateProjectCountsFromHistory();
             }
         };
 
         // ========== Calendar Functions ==========
         const calendarActions = {
-            renderCalendar() {
+            renderCalendar(container = DOM.calendarGrid, sessionsContainer = DOM.calendarSessions, titleElement = DOM.calendarTitle) {
                 const month = STATE.calendar.currentMonth;
                 const year = STATE.calendar.currentYear;
                 
                 // Set calendar title
                 const monthNames = ["January", "February", "March", "April", "May", "June",
                     "July", "August", "September", "October", "November", "December"];
-                DOM.calendarTitle.textContent = `${monthNames[month]} ${year}`;
+                titleElement.textContent = `${monthNames[month]} ${year}`;
                 
                 // Clear previous calendar days
-                while (DOM.calendarGrid.children.length > 7) {
-                    DOM.calendarGrid.removeChild(DOM.calendarGrid.lastChild);
+                while (container.children.length > 7) {
+                    container.removeChild(container.lastChild);
                 }
                 
                 // Get first day of month and total days in month
@@ -2700,7 +3076,7 @@
                 for (let i = 0; i < firstDay; i++) {
                     const emptyCell = document.createElement('div');
                     emptyCell.className = 'calendar-day empty';
-                    DOM.calendarGrid.appendChild(emptyCell);
+                    container.appendChild(emptyCell);
                 }
                 
                 // Add cells for each day of the month
@@ -2742,16 +3118,16 @@
                     dayCell.addEventListener('click', () => {
                         const selectedDate = new Date(year, month, day);
                         STATE.calendar.selectedDate = selectedDate;
-                        calendarActions.renderCalendar();
-                        calendarActions.showSessionsForDate(selectedDate);
+                        calendarActions.renderCalendar(container, sessionsContainer, titleElement);
+                        calendarActions.showSessionsForDate(selectedDate, sessionsContainer);
                     });
                     
-                    DOM.calendarGrid.appendChild(dayCell);
+                    container.appendChild(dayCell);
                 }
             },
             
-            showSessionsForDate(date) {
-                DOM.calendarSessions.innerHTML = '';
+            showSessionsForDate(date, sessionsContainer = DOM.calendarSessions) {
+                sessionsContainer.innerHTML = '';
                 
                 const sessionsForDate = STATE.sessionHistory.filter(session => {
                     const sessionDate = new Date(session.timestamp);
@@ -2761,7 +3137,7 @@
                 });
                 
                 if (sessionsForDate.length === 0) {
-                    DOM.calendarSessions.innerHTML = '<p style="text-align: center; padding: 20px; color: #666;">No sessions for this date</p>';
+                    sessionsContainer.innerHTML = '<p style="text-align: center; padding: 20px; color: #666;">No sessions for this date</p>';
                     return;
                 }
                 
@@ -2778,6 +3154,7 @@
                     sessionItem.innerHTML = `
                         <div class="calendar-session-time">${timeString}</div>
                         <div class="calendar-session-duration">${durationString}</div>
+                        ${session.project ? `<div>Project: ${session.project}</div>` : ''}
                         <div class="calendar-session-notes" contenteditable="true" data-index="${index}">${session.notes || 'Enter work/project here'}</div>
                     `;
                     
@@ -2797,7 +3174,7 @@
                         }
                     });
                     
-                    DOM.calendarSessions.appendChild(sessionItem);
+                    sessionsContainer.appendChild(sessionItem);
                 });
             },
             
@@ -2818,6 +3195,23 @@
                 DOM.calendarSessions.innerHTML = '<p style="text-align: center; padding: 20px; color: #666;">Select a date to view sessions</p>';
             },
             
+            fullscreenChangeMonth(offset) {
+                STATE.calendar.currentMonth += offset;
+                
+                // Handle year wrap-around
+                if (STATE.calendar.currentMonth < 0) {
+                    STATE.calendar.currentMonth = 11;
+                    STATE.calendar.currentYear--;
+                } else if (STATE.calendar.currentMonth > 11) {
+                    STATE.calendar.currentMonth = 0;
+                    STATE.calendar.currentYear++;
+                }
+                
+                STATE.calendar.selectedDate = null;
+                calendarActions.renderCalendar(DOM.fullscreenCalendarGrid, DOM.fullscreenCalendarSessions, DOM.fullscreenCalendarTitle);
+                DOM.fullscreenCalendarSessions.innerHTML = '<p style="text-align: center; padding: 20px; color: #666;">Select a date to view sessions</p>';
+            },
+            
             exportCalendarData() {
                 // Group sessions by date
                 const sessionsByDate = {};
@@ -2834,12 +3228,13 @@
                 });
                 
                 // Create CSV content
-                let csvContent = "Date,Type,Duration (seconds),Notes\n";
+                let csvContent = "Date,Type,Duration (seconds),Project,Notes\n";
                 
                 Object.keys(sessionsByDate).sort().forEach(date => {
                     sessionsByDate[date].forEach(session => {
+                        const project = session.project ? `"${session.project.replace(/"/g, '""')}"` : '';
                         const notes = session.notes ? `"${session.notes.replace(/"/g, '""')}"` : '';
-                        csvContent += `${date},${session.type},${session.duration},${notes}\n`;
+                        csvContent += `${date},${session.type},${session.duration},${project},${notes}\n`;
                     });
                 });
                 
@@ -2862,6 +3257,16 @@
                     this.renderCalendar();
                 } else {
                     DOM.calendarPanel.classList.remove('show');
+                }
+            },
+            
+            toggleFullscreenCalendar() {
+                STATE.fullscreenCalendarOpen = !STATE.fullscreenCalendarOpen;
+                if (STATE.fullscreenCalendarOpen) {
+                    DOM.fullscreenCalendar.style.display = 'block';
+                    this.renderCalendar(DOM.fullscreenCalendarGrid, DOM.fullscreenCalendarSessions, DOM.fullscreenCalendarTitle);
+                } else {
+                    DOM.fullscreenCalendar.style.display = 'none';
                 }
             }
         };
@@ -2953,6 +3358,28 @@
                             content.classList.remove('active');
                         });
                         document.getElementById(`${tabType}Rewards`).classList.add('active');
+                    });
+                });
+            }
+        };
+
+        // ========== History Tab Functions ==========
+        const historyTabActions = {
+            setupTabs() {
+                DOM.historyTabs.forEach(tab => {
+                    tab.addEventListener('click', () => {
+                        // Set active tab
+                        DOM.historyTabs.forEach(t => {
+                            t.classList.remove('active');
+                        });
+                        tab.classList.add('active');
+                        
+                        // Show corresponding content
+                        const tabType = tab.getAttribute('data-tab');
+                        document.querySelectorAll('.history-tab-content').forEach(content => {
+                            content.classList.remove('active');
+                        });
+                        document.getElementById(`${tabType}History`).classList.add('active');
                     });
                 });
             }
@@ -3072,6 +3499,21 @@
             DOM.prevMonthBtn.addEventListener('click', () => calendarActions.changeMonth(-1));
             DOM.nextMonthBtn.addEventListener('click', () => calendarActions.changeMonth(1));
             DOM.exportCalendarBtn.addEventListener('click', calendarActions.exportCalendarData);
+            DOM.fullscreenCalendarBtn.addEventListener('click', calendarActions.toggleFullscreenCalendar);
+            DOM.fullscreenPrevMonthBtn.addEventListener('click', () => calendarActions.fullscreenChangeMonth(-1));
+            DOM.fullscreenNextMonthBtn.addEventListener('click', () => calendarActions.fullscreenChangeMonth(1));
+            DOM.backToMainBtn.addEventListener('click', () => {
+                DOM.fullscreenCalendar.style.display = 'none';
+                STATE.fullscreenCalendarOpen = false;
+            });
+
+            // Project tracking
+            DOM.addProjectBtn.addEventListener('click', projectActions.addProject.bind(projectActions));
+            DOM.projectNameInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    projectActions.addProject();
+                }
+            });
 
             // Dropdown menu events
             DOM.dropdownBtn.addEventListener('click', (e) => {
@@ -3099,9 +3541,11 @@
                 noteActions.saveToStorage();
                 historyActions.saveHistory();
                 rewardActions.saveRewards();
+                localStorage.setItem('projects', JSON.stringify(STATE.projects));
             });
 
             rewardTabActions.setupTabs();
+            historyTabActions.setupTabs();
             
             // Timer display edit handling
             DOM.timer.addEventListener('blur', function() {
@@ -3134,6 +3578,7 @@
             noteActions.loadFromStorage();
             historyActions.loadHistory();
             rewardActions.loadRewards();
+            projectActions.loadProjects();
             timerActions.updateModeIndicator();
             soundActions.updateVolume();
             DOM.nowPlaying.textContent = STATE.noiseNames['none'];
@@ -3143,6 +3588,7 @@
             
             // Initialize rewards
             rewardTabActions.setupTabs();
+            historyTabActions.setupTabs();
             
             // Set up scrollable rewards panel
             const rewardsContents = document.querySelectorAll('.reward-tab-content');
