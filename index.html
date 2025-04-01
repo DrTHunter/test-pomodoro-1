@@ -336,104 +336,39 @@
             background-color: #e0e0e0;
         }
 
-        .notes-container {
-            margin-top: 20px;
-        }
-
-        .notes-column {
-            background-color: rgba(255, 255, 255, 0.7);
-            padding: 15px;
-            border-radius: 10px;
-            min-height: 200px;
-        }
-
-        .notes-column h3 {
-            margin-top: 0;
-            color: white;
-            padding: 8px;
-            border-radius: 5px;
-            background-color: var(--primary-purple);
-        }
-
-        .save-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-bottom: 10px;
-        }
-
-        textarea {
+        .project-notes {
             width: 100%;
-            height: 80px;
             padding: 10px;
             border-radius: 8px;
-            border: 2px solid var(--primary-purple);
-            resize: vertical;
-            font-family: inherit;
-            margin-bottom: 10px;
-        }
-
-        .note-list {
-            text-align: left;
-            max-height: 300px;
-            overflow-y: auto;
-            padding: 10px;
-            background-color: rgba(255, 255, 255, 0.8);
-            border-radius: 8px;
-        }
-
-        .note-item {
-            padding: 10px;
-            margin-bottom: 10px;
-            border-radius: 8px;
-            background-color: white;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            position: relative;
-        }
-
-        .work-note { border-left: 4px solid var(--primary-pink); }
-        .break-note { border-left: 4px solid var(--primary-green); }
-
-        .note-time {
-            font-weight: bold;
-            font-size: 0.9em;
-            color: #666;
-            margin-bottom: 5px;
-        }
-
-        .note-text { margin: 5px 0; }
-
-        .note-actions {
-            display: flex;
-            justify-content: flex-end;
-            gap: 5px;
-            margin-top: 5px;
-        }
-
-        .note-action-btn {
-            padding: 3px 8px;
-            font-size: 0.8em;
-            border-radius: 4px;
-            background-color: #f5f5f5;
             border: 1px solid #ddd;
-        }
-
-        .note-action-btn:hover { background-color: #e0e0e0; }
-
-        .notes-actions {
-            display: flex;
-            justify-content: space-between;
             margin-top: 10px;
+            display: none;
         }
 
-        .copy-notes-btn {
-            background-color: var(--primary-purple);
-            color: white;
+        .project-notes-toggle {
+            background-color: #f5f5f5;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.8em;
+            margin-top: 5px;
+            display: block;
+            width: 100%;
+            text-align: left;
         }
 
-        .delete-all-notes-btn {
-            background-color: #f44336;
-            color: white;
+        .project-notes-toggle:hover {
+            background-color: #e0e0e0;
+        }
+
+        .project-notes-toggle::after {
+            content: "▼";
+            float: right;
+        }
+
+        .project-notes-toggle.expanded::after {
+            content: "▲";
         }
 
         .mode-indicator {
@@ -680,84 +615,6 @@
             background-color: #ff7043;
         }
 
-        .history-item {
-            padding: 10px;
-            margin-bottom: 10px;
-            border-radius: 8px;
-            background-color: #f9f9f9;
-            border-left: 4px solid var(--primary-purple);
-        }
-
-        .history-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 5px;
-        }
-
-        .history-type {
-            font-weight: bold;
-            padding: 3px 8px;
-            border-radius: 4px;
-            font-size: 0.9em;
-        }
-
-        .work-history { background-color: var(--work-bg); color: var(--work-text); }
-        .break-history { background-color: var(--break-bg); color: var(--break-text); }
-
-        .history-time {
-            font-size: 0.9em;
-            color: #666;
-        }
-
-        .history-duration {
-            font-weight: bold;
-        }
-
-        .history-notes {
-            margin-top: 5px;
-            padding: 5px;
-            background-color: white;
-            border-radius: 4px;
-        }
-
-        .history-actions {
-            display: flex;
-            justify-content: flex-end;
-            gap: 5px;
-            margin-top: 5px;
-        }
-
-        .history-action-btn {
-            padding: 3px 8px;
-            font-size: 0.8em;
-            border-radius: 4px;
-            background-color: #f5f5f5;
-            border: 1px solid #ddd;
-        }
-
-        .history-action-btn:hover { background-color: #e0e0e0; }
-
-        .history-controls {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 10px;
-        }
-
-        .clear-history-btn {
-            background-color: #f44336;
-            color: white;
-            padding: 8px 15px;
-            margin-top: 10px;
-        }
-
-        .export-btn {
-            background-color: var(--primary-blue);
-            color: white;
-            padding: 8px 15px;
-            margin-top: 10px;
-        }
-
         .editable {
             border: 1px dashed #ccc;
             padding: 2px;
@@ -881,11 +738,6 @@
             color: white;
         }
 
-        .delete-history-btn {
-            background-color: #f44336;
-            color: white;
-        }
-
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 4px; }
         ::-webkit-scrollbar-thumb { background: #c1c1c1; border-radius: 4px; }
@@ -908,66 +760,8 @@
             pointer-events: none;
         }
 
-        /* Fullscreen calendar */
-        .calendar-fullscreen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: white;
-            z-index: 1000;
-            padding: 20px;
-            overflow-y: auto;
-        }
-
-        .calendar-fullscreen .calendar-header {
-            justify-content: center;
-            margin-bottom: 20px;
-        }
-
-        .calendar-fullscreen .calendar-grid {
-            grid-template-columns: repeat(7, 1fr);
-            gap: 10px;
-        }
-
-        .calendar-fullscreen .calendar-day {
-            padding: 15px;
-            min-height: 80px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .calendar-fullscreen .calendar-day.has-sessions::after {
-            content: '•';
-            color: var(--accent-purple);
-            font-size: 1.5em;
-            margin-top: 5px;
-        }
-
-        .calendar-fullscreen .calendar-sessions {
-            max-height: none;
-            margin-top: 30px;
-        }
-
-        .calendar-fullscreen .calendar-session-item {
-            padding: 15px;
-            margin-bottom: 10px;
-        }
-
-        .back-to-main {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            background-color: var(--accent-purple);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            z-index: 1001;
+        .negative-timer {
+            color: #f44336 !important;
         }
 
         /* Mobile responsiveness */
@@ -1048,11 +842,6 @@
                 transform: none;
             }
         }
-
-        /* Negative timer styling */
-        .negative-timer {
-            color: #f44336 !important;
-        }
     </style>
 </head>
 <body>
@@ -1076,14 +865,8 @@
             <div class="dropdown-item" id="lofiMenuItem">
                 <i>🎧</i> LoFi Channels
             </div>
-            <div class="dropdown-item" id="historyMenuItem">
-                <i>📊</i> Session History
-            </div>
             <div class="dropdown-item" id="rewardsMenuItem">
                 <i>🏆</i> Rewards
-            </div>
-            <div class="dropdown-item" id="calendarMenuItem">
-                <i>📅</i> Calendar
             </div>
             <div class="dropdown-item" id="donateMenuItem">
                 <i>☕</i> Buy Creator a Coffee
@@ -1143,22 +926,6 @@
                     <button id="addProjectBtn">Add Project</button>
                 </div>
                 <div class="project-list" id="projectList"></div>
-            </div>
-            
-            <div class="notes-container">
-                <div class="notes-column">
-                    <h3>Session Notes</h3>
-                    <textarea id="noteInput" placeholder="Add notes about your session..."></textarea>
-                    <div class="save-buttons">
-                        <button id="saveWorkNote" class="quick-btn" style="background-color: var(--primary-pink);">Save Work Note</button>
-                        <button id="saveBreakNote" class="quick-btn" style="background-color: var(--primary-green);">Save Break Note</button>
-                    </div>
-                    <div class="notes-actions">
-                        <button id="copyNotes" class="copy-notes-btn">Copy All Notes</button>
-                        <button id="deleteAllNotes" class="delete-all-notes-btn">Delete All Notes</button>
-                    </div>
-                    <div class="note-list" id="noteList"></div>
-                </div>
             </div>
         </div>
     </div>
@@ -1281,29 +1048,6 @@
         </a>
     </div>
 
-    <!-- History Panel -->
-    <div class="panel" id="historyPanel">
-        <button class="close-panel-btn" id="closeHistoryPanel">×</button>
-        <h3 style="margin-top: 0; color: var(--accent-purple);">Session History</h3>
-        
-        <div class="history-tabs">
-            <div class="history-tab active" data-tab="sessions">Sessions</div>
-            <div class="history-tab" data-tab="projects">Projects</div>
-        </div>
-        
-        <div class="history-tab-content active" id="sessionsHistory">
-            <div class="history-controls">
-                <button id="exportHistory" class="export-btn">Export History</button>
-                <button id="clearHistory" class="clear-history-btn">Clear History</button>
-            </div>
-            <div id="historyList"></div>
-        </div>
-        
-        <div class="history-tab-content" id="projectsHistory">
-            <div id="projectsHistoryList"></div>
-        </div>
-    </div>
-
     <!-- Rewards Panel -->
     <div class="panel" id="rewardsPanel">
         <button class="close-panel-btn" id="closeRewardsPanel">×</button>
@@ -1337,35 +1081,6 @@
         </div>
     </div>
 
-    <!-- Fullscreen Calendar -->
-    <div class="calendar-fullscreen" id="fullscreenCalendar" style="display: none;">
-        <button class="back-to-main" id="backToMainBtn">← Back to Timer</button>
-        <div class="calendar-header">
-            <div class="calendar-title" id="fullscreenCalendarTitle">March 2023</div>
-            <div class="calendar-nav">
-                <button id="fullscreenPrevMonthBtn">&lt;</button>
-                <button id="fullscreenNextMonthBtn">&gt;</button>
-            </div>
-        </div>
-        
-        <div class="calendar-grid" id="fullscreenCalendarGrid">
-            <!-- Calendar headers -->
-            <div class="calendar-day-header">Sun</div>
-            <div class="calendar-day-header">Mon</div>
-            <div class="calendar-day-header">Tue</div>
-            <div class="calendar-day-header">Wed</div>
-            <div class="calendar-day-header">Thu</div>
-            <div class="calendar-day-header">Fri</div>
-            <div class="calendar-day-header">Sat</div>
-            
-            <!-- Calendar days will be inserted here by JavaScript -->
-        </div>
-        
-        <div class="calendar-sessions" id="fullscreenCalendarSessions">
-            <p style="text-align: center; padding: 20px; color: #666;">Select a date to view sessions</p>
-        </div>
-    </div>
-
     <!-- Confetti Container -->
     <div class="confetti-container" id="confettiContainer"></div>
 
@@ -1393,14 +1108,6 @@
             totalWorkDisplay: document.getElementById('totalWork'),
             totalBreakDisplay: document.getElementById('totalBreak'),
             resetTracking: document.getElementById('resetTracking'),
-            noteInput: document.getElementById('noteInput'),
-            saveWorkNoteButton: document.getElementById('saveWorkNote'),
-            saveBreakNoteButton: document.getElementById('saveBreakNote'),
-            copyNotesButton: document.getElementById('copyNotes'),
-            deleteAllNotes: document.getElementById('deleteAllNotes'),
-            noteList: document.getElementById('noteList'),
-            alarmSound: document.getElementById('alarmSound'),
-            applauseSound: document.getElementById('applauseSound'),
             modeIndicator: document.getElementById('modeIndicator'),
             nowPlaying: document.getElementById('nowPlaying'),
             volumeControl: document.getElementById('volumeControl'),
@@ -1412,9 +1119,6 @@
             coffeeSound: document.getElementById('coffeeSound'),
             noiseOptions: document.querySelectorAll('.noise-option input'),
             infoPanel: document.getElementById('infoPanel'),
-            historyList: document.getElementById('historyList'),
-            clearHistory: document.getElementById('clearHistory'),
-            exportHistory: document.getElementById('exportHistory'),
             dailyRewardsList: document.getElementById('dailyRewardsList'),
             weeklyRewardsList: document.getElementById('weeklyRewardsList'),
             monthlyRewardsList: document.getElementById('monthlyRewardsList'),
@@ -1428,7 +1132,6 @@
             closeInfoPanel: document.getElementById('closeInfoPanel'),
             closeNoisePanel: document.getElementById('closeNoisePanel'),
             closeLofiPanel: document.getElementById('closeLofiPanel'),
-            closeHistoryPanel: document.getElementById('closeHistoryPanel'),
             closeRewardsPanel: document.getElementById('closeRewardsPanel'),
             body: document.body,
             dropdownBtn: document.getElementById('dropdownBtn'),
@@ -1437,27 +1140,15 @@
             productivityMenuItem: document.getElementById('productivityMenuItem'),
             noiseMenuItem: document.getElementById('noiseMenuItem'),
             lofiMenuItem: document.getElementById('lofiMenuItem'),
-            historyMenuItem: document.getElementById('historyMenuItem'),
             rewardsMenuItem: document.getElementById('rewardsMenuItem'),
-            calendarMenuItem: document.getElementById('calendarMenuItem'),
             donateMenuItem: document.getElementById('donateMenuItem'),
             noisePlayBtn: document.getElementById('noisePlayBtn'),
             noisePanel: document.getElementById('noisePanel'),
             lofiPanel: document.getElementById('lofiPanel'),
-            historyPanel: document.getElementById('historyPanel'),
             rewardsPanel: document.getElementById('rewardsPanel'),
-            fullscreenCalendar: document.getElementById('fullscreenCalendar'),
-            fullscreenCalendarTitle: document.getElementById('fullscreenCalendarTitle'),
-            fullscreenCalendarGrid: document.getElementById('fullscreenCalendarGrid'),
-            fullscreenCalendarSessions: document.getElementById('fullscreenCalendarSessions'),
-            fullscreenPrevMonthBtn: document.getElementById('fullscreenPrevMonthBtn'),
-            fullscreenNextMonthBtn: document.getElementById('fullscreenNextMonthBtn'),
-            backToMainBtn: document.getElementById('backToMainBtn'),
             projectInput: document.getElementById('projectInput'),
             addProjectBtn: document.getElementById('addProjectBtn'),
-            projectList: document.getElementById('projectList'),
-            projectsHistoryList: document.getElementById('projectsHistoryList'),
-            historyTabs: document.querySelectorAll('.history-tab')
+            projectList: document.getElementById('projectList')
         };
 
         // ========== State Management ==========
@@ -1483,8 +1174,6 @@
                 'coffee': 'Coffee Shop',
                 'none': 'No sound selected'
             },
-            sessionHistory: [],
-            notes: [],
             projects: [],
             rewards: {
                 daily: [
@@ -1655,13 +1344,7 @@
                 daily: [],
                 weekly: [],
                 monthly: []
-            },
-            calendar: {
-                currentMonth: new Date().getMonth(),
-                currentYear: new Date().getFullYear(),
-                selectedDate: null
-            },
-            fullscreenCalendarOpen: false
+            }
         };
 
         // ========== Timer Functions ==========
@@ -1757,24 +1440,10 @@
                             STATE.completedSessions++;
                             projectActions.incrementPomodoroCount();
                             rewardActions.updateSessionCounters();
-                            historyActions.addSession({
-                                type: 'work',
-                                duration: sessionDuration,
-                                notes: DOM.noteInput.value.trim() || 'Enter work/project here',
-                                timestamp: STATE.sessionStartTime,
-                                project: projectActions.getCurrentProject()
-                            });
                             rewardActions.updateRewards('work', sessionDuration);
                         } else {
                             STATE.totalBreakSeconds += sessionDuration;
                             projectActions.incrementBreakCount();
-                            historyActions.addSession({
-                                type: 'break',
-                                duration: sessionDuration,
-                                notes: DOM.noteInput.value.trim() || 'Enter work/project here',
-                                timestamp: STATE.sessionStartTime,
-                                project: projectActions.getCurrentProject()
-                            });
                         }
                         
                         trackingActions.updateDisplay();
@@ -1830,25 +1499,12 @@
                         STATE.completedSessions++;
                         projectActions.incrementPomodoroCount();
                         rewardActions.updateSessionCounters();
-                        historyActions.addSession({
-                            type: 'work',
-                            duration: sessionDuration,
-                            notes: DOM.noteInput.value.trim() || 'Enter work/project here',
-                            timestamp: STATE.sessionStartTime,
-                            project: projectActions.getCurrentProject()
-                        });
                         rewardActions.updateRewards('work', sessionDuration);
                     } else {
                         STATE.totalBreakSeconds += sessionDuration;
                         projectActions.incrementBreakCount();
-                        historyActions.addSession({
-                            type: 'break',
-                            duration: sessionDuration,
-                            notes: DOM.noteInput.value.trim() || 'Enter work/project here',
-                            timestamp: STATE.sessionStartTime,
-                            project: projectActions.getCurrentProject()
-                        });
                     }
+                    
                     trackingActions.updateDisplay();
                     STATE.sessionStartTime = null;
                 }
@@ -1950,7 +1606,8 @@
                         id: Date.now().toString(),
                         name: projectName,
                         pomodoros: 0,
-                        breaks: 0
+                        breaks: 0,
+                        notes: ''
                     };
                     
                     STATE.projects.push(project);
@@ -2034,44 +1691,25 @@
                             <button class="project-action-btn" onclick="projectActions.setCurrentProject('${project.id}')">Track</button>
                             <button class="project-action-btn" onclick="projectActions.deleteProject('${project.id}')">Delete</button>
                         </div>
+                        <button class="project-notes-toggle">Notes</button>
+                        <textarea class="project-notes" placeholder="Add notes about this project...">${project.notes || ''}</textarea>
                     `;
                     
                     DOM.projectList.appendChild(projectItem);
-                });
-            },
-            
-            renderProjectsHistory() {
-                DOM.projectsHistoryList.innerHTML = '';
-                
-                if (STATE.projects.length === 0) {
-                    DOM.projectsHistoryList.innerHTML = '<p style="text-align: center; padding: 20px; color: #666;">No projects yet</p>';
-                    return;
-                }
-                
-                STATE.projects.forEach(project => {
-                    const projectItem = document.createElement('div');
-                    projectItem.className = 'history-item';
                     
-                    // Calculate total time spent on this project
-                    const projectSessions = STATE.sessionHistory.filter(s => s.project === project.name);
-                    const workSeconds = projectSessions
-                        .filter(s => s.type === 'work')
-                        .reduce((sum, s) => sum + s.duration, 0);
-                    const breakSeconds = projectSessions
-                        .filter(s => s.type === 'break')
-                        .reduce((sum, s) => sum + s.duration, 0);
+                    // Add event listeners for the notes toggle and textarea
+                    const notesToggle = projectItem.querySelector('.project-notes-toggle');
+                    const notesTextarea = projectItem.querySelector('.project-notes');
                     
-                    projectItem.innerHTML = `
-                        <div class="history-header">
-                            <span class="history-type">${project.name}</span>
-                        </div>
-                        <div>Pomodoros: ${project.pomodoros}</div>
-                        <div>Breaks: ${project.breaks}</div>
-                        <div>Work Time: ${trackingActions.formatTime(workSeconds)}</div>
-                        <div>Break Time: ${trackingActions.formatTime(breakSeconds)}</div>
-                    `;
+                    notesToggle.addEventListener('click', () => {
+                        notesTextarea.style.display = notesTextarea.style.display === 'none' ? 'block' : 'none';
+                        notesToggle.classList.toggle('expanded');
+                    });
                     
-                    DOM.projectsHistoryList.appendChild(projectItem);
+                    notesTextarea.addEventListener('blur', () => {
+                        project.notes = notesTextarea.value;
+                        this.saveProjects();
+                    });
                 });
             }
         };
@@ -2568,435 +2206,10 @@
             }
         };
 
-        // ========== Notes Functions ==========
-        const noteActions = {
-            saveNote(isWorkNote) {
-                const noteText = DOM.noteInput.value.trim();
-                
-                if (noteText) {
-                    const now = new Date();
-                    const timeString = now.toLocaleTimeString();
-                    const dateString = now.toLocaleDateString();
-                    
-                    const noteItem = document.createElement('div');
-                    noteItem.className = `note-item ${isWorkNote ? 'work-note' : 'break-note'}`;
-                    
-                    noteItem.innerHTML = `
-                        <div class="note-time" contenteditable="true" data-type="time">${dateString} ${timeString}</div>
-                        <div class="note-text" contenteditable="true" data-type="text">${noteText}</div>
-                        <div class="note-actions">
-                            <button class="note-action-btn" onclick="noteActions.deleteNote(this)">Delete</button>
-                        </div>
-                    `;
-                    
-                    DOM.noteList.insertBefore(noteItem, DOM.noteList.firstChild);
-                    DOM.noteInput.value = '';
-                    
-                    // Save to state
-                    STATE.notes.unshift({
-                        type: isWorkNote ? 'work' : 'break',
-                        text: noteText,
-                        time: `${dateString} ${timeString}`,
-                        timestamp: now.getTime()
-                    });
-                    
-                    // Also add to session history if not during a timer
-                    if (!STATE.isRunning) {
-                        historyActions.addSession({
-                            type: isWorkNote ? 'work' : 'break',
-                            duration: 0,
-                            notes: noteText,
-                            timestamp: now,
-                            project: projectActions.getCurrentProject()
-                        });
-                    }
-                    
-                    noteActions.saveToStorage();
-                }
-            },
-
-            deleteNote(button) {
-                const noteItem = button.closest('.note-item');
-                const index = Array.from(DOM.noteList.children).indexOf(noteItem);
-                
-                if (index !== -1) {
-                    STATE.notes.splice(index, 1);
-                    noteItem.remove();
-                    noteActions.saveToStorage();
-                }
-            },
-
-            deleteAllNotes() {
-                if (confirm('Are you sure you want to delete all notes? This cannot be undone.')) {
-                    STATE.notes = [];
-                    DOM.noteList.innerHTML = '';
-                    noteActions.saveToStorage();
-                }
-            },
-
-            saveToStorage() {
-                localStorage.setItem('notes', JSON.stringify(STATE.notes));
-            },
-
-            loadFromStorage() {
-                const savedNotes = localStorage.getItem('notes');
-                if (savedNotes) {
-                    STATE.notes = JSON.parse(savedNotes);
-                    
-                    // Sort notes by timestamp (newest first)
-                    STATE.notes.sort((a, b) => b.timestamp - a.timestamp);
-                    
-                    // Render notes
-                    STATE.notes.forEach(note => {
-                        const noteItem = document.createElement('div');
-                        noteItem.className = `note-item ${note.type === 'work' ? 'work-note' : 'break-note'}`;
-                        
-                        noteItem.innerHTML = `
-                            <div class="note-time" contenteditable="true" data-type="time">${note.time}</div>
-                            <div class="note-text" contenteditable="true" data-type="text">${note.text}</div>
-                            <div class="note-actions">
-                                <button class="note-action-btn" onclick="noteActions.deleteNote(this)">Delete</button>
-                            </div>
-                        `;
-                        
-                        DOM.noteList.appendChild(noteItem);
-                    });
-                }
-                
-                // Add event listeners for editable fields
-                document.querySelectorAll('.note-time, .note-text').forEach(element => {
-                    element.addEventListener('blur', function() {
-                        const noteItem = this.closest('.note-item');
-                        const index = Array.from(DOM.noteList.children).indexOf(noteItem);
-                        
-                        if (index !== -1 && STATE.notes[index]) {
-                            const type = this.getAttribute('data-type');
-                            if (type === 'time') {
-                                STATE.notes[index].time = this.textContent;
-                            } else if (type === 'text') {
-                                STATE.notes[index].text = this.textContent;
-                            }
-                            noteActions.saveToStorage();
-                        }
-                    });
-                });
-                
-                STATE.totalWorkSeconds = parseInt(localStorage.getItem('totalWorkSeconds')) || 0;
-                STATE.totalBreakSeconds = parseInt(localStorage.getItem('totalBreakSeconds')) || 0;
-                trackingActions.updateDisplay();
-            },
-
-            copyToClipboard() {
-                let notesText = '';
-                
-                DOM.noteList.querySelectorAll('.note-item').forEach(item => {
-                    const time = item.querySelector('.note-time').textContent;
-                    const text = item.querySelector('.note-text').textContent;
-                    const type = item.classList.contains('work-note') ? 'WORK' : 'BREAK';
-                    notesText += `${type} - ${time}\n${text}\n\n`;
-                });
-                
-                navigator.clipboard.writeText(notesText.trim()).then(() => {
-                    alert('All notes copied to clipboard!');
-                }).catch(err => {
-                    console.error('Failed to copy notes: ', err);
-                });
-            }
-        };
-
-        // ========== History Functions ==========
-        const historyActions = {
-            addSession(session) {
-                STATE.sessionHistory.push(session);
-                this.saveHistory();
-                this.renderHistory();
-                projectActions.renderProjectsHistory();
-            },
-
-            saveHistory() {
-                localStorage.setItem('sessionHistory', JSON.stringify(STATE.sessionHistory));
-            },
-
-            loadHistory() {
-                const savedHistory = localStorage.getItem('sessionHistory');
-                if (savedHistory) {
-                    STATE.sessionHistory = JSON.parse(savedHistory);
-                    this.renderHistory();
-                    projectActions.renderProjectsHistory();
-                }
-            },
-
-            clearHistory() {
-                if (confirm('Are you sure you want to clear all session history? This cannot be undone.')) {
-                    STATE.sessionHistory = [];
-                    this.saveHistory();
-                    DOM.historyList.innerHTML = '';
-                    projectActions.renderProjectsHistory();
-                }
-            },
-
-            exportHistory() {
-                let historyText = 'Pomodoro Session History\n\n';
-                
-                STATE.sessionHistory.forEach(session => {
-                    const date = new Date(session.timestamp);
-                    const dateString = date.toLocaleDateString();
-                    const timeString = date.toLocaleTimeString();
-                    const durationString = trackingActions.formatTime(session.duration);
-                    
-                    historyText += `Type: ${session.type.toUpperCase()}\n`;
-                    historyText += `Date: ${dateString} ${timeString}\n`;
-                    historyText += `Duration: ${durationString}\n`;
-                    historyText += `Project: ${session.project || 'None'}\n`;
-                    historyText += `Notes: ${session.notes || 'Enter work/project here'}\n\n`;
-                });
-                
-                // Create a blob and download it
-                const blob = new Blob([historyText], { type: 'text/plain' });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = 'pomodoro-session-history.txt';
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                URL.revokeObjectURL(url);
-            },
-
-            renderHistory() {
-                DOM.historyList.innerHTML = '';
-                
-                if (STATE.sessionHistory.length === 0) {
-                    DOM.historyList.innerHTML = '<p style="text-align: center; padding: 20px; color: #666;">No session history yet</p>';
-                    return;
-                }
-                
-                // Sort by timestamp (newest first)
-                STATE.sessionHistory.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
-                
-                STATE.sessionHistory.forEach((session, index) => {
-                    const historyItem = document.createElement('div');
-                    historyItem.className = 'history-item';
-                    
-                    const date = new Date(session.timestamp);
-                    const dateString = date.toLocaleDateString();
-                    const timeString = date.toLocaleTimeString();
-                    const durationString = trackingActions.formatTime(session.duration);
-                    
-                    historyItem.innerHTML = `
-                        <div class="history-header">
-                            <span class="history-type ${session.type}-history">${session.type.charAt(0).toUpperCase() + session.type.slice(1)}</span>
-                            <span class="history-time" contenteditable="true" data-type="time" data-index="${index}">${dateString} ${timeString}</span>
-                        </div>
-                        <div class="history-duration editable" contenteditable="true" data-type="duration" data-index="${index}">Duration: ${durationString}</div>
-                        ${session.project ? `<div class="editable" contenteditable="true" data-type="project" data-index="${index}">Project: ${session.project}</div>` : ''}
-                        <div class="history-notes editable" contenteditable="true" data-type="notes" data-index="${index}">${session.notes || 'Enter work/project here'}</div>
-                        <div class="history-actions">
-                            <button class="history-action-btn" onclick="historyActions.deleteSession(${index})">Delete</button>
-                        </div>
-                    `;
-                    
-                    DOM.historyList.appendChild(historyItem);
-                });
-                
-                // Add event listeners for editable fields
-                document.querySelectorAll('.history-time, .history-duration, .history-notes, [data-type="project"]').forEach(element => {
-                    element.addEventListener('blur', function() {
-                        const index = parseInt(this.getAttribute('data-index'));
-                        const type = this.getAttribute('data-type');
-                        
-                        if (type === 'time') {
-                            // Parse the edited time string and update the timestamp
-                            const timeString = this.textContent;
-                            const [datePart, timePart] = timeString.split(' ');
-                            const [month, day, year] = datePart.split('/');
-                            const [hours, minutes, seconds] = timePart.split(':');
-                            
-                            const newDate = new Date(year, month - 1, day, hours, minutes, seconds);
-                            STATE.sessionHistory[index].timestamp = newDate;
-                        } else if (type === 'duration') {
-                            // Parse duration from text like "Duration: 00:05:00"
-                            const durationText = this.textContent.replace('Duration: ', '');
-                            const [hours, minutes, seconds] = durationText.split(':').map(Number);
-                            STATE.sessionHistory[index].duration = hours * 3600 + minutes * 60 + seconds;
-                        } else if (type === 'project') {
-                            STATE.sessionHistory[index].project = this.textContent.replace('Project: ', '');
-                        } else if (type === 'notes') {
-                            STATE.sessionHistory[index].notes = this.textContent;
-                        }
-                        
-                        historyActions.saveHistory();
-                        projectActions.renderProjectsHistory();
-                    });
-                });
-            },
-
-            deleteSession(index) {
-                STATE.sessionHistory.splice(index, 1);
-                this.saveHistory();
-                this.renderHistory();
-                projectActions.renderProjectsHistory();
-            }
-        };
-
-        // ========== Calendar Functions ==========
-        const calendarActions = {
-            renderCalendar(container = DOM.fullscreenCalendarGrid, sessionsContainer = DOM.fullscreenCalendarSessions, titleElement = DOM.fullscreenCalendarTitle) {
-                const month = STATE.calendar.currentMonth;
-                const year = STATE.calendar.currentYear;
-                
-                // Set calendar title
-                const monthNames = ["January", "February", "March", "April", "May", "June",
-                    "July", "August", "September", "October", "November", "December"];
-                titleElement.textContent = `${monthNames[month]} ${year}`;
-                
-                // Clear previous calendar days
-                while (container.children.length > 7) {
-                    container.removeChild(container.lastChild);
-                }
-                
-                // Get first day of month and total days in month
-                const firstDay = new Date(year, month, 1).getDay();
-                const daysInMonth = new Date(year, month + 1, 0).getDate();
-                
-                // Add empty cells for days before the first day of the month
-                for (let i = 0; i < firstDay; i++) {
-                    const emptyCell = document.createElement('div');
-                    emptyCell.className = 'calendar-day empty';
-                    container.appendChild(emptyCell);
-                }
-                
-                // Add cells for each day of the month
-                const today = new Date();
-                const currentDate = today.getDate();
-                const currentMonth = today.getMonth();
-                const currentYear = today.getFullYear();
-                
-                for (let day = 1; day <= daysInMonth; day++) {
-                    const dayCell = document.createElement('div');
-                    dayCell.className = 'calendar-day';
-                    dayCell.textContent = day;
-                    
-                    // Check if this day has any sessions
-                    const hasSessions = STATE.sessionHistory.some(session => {
-                        const sessionDate = new Date(session.timestamp);
-                        return sessionDate.getDate() === day && 
-                               sessionDate.getMonth() === month && 
-                               sessionDate.getFullYear() === year;
-                    });
-                    
-                    if (hasSessions) {
-                        dayCell.classList.add('has-sessions');
-                    }
-                    
-                    // Highlight today
-                    if (day === currentDate && month === currentMonth && year === currentYear) {
-                        dayCell.classList.add('today');
-                    }
-                    
-                    // Highlight selected date
-                    if (STATE.calendar.selectedDate && 
-                        day === STATE.calendar.selectedDate.getDate() && 
-                        month === STATE.calendar.selectedDate.getMonth() && 
-                        year === STATE.calendar.selectedDate.getFullYear()) {
-                        dayCell.classList.add('selected');
-                    }
-                    
-                    dayCell.addEventListener('click', () => {
-                        const selectedDate = new Date(year, month, day);
-                        STATE.calendar.selectedDate = selectedDate;
-                        calendarActions.renderCalendar(container, sessionsContainer, titleElement);
-                        calendarActions.showSessionsForDate(selectedDate, sessionsContainer);
-                    });
-                    
-                    container.appendChild(dayCell);
-                }
-            },
-            
-            showSessionsForDate(date, sessionsContainer = DOM.fullscreenCalendarSessions) {
-                sessionsContainer.innerHTML = '';
-                
-                const sessionsForDate = STATE.sessionHistory.filter(session => {
-                    const sessionDate = new Date(session.timestamp);
-                    return sessionDate.getDate() === date.getDate() && 
-                           sessionDate.getMonth() === date.getMonth() && 
-                           sessionDate.getFullYear() === date.getFullYear();
-                });
-                
-                if (sessionsForDate.length === 0) {
-                    sessionsContainer.innerHTML = '<p style="text-align: center; padding: 20px; color: #666;">No sessions for this date</p>';
-                    return;
-                }
-                
-                sessionsForDate.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
-                
-                sessionsForDate.forEach((session, index) => {
-                    const sessionItem = document.createElement('div');
-                    sessionItem.className = `calendar-session-item ${session.type}`;
-                    
-                    const sessionDate = new Date(session.timestamp);
-                    const timeString = sessionDate.toLocaleTimeString();
-                    const durationString = trackingActions.formatTime(session.duration);
-                    
-                    sessionItem.innerHTML = `
-                        <div class="calendar-session-time">${timeString}</div>
-                        <div class="calendar-session-duration">${durationString}</div>
-                        ${session.project ? `<div>Project: ${session.project}</div>` : ''}
-                        <div class="calendar-session-notes" contenteditable="true" data-index="${index}">${session.notes || 'Enter work/project here'}</div>
-                    `;
-                    
-                    // Add event listener for editable notes
-                    sessionItem.querySelector('.calendar-session-notes').addEventListener('blur', function() {
-                        const sessionIndex = STATE.sessionHistory.findIndex(s => {
-                            const sDate = new Date(s.timestamp);
-                            return sDate.getDate() === date.getDate() && 
-                                   sDate.getMonth() === date.getMonth() && 
-                                   sDate.getFullYear() === date.getFullYear() &&
-                                   sDate.toLocaleTimeString() === timeString;
-                        });
-                        
-                        if (sessionIndex !== -1) {
-                            STATE.sessionHistory[sessionIndex].notes = this.textContent;
-                            historyActions.saveHistory();
-                        }
-                    });
-                    
-                    sessionsContainer.appendChild(sessionItem);
-                });
-            },
-            
-            changeMonth(offset) {
-                STATE.calendar.currentMonth += offset;
-                
-                // Handle year wrap-around
-                if (STATE.calendar.currentMonth < 0) {
-                    STATE.calendar.currentMonth = 11;
-                    STATE.calendar.currentYear--;
-                } else if (STATE.calendar.currentMonth > 11) {
-                    STATE.calendar.currentMonth = 0;
-                    STATE.calendar.currentYear++;
-                }
-                
-                STATE.calendar.selectedDate = null;
-                calendarActions.renderCalendar();
-                DOM.fullscreenCalendarSessions.innerHTML = '<p style="text-align: center; padding: 20px; color: #666;">Select a date to view sessions</p>';
-            },
-            
-            toggleFullscreenCalendar() {
-                STATE.fullscreenCalendarOpen = !STATE.fullscreenCalendarOpen;
-                if (STATE.fullscreenCalendarOpen) {
-                    DOM.fullscreenCalendar.style.display = 'block';
-                    this.renderCalendar();
-                } else {
-                    DOM.fullscreenCalendar.style.display = 'none';
-                }
-            }
-        };
-
         // ========== Sound Control Functions ==========
         const soundActions = {
             togglePanel(panel) {
-                const panels = [DOM.infoPanel, DOM.noisePanel, DOM.lofiPanel, DOM.historyPanel, DOM.rewardsPanel, DOM.productivityPanel];
+                const panels = [DOM.infoPanel, DOM.noisePanel, DOM.lofiPanel, DOM.rewardsPanel, DOM.productivityPanel];
                 panels.forEach(p => {
                     if (p === panel) {
                         p.classList.toggle('show');
@@ -3079,28 +2292,6 @@
             }
         };
 
-        // ========== History Tab Functions ==========
-        const historyTabActions = {
-            setupTabs() {
-                DOM.historyTabs.forEach(tab => {
-                    tab.addEventListener('click', () => {
-                        // Set active tab
-                        DOM.historyTabs.forEach(t => {
-                            t.classList.remove('active');
-                        });
-                        tab.classList.add('active');
-                        
-                        // Show corresponding content
-                        const tabType = tab.getAttribute('data-tab');
-                        document.querySelectorAll('.history-tab-content').forEach(content => {
-                            content.classList.remove('active');
-                        });
-                        document.getElementById(`${tabType}History`).classList.add('active');
-                    });
-                });
-            }
-        };
-
         // ========== Dropdown Menu Functions ==========
         const dropdownActions = {
             toggleDropdown() {
@@ -3132,18 +2323,8 @@
                     this.closeDropdown();
                 });
                 
-                DOM.historyMenuItem.addEventListener('click', () => {
-                    soundActions.togglePanel(DOM.historyPanel);
-                    this.closeDropdown();
-                });
-                
                 DOM.rewardsMenuItem.addEventListener('click', () => {
                     soundActions.togglePanel(DOM.rewardsPanel);
-                    this.closeDropdown();
-                });
-                
-                DOM.calendarMenuItem.addEventListener('click', () => {
-                    calendarActions.toggleFullscreenCalendar();
                     this.closeDropdown();
                 });
                 
@@ -3165,10 +2346,6 @@
             DOM.setWorkModeButton.addEventListener('click', () => timerActions.setMode(true));
             DOM.setBreakModeButton.addEventListener('click', () => timerActions.setMode(false));
             
-            DOM.saveWorkNoteButton.addEventListener('click', () => noteActions.saveNote(true));
-            DOM.saveBreakNoteButton.addEventListener('click', () => noteActions.saveNote(false));
-            DOM.copyNotesButton.addEventListener('click', noteActions.copyToClipboard);
-            DOM.deleteAllNotes.addEventListener('click', noteActions.deleteAllNotes);
             DOM.resetTracking.addEventListener('click', trackingActions.resetTracking);
             
             DOM.noisePlayBtn.addEventListener('click', soundActions.toggleNoisePlayback);
@@ -3176,9 +2353,6 @@
             DOM.noiseOptions.forEach(option => {
                 option.addEventListener('change', soundActions.changeBackgroundNoise);
             });
-
-            DOM.clearHistory.addEventListener('click', historyActions.clearHistory);
-            DOM.exportHistory.addEventListener('click', historyActions.exportHistory);
 
             DOM.closeProductivityPanel.addEventListener('click', () => {
                 DOM.productivityPanel.classList.remove('show');
@@ -3196,23 +2370,11 @@
                 DOM.lofiPanel.classList.remove('show');
             });
             
-            DOM.closeHistoryPanel.addEventListener('click', () => {
-                DOM.historyPanel.classList.remove('show');
-            });
-            
             DOM.closeRewardsPanel.addEventListener('click', () => {
                 DOM.rewardsPanel.classList.remove('show');
             });
 
             DOM.resetRewards.addEventListener('click', rewardActions.resetRewards);
-
-            // Calendar navigation
-            DOM.fullscreenPrevMonthBtn.addEventListener('click', () => calendarActions.changeMonth(-1));
-            DOM.fullscreenNextMonthBtn.addEventListener('click', () => calendarActions.changeMonth(1));
-            DOM.backToMainBtn.addEventListener('click', () => {
-                DOM.fullscreenCalendar.style.display = 'none';
-                STATE.fullscreenCalendarOpen = false;
-            });
 
             // Project tracking
             DOM.addProjectBtn.addEventListener('click', projectActions.addProject.bind(projectActions));
@@ -3231,7 +2393,7 @@
             dropdownActions.setupMenuItems();
 
             document.addEventListener('click', (e) => {
-                const panels = [DOM.infoPanel, DOM.noisePanel, DOM.lofiPanel, DOM.historyPanel, 
+                const panels = [DOM.infoPanel, DOM.noisePanel, DOM.lofiPanel, 
                                DOM.rewardsPanel, DOM.productivityPanel];
                 
                 if (!panels.some(panel => panel.contains(e.target)) && 
@@ -3245,14 +2407,11 @@
             window.addEventListener('beforeunload', () => {
                 localStorage.setItem('totalWorkSeconds', STATE.totalWorkSeconds.toString());
                 localStorage.setItem('totalBreakSeconds', STATE.totalBreakSeconds.toString());
-                noteActions.saveToStorage();
-                historyActions.saveHistory();
                 rewardActions.saveRewards();
                 localStorage.setItem('projects', JSON.stringify(STATE.projects));
             });
 
             rewardTabActions.setupTabs();
-            historyTabActions.setupTabs();
             
             // Timer display edit handling
             DOM.timer.addEventListener('blur', function() {
@@ -3282,8 +2441,6 @@
         // ========== Initialization ==========
         function init() {
             setupEventListeners();
-            noteActions.loadFromStorage();
-            historyActions.loadHistory();
             rewardActions.loadRewards();
             projectActions.loadProjects();
             timerActions.updateModeIndicator();
@@ -3295,14 +2452,6 @@
             
             // Initialize rewards
             rewardTabActions.setupTabs();
-            historyTabActions.setupTabs();
-            
-            // Set up scrollable rewards panel
-            const rewardsContents = document.querySelectorAll('.reward-tab-content');
-            rewardsContents.forEach(content => {
-                content.style.maxHeight = '400px';
-                content.style.overflowY = 'auto';
-            });
         }
 
         init();
