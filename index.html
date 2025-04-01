@@ -114,9 +114,11 @@
             text-align: center;
             max-width: 800px;
             width: 90%;
+            height: 90vh;
             backdrop-filter: blur(5px);
             position: relative;
             z-index: 2;
+            overflow-y: auto;
         }
 
         h1 {
@@ -289,7 +291,7 @@
         }
 
         .project-list {
-            max-height: 200px;
+            max-height: 300px;
             overflow-y: auto;
         }
 
@@ -300,7 +302,7 @@
             margin-bottom: 10px;
             background-color: white;
             border-radius: 5px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            border: 1px solid #eee;
         }
 
         .project-item.selected {
@@ -320,6 +322,7 @@
             overflow: hidden;
             text-overflow: ellipsis;
             font-weight: 500;
+            padding: 5px;
         }
 
         .project-stats {
@@ -356,11 +359,6 @@
 
         .project-action-btn:hover {
             background-color: #e0e0e0;
-        }
-
-        .pause-resume-btn {
-            background-color: var(--primary-orange);
-            color: white;
         }
 
         .project-notes-section {
@@ -418,19 +416,25 @@
         .break-mode { background-color: var(--break-bg); color: var(--break-text); }
 
         .editable {
-            border: 1px dashed #ccc;
             padding: 2px;
             min-width: 20px;
             display: inline-block;
+            border: none;
+            background: transparent;
         }
 
         .editable:focus {
             outline: none;
-            border: 1px solid var(--primary-blue);
             background-color: #f5f9ff;
         }
 
-        /* Rest of your existing styles... */
+        /* Confetti animation */
+        @keyframes fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
     </style>
 </head>
 <body>
@@ -592,18 +596,20 @@
                             STATE.totalWorkSeconds += elapsedSeconds;
                             if (STATE.currentProject) {
                                 const project = STATE.projects.find(p => p.id === STATE.currentProject);
-                                if (project && !project.isPaused) {
+                                if (project) {
                                     project.workTime += elapsedSeconds;
                                     projectActions.saveProjects();
+                                    projectActions.renderProjects();
                                 }
                             }
                         } else {
                             STATE.totalBreakSeconds += elapsedSeconds;
                             if (STATE.currentProject) {
                                 const project = STATE.projects.find(p => p.id === STATE.currentProject);
-                                if (project && !project.isPaused) {
+                                if (project) {
                                     project.breakTime += elapsedSeconds;
                                     projectActions.saveProjects();
+                                    projectActions.renderProjects();
                                 }
                             }
                         }
@@ -642,20 +648,22 @@
                             STATE.completedSessions++;
                             if (STATE.currentProject) {
                                 const project = STATE.projects.find(p => p.id === STATE.currentProject);
-                                if (project && !project.isPaused) {
+                                if (project) {
                                     project.pomodoros++;
                                     project.workTime += sessionDuration;
                                     projectActions.saveProjects();
+                                    projectActions.renderProjects();
                                 }
                             }
                         } else {
                             STATE.totalBreakSeconds += sessionDuration;
                             if (STATE.currentProject) {
                                 const project = STATE.projects.find(p => p.id === STATE.currentProject);
-                                if (project && !project.isPaused) {
+                                if (project) {
                                     project.breaks++;
                                     project.breakTime += sessionDuration;
                                     projectActions.saveProjects();
+                                    projectActions.renderProjects();
                                 }
                             }
                         }
@@ -713,18 +721,20 @@
                         STATE.totalWorkSeconds += sessionDuration;
                         if (STATE.currentProject) {
                             const project = STATE.projects.find(p => p.id === STATE.currentProject);
-                            if (project && !project.isPaused) {
+                            if (project) {
                                 project.workTime += sessionDuration;
                                 projectActions.saveProjects();
+                                projectActions.renderProjects();
                             }
                         }
                     } else {
                         STATE.totalBreakSeconds += sessionDuration;
                         if (STATE.currentProject) {
                             const project = STATE.projects.find(p => p.id === STATE.currentProject);
-                            if (project && !project.isPaused) {
+                            if (project) {
                                 project.breakTime += sessionDuration;
                                 projectActions.saveProjects();
+                                projectActions.renderProjects();
                             }
                         }
                     }
@@ -752,20 +762,22 @@
                             STATE.completedSessions++;
                             if (STATE.currentProject) {
                                 const project = STATE.projects.find(p => p.id === STATE.currentProject);
-                                if (project && !project.isPaused) {
+                                if (project) {
                                     project.pomodoros++;
                                     project.workTime += sessionDuration;
                                     projectActions.saveProjects();
+                                    projectActions.renderProjects();
                                 }
                             }
                         } else {
                             STATE.totalBreakSeconds += sessionDuration;
                             if (STATE.currentProject) {
                                 const project = STATE.projects.find(p => p.id === STATE.currentProject);
-                                if (project && !project.isPaused) {
+                                if (project) {
                                     project.breaks++;
                                     project.breakTime += sessionDuration;
                                     projectActions.saveProjects();
+                                    projectActions.renderProjects();
                                 }
                             }
                         }
@@ -871,8 +883,7 @@
                         breaks: 0,
                         workTime: 0,
                         breakTime: 0,
-                        notes: '',
-                        isPaused: false
+                        notes: ''
                     };
                     
                     STATE.projects.push(project);
@@ -892,17 +903,12 @@
             },
             
             setCurrentProject(id) {
-                STATE.currentProject = id;
-                this.renderProjects();
-            },
-            
-            togglePause(id) {
-                const project = STATE.projects.find(p => p.id === id);
-                if (project) {
-                    project.isPaused = !project.isPaused;
-                    this.saveProjects();
-                    this.renderProjects();
+                if (STATE.currentProject === id) {
+                    STATE.currentProject = null;
+                } else {
+                    STATE.currentProject = id;
                 }
+                this.renderProjects();
             },
             
             saveProjects() {
@@ -947,8 +953,9 @@
                                 </div>
                             </div>
                             <div class="project-actions">
-                                <button class="project-action-btn pause-resume-btn">${project.isPaused ? 'Resume' : 'Pause'}</button>
-                                <button class="project-action-btn" onclick="projectActions.setCurrentProject('${project.id}')">Track</button>
+                                <button class="project-action-btn" onclick="projectActions.setCurrentProject('${project.id}')">
+                                    ${project.id === STATE.currentProject ? 'Untrack' : 'Track'}
+                                </button>
                                 <button class="project-action-btn" onclick="projectActions.deleteProject('${project.id}')">Delete</button>
                             </div>
                         </div>
@@ -971,11 +978,6 @@
                     notesTextarea.addEventListener('blur', () => {
                         project.notes = notesTextarea.value;
                         this.saveProjects();
-                    });
-                    
-                    const pauseResumeBtn = projectItem.querySelector('.pause-resume-btn');
-                    pauseResumeBtn.addEventListener('click', () => {
-                        this.togglePause(project.id);
                     });
                     
                     const nameEditable = projectItem.querySelector('.project-name');
