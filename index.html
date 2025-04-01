@@ -113,7 +113,7 @@
             padding: 30px;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
             text-align: center;
-            max-width: 800px;
+            max-width: 900px;
             width: 90%;
             backdrop-filter: blur(5px);
             position: relative;
@@ -275,6 +275,7 @@
             background-color: rgba(255, 255, 255, 0.7);
             padding: 15px;
             border-radius: 10px;
+            width: 100%;
         }
 
         .project-input {
@@ -291,15 +292,15 @@
         }
 
         .project-list {
-            max-height: 200px;
-            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
         }
 
         .project-item {
             display: flex;
             flex-direction: column;
             padding: 10px;
-            margin-bottom: 10px;
             background-color: white;
             border-radius: 5px;
             border: 1px solid #eee;
@@ -318,16 +319,18 @@
 
         .project-name {
             flex: 1;
+            min-width: 100px;
+            font-weight: 500;
+            padding: 5px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            font-weight: 500;
-            padding: 5px;
         }
 
         .project-stats {
             display: flex;
             gap: 15px;
+            flex-wrap: wrap;
         }
 
         .project-stat {
