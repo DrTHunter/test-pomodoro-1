@@ -267,6 +267,75 @@
             display: block;
         }
 
+        .projects-container {
+            margin-top: 20px;
+            background-color: rgba(255, 255, 255, 0.7);
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        .project-input {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .project-input input {
+            flex: 1;
+            padding: 8px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+
+        .project-list {
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .project-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px;
+            margin-bottom: 5px;
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .project-item.selected {
+            background-color: #e1bee7;
+        }
+
+        .project-stats {
+            display: flex;
+            gap: 10px;
+        }
+
+        .project-stat {
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            font-size: 0.9em;
+        }
+
+        .project-actions {
+            display: flex;
+            gap: 5px;
+        }
+
+        .project-action-btn {
+            padding: 3px 6px;
+            background-color: #f5f5f5;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        .project-action-btn:hover {
+            background-color: #e0e0e0;
+        }
+
         .notes-container {
             margin-top: 20px;
         }
@@ -839,256 +908,6 @@
             pointer-events: none;
         }
 
-        /* Calendar styles */
-        .calendar-panel {
-            position: fixed;
-            background-color: white;
-            border-radius: 15px;
-            padding: 15px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-            display: none;
-            max-height: 80vh;
-            overflow-y: auto;
-            z-index: 101;
-            width: 350px;
-            left: 50%;
-            transform: translateX(-50%);
-        }
-
-        .calendar-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-
-        .calendar-title {
-            font-size: 1.2em;
-            font-weight: bold;
-            color: var(--accent-purple);
-        }
-
-        .calendar-nav {
-            display: flex;
-            gap: 10px;
-            margin-left: 20px; /* Added to move arrows left */
-        }
-
-        .calendar-nav button {
-            background: none;
-            border: none;
-            font-size: 1.2em;
-            cursor: pointer;
-            color: var(--accent-purple);
-        }
-
-        .calendar-grid {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 5px;
-        }
-
-        .calendar-day-header {
-            text-align: center;
-            font-weight: bold;
-            padding: 5px;
-            color: var(--accent-purple);
-        }
-
-        .calendar-day {
-            text-align: center;
-            padding: 8px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .calendar-day:hover {
-            background-color: #f0f0f0;
-        }
-
-        .calendar-day.empty {
-            visibility: hidden;
-        }
-
-        .calendar-day.today {
-            background-color: var(--accent-purple);
-            color: white;
-            font-weight: bold;
-        }
-
-        .calendar-day.has-sessions {
-            background-color: #e1bee7;
-            font-weight: bold;
-        }
-
-        .calendar-day.selected {
-            background-color: var(--primary-blue);
-            color: white;
-        }
-
-        .calendar-sessions {
-            margin-top: 15px;
-            max-height: 300px;
-            overflow-y: auto;
-        }
-
-        .calendar-session-item {
-            padding: 8px;
-            margin-bottom: 5px;
-            border-radius: 5px;
-            background-color: #f5f5f5;
-        }
-
-        .calendar-session-item.work {
-            border-left: 3px solid var(--primary-pink);
-        }
-
-        .calendar-session-item.break {
-            border-left: 3px solid var(--primary-green);
-        }
-
-        .calendar-session-time {
-            font-size: 0.8em;
-            color: #666;
-        }
-
-        .calendar-session-duration {
-            font-weight: bold;
-        }
-
-        .calendar-session-notes {
-            margin-top: 3px;
-            font-size: 0.9em;
-        }
-
-        .calendar-export-btn {
-            background-color: var(--primary-blue);
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 5px;
-            margin-top: 10px;
-            cursor: pointer;
-        }
-
-        /* Project tracking styles */
-        .project-tracking {
-            margin-top: 20px;
-            background-color: rgba(255, 255, 255, 0.7);
-            padding: 15px;
-            border-radius: 10px;
-        }
-
-        .project-input {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-
-        .project-input input {
-            flex: 1;
-            padding: 8px;
-            border-radius: 5px;
-            border: 1px solid #ddd;
-        }
-
-        .project-input button {
-            padding: 8px 15px;
-            background-color: var(--primary-purple);
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .project-list {
-            max-height: 200px;
-            overflow-y: auto;
-            margin-bottom: 15px;
-        }
-
-        .project-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 8px;
-            margin-bottom: 5px;
-            background-color: white;
-            border-radius: 5px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }
-
-        .project-name {
-            flex: 1;
-        }
-
-        .project-pomodoros {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .project-pomodoros input {
-            width: 40px;
-            padding: 3px;
-            text-align: center;
-            border: 1px solid #ddd;
-            border-radius: 3px;
-        }
-
-        .project-actions {
-            display: flex;
-            gap: 5px;
-        }
-
-        .project-action-btn {
-            padding: 3px 6px;
-            background-color: #f5f5f5;
-            border: 1px solid #ddd;
-            border-radius: 3px;
-            cursor: pointer;
-        }
-
-        .project-action-btn:hover {
-            background-color: #e0e0e0;
-        }
-
-        .project-total {
-            font-weight: bold;
-            text-align: right;
-            padding: 5px;
-            border-top: 1px solid #eee;
-            margin-top: 10px;
-        }
-
-        /* History tabs */
-        .history-tabs {
-            display: flex;
-            margin-bottom: 10px;
-            border-bottom: 1px solid #ddd;
-        }
-
-        .history-tab {
-            padding: 8px 15px;
-            cursor: pointer;
-            border-bottom: 2px solid transparent;
-            transition: all 0.2s;
-        }
-
-        .history-tab.active {
-            border-bottom: 2px solid var(--accent-purple);
-            color: var(--accent-purple);
-            font-weight: bold;
-        }
-
-        .history-tab-content {
-            display: none;
-        }
-
-        .history-tab-content.active {
-            display: block;
-        }
-
         /* Fullscreen calendar */
         .calendar-fullscreen {
             position: fixed;
@@ -1218,11 +1037,6 @@
                     height: auto;
                 }
             }
-
-            /* Remove close button from calendar panel */
-            #closeCalendarPanel {
-                display: none;
-            }
         }
 
         /* Desktop specific styles */
@@ -1231,13 +1045,6 @@
                 top: 90px;
                 right: 20px;
                 left: auto;
-                transform: none;
-            }
-            
-            .calendar-panel {
-                top: 90px;
-                left: auto;
-                right: 20px;
                 transform: none;
             }
         }
@@ -1327,6 +1134,16 @@
             </div>
             
             <button id="resetTracking" class="reset-tracking-btn">Reset Tracking Time</button>
+            
+            <!-- Projects Section -->
+            <div class="projects-container">
+                <h3>Project Tracking</h3>
+                <div class="project-input">
+                    <input type="text" id="projectInput" placeholder="Enter project name">
+                    <button id="addProjectBtn">Add Project</button>
+                </div>
+                <div class="project-list" id="projectList"></div>
+            </div>
             
             <div class="notes-container">
                 <div class="notes-column">
@@ -1483,16 +1300,7 @@
         </div>
         
         <div class="history-tab-content" id="projectsHistory">
-            <div class="project-tracking">
-                <div class="project-input">
-                    <input type="text" id="projectNameInput" placeholder="Enter project name">
-                    <button id="addProjectBtn">Add</button>
-                </div>
-                <div class="project-list" id="projectList"></div>
-                <div class="project-total">
-                    Total Pomodoros: <span id="totalPomodoros">0</span>
-                </div>
-            </div>
+            <div id="projectsHistoryList"></div>
         </div>
     </div>
 
@@ -1527,38 +1335,6 @@
         <div class="reward-controls">
             <button id="resetRewards" class="reset-rewards-btn">Reset Rewards</button>
         </div>
-    </div>
-
-    <!-- Calendar Panel -->
-    <div class="panel calendar-panel" id="calendarPanel">
-        <button class="close-panel-btn" id="closeCalendarPanel">×</button>
-        <div class="calendar-header">
-            <div class="calendar-title" id="calendarTitle">March 2023</div>
-            <div class="calendar-nav">
-                <button id="prevMonthBtn">&lt;</button>
-                <button id="nextMonthBtn">&gt;</button>
-            </div>
-        </div>
-        
-        <div class="calendar-grid" id="calendarGrid">
-            <!-- Calendar headers -->
-            <div class="calendar-day-header">Sun</div>
-            <div class="calendar-day-header">Mon</div>
-            <div class="calendar-day-header">Tue</div>
-            <div class="calendar-day-header">Wed</div>
-            <div class="calendar-day-header">Thu</div>
-            <div class="calendar-day-header">Fri</div>
-            <div class="calendar-day-header">Sat</div>
-            
-            <!-- Calendar days will be inserted here by JavaScript -->
-        </div>
-        
-        <div class="calendar-sessions" id="calendarSessions">
-            <p style="text-align: center; padding: 20px; color: #666;">Select a date to view sessions</p>
-        </div>
-        
-        <button id="exportCalendarBtn" class="calendar-export-btn">Export Calendar Data</button>
-        <button id="fullscreenCalendarBtn" class="calendar-export-btn" style="background-color: var(--primary-purple); margin-left: 10px;">Fullscreen Calendar</button>
     </div>
 
     <!-- Fullscreen Calendar -->
@@ -1654,7 +1430,6 @@
             closeLofiPanel: document.getElementById('closeLofiPanel'),
             closeHistoryPanel: document.getElementById('closeHistoryPanel'),
             closeRewardsPanel: document.getElementById('closeRewardsPanel'),
-            closeCalendarPanel: document.getElementById('closeCalendarPanel'),
             body: document.body,
             dropdownBtn: document.getElementById('dropdownBtn'),
             dropdownContent: document.getElementById('dropdownContent'),
@@ -1671,14 +1446,6 @@
             lofiPanel: document.getElementById('lofiPanel'),
             historyPanel: document.getElementById('historyPanel'),
             rewardsPanel: document.getElementById('rewardsPanel'),
-            calendarPanel: document.getElementById('calendarPanel'),
-            calendarTitle: document.getElementById('calendarTitle'),
-            calendarGrid: document.getElementById('calendarGrid'),
-            calendarSessions: document.getElementById('calendarSessions'),
-            prevMonthBtn: document.getElementById('prevMonthBtn'),
-            nextMonthBtn: document.getElementById('nextMonthBtn'),
-            exportCalendarBtn: document.getElementById('exportCalendarBtn'),
-            fullscreenCalendarBtn: document.getElementById('fullscreenCalendarBtn'),
             fullscreenCalendar: document.getElementById('fullscreenCalendar'),
             fullscreenCalendarTitle: document.getElementById('fullscreenCalendarTitle'),
             fullscreenCalendarGrid: document.getElementById('fullscreenCalendarGrid'),
@@ -1686,12 +1453,10 @@
             fullscreenPrevMonthBtn: document.getElementById('fullscreenPrevMonthBtn'),
             fullscreenNextMonthBtn: document.getElementById('fullscreenNextMonthBtn'),
             backToMainBtn: document.getElementById('backToMainBtn'),
-            projectNameInput: document.getElementById('projectNameInput'),
+            projectInput: document.getElementById('projectInput'),
             addProjectBtn: document.getElementById('addProjectBtn'),
             projectList: document.getElementById('projectList'),
-            totalPomodoros: document.getElementById('totalPomodoros'),
-            sessionsHistory: document.getElementById('sessionsHistory'),
-            projectsHistory: document.getElementById('projectsHistory'),
+            projectsHistoryList: document.getElementById('projectsHistoryList'),
             historyTabs: document.querySelectorAll('.history-tab')
         };
 
@@ -1896,8 +1661,7 @@
                 currentYear: new Date().getFullYear(),
                 selectedDate: null
             },
-            calendarOpen: false, // Track if calendar is open
-            fullscreenCalendarOpen: false // Track if fullscreen calendar is open
+            fullscreenCalendarOpen: false
         };
 
         // ========== Timer Functions ==========
@@ -1991,6 +1755,7 @@
                         if (STATE.isWorkMode) {
                             STATE.totalWorkSeconds += sessionDuration;
                             STATE.completedSessions++;
+                            projectActions.incrementPomodoroCount();
                             rewardActions.updateSessionCounters();
                             historyActions.addSession({
                                 type: 'work',
@@ -2002,6 +1767,7 @@
                             rewardActions.updateRewards('work', sessionDuration);
                         } else {
                             STATE.totalBreakSeconds += sessionDuration;
+                            projectActions.incrementBreakCount();
                             historyActions.addSession({
                                 type: 'break',
                                 duration: sessionDuration,
@@ -2062,6 +1828,7 @@
                     if (STATE.isWorkMode) {
                         STATE.totalWorkSeconds += sessionDuration;
                         STATE.completedSessions++;
+                        projectActions.incrementPomodoroCount();
                         rewardActions.updateSessionCounters();
                         historyActions.addSession({
                             type: 'work',
@@ -2073,6 +1840,7 @@
                         rewardActions.updateRewards('work', sessionDuration);
                     } else {
                         STATE.totalBreakSeconds += sessionDuration;
+                        projectActions.incrementBreakCount();
                         historyActions.addSession({
                             type: 'break',
                             duration: sessionDuration,
@@ -2176,18 +1944,19 @@
             currentProject: null,
             
             addProject() {
-                const projectName = DOM.projectNameInput.value.trim();
+                const projectName = DOM.projectInput.value.trim();
                 if (projectName) {
                     const project = {
                         id: Date.now().toString(),
                         name: projectName,
-                        pomodoros: 0
+                        pomodoros: 0,
+                        breaks: 0
                     };
                     
                     STATE.projects.push(project);
                     this.saveProjects();
                     this.renderProjects();
-                    DOM.projectNameInput.value = '';
+                    DOM.projectInput.value = '';
                 }
             },
             
@@ -2197,21 +1966,9 @@
                 this.renderProjects();
             },
             
-            updatePomodoroCount(id, count) {
-                const project = STATE.projects.find(p => p.id === id);
-                if (project) {
-                    project.pomodoros = parseInt(count) || 0;
-                    this.saveProjects();
-                    this.renderProjects();
-                }
-            },
-            
             setCurrentProject(id) {
                 this.currentProject = id;
-                // Highlight the selected project in the UI
-                document.querySelectorAll('.project-item').forEach(item => {
-                    item.style.backgroundColor = item.dataset.id === id ? '#e1bee7' : 'white';
-                });
+                this.renderProjects();
             },
             
             getCurrentProject() {
@@ -2219,9 +1976,30 @@
                 return STATE.projects.find(p => p.id === this.currentProject)?.name || null;
             },
             
+            incrementPomodoroCount() {
+                if (this.currentProject) {
+                    const project = STATE.projects.find(p => p.id === this.currentProject);
+                    if (project) {
+                        project.pomodoros++;
+                        this.saveProjects();
+                        this.renderProjects();
+                    }
+                }
+            },
+            
+            incrementBreakCount() {
+                if (this.currentProject) {
+                    const project = STATE.projects.find(p => p.id === this.currentProject);
+                    if (project) {
+                        project.breaks++;
+                        this.saveProjects();
+                        this.renderProjects();
+                    }
+                }
+            },
+            
             saveProjects() {
                 localStorage.setItem('projects', JSON.stringify(STATE.projects));
-                this.updateTotalPomodoros();
             },
             
             loadProjects() {
@@ -2237,15 +2015,20 @@
                 
                 STATE.projects.forEach(project => {
                     const projectItem = document.createElement('div');
-                    projectItem.className = 'project-item';
+                    projectItem.className = `project-item ${project.id === this.currentProject ? 'selected' : ''}`;
                     projectItem.dataset.id = project.id;
                     
                     projectItem.innerHTML = `
                         <div class="project-name">${project.name}</div>
-                        <div class="project-pomodoros">
-                            <input type="number" value="${project.pomodoros}" min="0" 
-                                onchange="projectActions.updatePomodoroCount('${project.id}', this.value)">
-                            <span>pomodoros</span>
+                        <div class="project-stats">
+                            <div class="project-stat">
+                                <span>🍅</span>
+                                <span>${project.pomodoros}</span>
+                            </div>
+                            <div class="project-stat">
+                                <span>☕</span>
+                                <span>${project.breaks}</span>
+                            </div>
                         </div>
                         <div class="project-actions">
                             <button class="project-action-btn" onclick="projectActions.setCurrentProject('${project.id}')">Track</button>
@@ -2255,33 +2038,41 @@
                     
                     DOM.projectList.appendChild(projectItem);
                 });
-                
-                this.updateTotalPomodoros();
             },
             
-            updateTotalPomodoros() {
-                const total = STATE.projects.reduce((sum, project) => sum + project.pomodoros, 0);
-                DOM.totalPomodoros.textContent = total;
-            },
-            
-            updateProjectCountsFromHistory() {
-                // Reset all counts
-                STATE.projects.forEach(project => project.pomodoros = 0);
+            renderProjectsHistory() {
+                DOM.projectsHistoryList.innerHTML = '';
                 
-                // Count work sessions for each project
-                STATE.sessionHistory.forEach(session => {
-                    if (session.type === 'work' && session.project) {
-                        const project = STATE.projects.find(p => p.name === session.project);
-                        if (project) {
-                            // Count each 25-minute block as one pomodoro
-                            const pomodoros = Math.ceil(session.duration / (25 * 60));
-                            project.pomodoros += pomodoros;
-                        }
-                    }
+                if (STATE.projects.length === 0) {
+                    DOM.projectsHistoryList.innerHTML = '<p style="text-align: center; padding: 20px; color: #666;">No projects yet</p>';
+                    return;
+                }
+                
+                STATE.projects.forEach(project => {
+                    const projectItem = document.createElement('div');
+                    projectItem.className = 'history-item';
+                    
+                    // Calculate total time spent on this project
+                    const projectSessions = STATE.sessionHistory.filter(s => s.project === project.name);
+                    const workSeconds = projectSessions
+                        .filter(s => s.type === 'work')
+                        .reduce((sum, s) => sum + s.duration, 0);
+                    const breakSeconds = projectSessions
+                        .filter(s => s.type === 'break')
+                        .reduce((sum, s) => sum + s.duration, 0);
+                    
+                    projectItem.innerHTML = `
+                        <div class="history-header">
+                            <span class="history-type">${project.name}</span>
+                        </div>
+                        <div>Pomodoros: ${project.pomodoros}</div>
+                        <div>Breaks: ${project.breaks}</div>
+                        <div>Work Time: ${trackingActions.formatTime(workSeconds)}</div>
+                        <div>Break Time: ${trackingActions.formatTime(breakSeconds)}</div>
+                    `;
+                    
+                    DOM.projectsHistoryList.appendChild(projectItem);
                 });
-                
-                this.saveProjects();
-                this.renderProjects();
             }
         };
 
@@ -2919,7 +2710,7 @@
                 STATE.sessionHistory.push(session);
                 this.saveHistory();
                 this.renderHistory();
-                projectActions.updateProjectCountsFromHistory();
+                projectActions.renderProjectsHistory();
             },
 
             saveHistory() {
@@ -2931,7 +2722,7 @@
                 if (savedHistory) {
                     STATE.sessionHistory = JSON.parse(savedHistory);
                     this.renderHistory();
-                    projectActions.updateProjectCountsFromHistory();
+                    projectActions.renderProjectsHistory();
                 }
             },
 
@@ -2940,11 +2731,7 @@
                     STATE.sessionHistory = [];
                     this.saveHistory();
                     DOM.historyList.innerHTML = '';
-                    projectActions.updateProjectCountsFromHistory();
-                    // Force immediate UI update
-                    setTimeout(() => {
-                        historyActions.renderHistory();
-                    }, 0);
+                    projectActions.renderProjectsHistory();
                 }
             },
 
@@ -3039,7 +2826,7 @@
                         }
                         
                         historyActions.saveHistory();
-                        projectActions.updateProjectCountsFromHistory();
+                        projectActions.renderProjectsHistory();
                     });
                 });
             },
@@ -3048,13 +2835,13 @@
                 STATE.sessionHistory.splice(index, 1);
                 this.saveHistory();
                 this.renderHistory();
-                projectActions.updateProjectCountsFromHistory();
+                projectActions.renderProjectsHistory();
             }
         };
 
         // ========== Calendar Functions ==========
         const calendarActions = {
-            renderCalendar(container = DOM.calendarGrid, sessionsContainer = DOM.calendarSessions, titleElement = DOM.calendarTitle) {
+            renderCalendar(container = DOM.fullscreenCalendarGrid, sessionsContainer = DOM.fullscreenCalendarSessions, titleElement = DOM.fullscreenCalendarTitle) {
                 const month = STATE.calendar.currentMonth;
                 const year = STATE.calendar.currentYear;
                 
@@ -3126,7 +2913,7 @@
                 }
             },
             
-            showSessionsForDate(date, sessionsContainer = DOM.calendarSessions) {
+            showSessionsForDate(date, sessionsContainer = DOM.fullscreenCalendarSessions) {
                 sessionsContainer.innerHTML = '';
                 
                 const sessionsForDate = STATE.sessionHistory.filter(session => {
@@ -3192,79 +2979,14 @@
                 
                 STATE.calendar.selectedDate = null;
                 calendarActions.renderCalendar();
-                DOM.calendarSessions.innerHTML = '<p style="text-align: center; padding: 20px; color: #666;">Select a date to view sessions</p>';
-            },
-            
-            fullscreenChangeMonth(offset) {
-                STATE.calendar.currentMonth += offset;
-                
-                // Handle year wrap-around
-                if (STATE.calendar.currentMonth < 0) {
-                    STATE.calendar.currentMonth = 11;
-                    STATE.calendar.currentYear--;
-                } else if (STATE.calendar.currentMonth > 11) {
-                    STATE.calendar.currentMonth = 0;
-                    STATE.calendar.currentYear++;
-                }
-                
-                STATE.calendar.selectedDate = null;
-                calendarActions.renderCalendar(DOM.fullscreenCalendarGrid, DOM.fullscreenCalendarSessions, DOM.fullscreenCalendarTitle);
                 DOM.fullscreenCalendarSessions.innerHTML = '<p style="text-align: center; padding: 20px; color: #666;">Select a date to view sessions</p>';
-            },
-            
-            exportCalendarData() {
-                // Group sessions by date
-                const sessionsByDate = {};
-                
-                STATE.sessionHistory.forEach(session => {
-                    const date = new Date(session.timestamp);
-                    const dateKey = date.toISOString().split('T')[0]; // YYYY-MM-DD format
-                    
-                    if (!sessionsByDate[dateKey]) {
-                        sessionsByDate[dateKey] = [];
-                    }
-                    
-                    sessionsByDate[dateKey].push(session);
-                });
-                
-                // Create CSV content
-                let csvContent = "Date,Type,Duration (seconds),Project,Notes\n";
-                
-                Object.keys(sessionsByDate).sort().forEach(date => {
-                    sessionsByDate[date].forEach(session => {
-                        const project = session.project ? `"${session.project.replace(/"/g, '""')}"` : '';
-                        const notes = session.notes ? `"${session.notes.replace(/"/g, '""')}"` : '';
-                        csvContent += `${date},${session.type},${session.duration},${project},${notes}\n`;
-                    });
-                });
-                
-                // Create download link
-                const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-                const url = URL.createObjectURL(blob);
-                const link = document.createElement('a');
-                link.setAttribute('href', url);
-                link.setAttribute('download', `pomodoro-sessions-${new Date().toISOString().split('T')[0]}.csv`);
-                link.style.visibility = 'hidden';
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-            },
-            
-            toggleCalendar() {
-                STATE.calendarOpen = !STATE.calendarOpen;
-                if (STATE.calendarOpen) {
-                    DOM.calendarPanel.classList.add('show');
-                    this.renderCalendar();
-                } else {
-                    DOM.calendarPanel.classList.remove('show');
-                }
             },
             
             toggleFullscreenCalendar() {
                 STATE.fullscreenCalendarOpen = !STATE.fullscreenCalendarOpen;
                 if (STATE.fullscreenCalendarOpen) {
                     DOM.fullscreenCalendar.style.display = 'block';
-                    this.renderCalendar(DOM.fullscreenCalendarGrid, DOM.fullscreenCalendarSessions, DOM.fullscreenCalendarTitle);
+                    this.renderCalendar();
                 } else {
                     DOM.fullscreenCalendar.style.display = 'none';
                 }
@@ -3274,16 +2996,10 @@
         // ========== Sound Control Functions ==========
         const soundActions = {
             togglePanel(panel) {
-                const panels = [DOM.infoPanel, DOM.noisePanel, DOM.lofiPanel, DOM.historyPanel, DOM.rewardsPanel, DOM.productivityPanel, DOM.calendarPanel];
+                const panels = [DOM.infoPanel, DOM.noisePanel, DOM.lofiPanel, DOM.historyPanel, DOM.rewardsPanel, DOM.productivityPanel];
                 panels.forEach(p => {
                     if (p === panel) {
                         p.classList.toggle('show');
-                        if (p === DOM.calendarPanel) {
-                            STATE.calendarOpen = p.classList.contains('show');
-                            if (STATE.calendarOpen) {
-                                calendarActions.renderCalendar();
-                            }
-                        }
                     } else {
                         p.classList.remove('show');
                     }
@@ -3427,7 +3143,7 @@
                 });
                 
                 DOM.calendarMenuItem.addEventListener('click', () => {
-                    soundActions.togglePanel(DOM.calendarPanel);
+                    calendarActions.toggleFullscreenCalendar();
                     this.closeDropdown();
                 });
                 
@@ -3487,21 +3203,12 @@
             DOM.closeRewardsPanel.addEventListener('click', () => {
                 DOM.rewardsPanel.classList.remove('show');
             });
-            
-            DOM.closeCalendarPanel.addEventListener('click', () => {
-                DOM.calendarPanel.classList.remove('show');
-                STATE.calendarOpen = false;
-            });
 
             DOM.resetRewards.addEventListener('click', rewardActions.resetRewards);
 
             // Calendar navigation
-            DOM.prevMonthBtn.addEventListener('click', () => calendarActions.changeMonth(-1));
-            DOM.nextMonthBtn.addEventListener('click', () => calendarActions.changeMonth(1));
-            DOM.exportCalendarBtn.addEventListener('click', calendarActions.exportCalendarData);
-            DOM.fullscreenCalendarBtn.addEventListener('click', calendarActions.toggleFullscreenCalendar);
-            DOM.fullscreenPrevMonthBtn.addEventListener('click', () => calendarActions.fullscreenChangeMonth(-1));
-            DOM.fullscreenNextMonthBtn.addEventListener('click', () => calendarActions.fullscreenChangeMonth(1));
+            DOM.fullscreenPrevMonthBtn.addEventListener('click', () => calendarActions.changeMonth(-1));
+            DOM.fullscreenNextMonthBtn.addEventListener('click', () => calendarActions.changeMonth(1));
             DOM.backToMainBtn.addEventListener('click', () => {
                 DOM.fullscreenCalendar.style.display = 'none';
                 STATE.fullscreenCalendarOpen = false;
@@ -3509,7 +3216,7 @@
 
             // Project tracking
             DOM.addProjectBtn.addEventListener('click', projectActions.addProject.bind(projectActions));
-            DOM.projectNameInput.addEventListener('keypress', (e) => {
+            DOM.projectInput.addEventListener('keypress', (e) => {
                 if (e.key === 'Enter') {
                     projectActions.addProject();
                 }
@@ -3525,7 +3232,7 @@
 
             document.addEventListener('click', (e) => {
                 const panels = [DOM.infoPanel, DOM.noisePanel, DOM.lofiPanel, DOM.historyPanel, 
-                               DOM.rewardsPanel, DOM.productivityPanel, DOM.calendarPanel];
+                               DOM.rewardsPanel, DOM.productivityPanel];
                 
                 if (!panels.some(panel => panel.contains(e.target)) && 
                     !DOM.dropdownBtn.contains(e.target) && 
