@@ -294,10 +294,9 @@
 
         .project-item {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 8px;
-            margin-bottom: 5px;
+            flex-direction: column;
+            padding: 10px;
+            margin-bottom: 10px;
             background-color: white;
             border-radius: 5px;
             box-shadow: 0 1px 3px rgba(0,0,0,0.1);
@@ -307,15 +306,30 @@
             background-color: #e1bee7;
         }
 
+        .project-main-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .project-name {
+            flex: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            font-weight: 500;
+        }
+
         .project-stats {
             display: flex;
-            gap: 10px;
+            gap: 15px;
         }
 
         .project-stat {
             display: flex;
             align-items: center;
-            gap: 3px;
+            gap: 5px;
             font-size: 0.9em;
         }
 
@@ -325,35 +339,30 @@
         }
 
         .project-action-btn {
-            padding: 3px 6px;
+            padding: 3px 8px;
             background-color: #f5f5f5;
             border: 1px solid #ddd;
             border-radius: 3px;
             cursor: pointer;
+            font-size: 0.8em;
         }
 
         .project-action-btn:hover {
             background-color: #e0e0e0;
         }
 
-        .project-notes {
+        .project-notes-section {
+            margin-top: 8px;
             width: 100%;
-            padding: 10px;
-            border-radius: 8px;
-            border: 1px solid #ddd;
-            margin-top: 10px;
-            display: none;
         }
 
         .project-notes-toggle {
             background-color: #f5f5f5;
             border: none;
-            padding: 5px 10px;
-            border-radius: 5px;
+            padding: 3px 8px;
+            border-radius: 3px;
             cursor: pointer;
             font-size: 0.8em;
-            margin-top: 5px;
-            display: block;
             width: 100%;
             text-align: left;
         }
@@ -365,10 +374,23 @@
         .project-notes-toggle::after {
             content: "▼";
             float: right;
+            font-size: 0.7em;
         }
 
         .project-notes-toggle.expanded::after {
             content: "▲";
+        }
+
+        .project-notes {
+            width: 100%;
+            padding: 8px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+            margin-top: 5px;
+            display: none;
+            font-size: 0.9em;
+            min-height: 60px;
+            box-sizing: border-box;
         }
 
         .mode-indicator {
@@ -1676,23 +1698,27 @@
                     projectItem.dataset.id = project.id;
                     
                     projectItem.innerHTML = `
-                        <div class="project-name">${project.name}</div>
-                        <div class="project-stats">
-                            <div class="project-stat">
-                                <span>🍅</span>
-                                <span>${project.pomodoros}</span>
+                        <div class="project-main-content">
+                            <div class="project-name">${project.name}</div>
+                            <div class="project-stats">
+                                <div class="project-stat">
+                                    <span>🍅</span>
+                                    <span>${project.pomodoros}</span>
+                                </div>
+                                <div class="project-stat">
+                                    <span>☕</span>
+                                    <span>${project.breaks}</span>
+                                </div>
                             </div>
-                            <div class="project-stat">
-                                <span>☕</span>
-                                <span>${project.breaks}</span>
+                            <div class="project-actions">
+                                <button class="project-action-btn" onclick="projectActions.setCurrentProject('${project.id}')">Track</button>
+                                <button class="project-action-btn" onclick="projectActions.deleteProject('${project.id}')">Delete</button>
                             </div>
                         </div>
-                        <div class="project-actions">
-                            <button class="project-action-btn" onclick="projectActions.setCurrentProject('${project.id}')">Track</button>
-                            <button class="project-action-btn" onclick="projectActions.deleteProject('${project.id}')">Delete</button>
+                        <div class="project-notes-section">
+                            <button class="project-notes-toggle">Notes</button>
+                            <textarea class="project-notes" placeholder="Add notes about this project...">${project.notes || ''}</textarea>
                         </div>
-                        <button class="project-notes-toggle">Notes</button>
-                        <textarea class="project-notes" placeholder="Add notes about this project...">${project.notes || ''}</textarea>
                     `;
                     
                     DOM.projectList.appendChild(projectItem);
