@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pomodoro Timer</title>
+    <title>Pomodoro Timer with Project Tracking</title>
     <style>
-        /* === Base Styles === */
         :root {
             --primary-pink: #e91e63;
             --primary-green: #4caf50;
@@ -13,10 +12,6 @@
             --primary-blue: #2196f3;
             --primary-orange: #ff9800;
             --accent-purple: #673ab7;
-            --background-gradient-1: #ffebee;
-            --background-gradient-2: #e8f5e9;
-            --background-gradient-3: #e3f2fd;
-            --background-gradient-4: #f3e5f5;
             --work-bg: #ffebee;
             --break-bg: #e8f5e9;
             --work-text: #e91e63;
@@ -25,161 +20,47 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
             margin: 0;
+            padding: 0;
             color: #333;
-            overflow-x: hidden;
-            background: linear-gradient(-45deg, 
-                var(--background-gradient-1),
-                var(--background-gradient-2),
-                var(--background-gradient-3),
-                var(--background-gradient-4));
-            background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
-            transition: background-color 0.5s ease;
-        }
-
-        body.work-mode {
-            background-color: var(--work-bg);
-            animation: none;
-        }
-
-        body.break-mode {
-            background-color: var(--break-bg);
-            animation: none;
-        }
-
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; background-color: var(--background-gradient-1); }
-            25% { background-color: var(--background-gradient-2); }
-            50% { background-position: 100% 50%; background-color: var(--background-gradient-3); }
-            75% { background-color: var(--background-gradient-4); }
-            100% { background-position: 0% 50%; background-color: var(--background-gradient-1); }
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
-
-        .animal-side {
-            position: fixed;
-            top: 45%;
-            transform: translateY(-50%);
-            z-index: 1;
-            pointer-events: none;
-        }
-
-        .animal-left { 
-            left: 10px;
-            animation: floatLeft 15s ease-in-out infinite alternate;
-        }
-
-        .animal-right { 
-            right: 10px;
-            animation: floatRight 15s ease-in-out infinite alternate;
-        }
-
-        .animal-gif {
-            width: 160px;
-            height: auto;
-            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1));
-            animation: float 4s ease-in-out infinite;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-15px) rotate(3deg); }
-        }
-
-        @keyframes floatLeft {
-            0% { transform: translateY(-50%) translateX(0); }
-            100% { transform: translateY(-50%) translateX(20px); }
-        }
-
-        @keyframes floatRight {
-            0% { transform: translateY(-50%) translateX(0); }
-            100% { transform: translateY(-50%) translateX(-20px); }
+            background: #f5f5f5;
         }
 
         .container {
-            background-color: rgba(255, 255, 255, 0.9);
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-            text-align: center;
-            max-width: 800px;
-            width: 90%;
-            backdrop-filter: blur(5px);
-            position: relative;
-            z-index: 2;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
         }
 
         h1 {
             color: var(--primary-pink);
-            margin-top: 0;
-            font-size: 2.5em;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
-            font-weight: 600;
-        }
-
-        .header-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-bottom: 15px;
+            margin: 0;
         }
 
         .timer-container {
-            position: relative;
-            width: 300px;
-            height: 300px;
-            margin: 20px auto;
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
         }
 
         .timer-display {
-            font-size: 5em;
-            font-weight: bold;
-            color: var(--primary-purple);
-            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.1);
-            font-family: 'Courier New', monospace;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 2;
-            transition: none; /* Remove transition to prevent movement during celebration */
-            width: 100%;
+            font-size: 4rem;
             text-align: center;
+            font-family: monospace;
+            margin: 20px 0;
+            color: var(--primary-purple);
         }
 
-        .timer-progress {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            background: conic-gradient(var(--primary-blue) 0%, transparent 0%);
-            z-index: 1;
-        }
-
-        .timer-circle {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            border: 10px solid rgba(0, 0, 0, 0.1);
-            box-sizing: border-box;
-        }
-
-        .buttons {
+        .timer-controls {
             display: flex;
             justify-content: center;
             gap: 10px;
@@ -187,24 +68,26 @@
         }
 
         button {
-            padding: 12px 25px;
-            font-size: 1.1em;
+            padding: 10px 20px;
             border: none;
-            border-radius: 50px;
+            border-radius: 5px;
+            background-color: var(--primary-blue);
+            color: white;
             cursor: pointer;
-            transition: all 0.3s;
-            font-weight: bold;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            font-size: 1rem;
+            transition: background-color 0.2s;
         }
 
         button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+            opacity: 0.9;
         }
 
-        #start { background-color: var(--primary-green); color: white; }
-        #stop { background-color: #f44336; color: white; display: none; }
-        #reset { background-color: var(--primary-blue); color: white; }
+        .mode-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
 
         .quick-buttons {
             display: flex;
@@ -213,485 +96,258 @@
             margin-bottom: 20px;
         }
 
-        .quick-btn {
-            padding: 10px 15px;
-            background-color: var(--primary-orange);
-            color: white;
+        #start { background-color: var(--primary-green); }
+        #stop { background-color: #f44336; display: none; }
+        #reset { background-color: var(--primary-orange); }
+        #setWorkMode { background-color: var(--primary-pink); }
+        #setBreakMode { background-color: var(--primary-green); }
+
+        .tracking-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
         }
 
-        .mode-btn {
-            padding: 10px 20px;
-            font-size: 1em;
-        }
-
-        #setWorkMode { background-color: var(--primary-pink); color: white; }
-        #setBreakMode { background-color: var(--primary-green); color: white; }
-
-        .tracking {
-            margin-top: 30px;
-            background-color: rgba(255, 255, 255, 0.7);
-            padding: 15px;
+        .tracking-box {
+            background-color: white;
             border-radius: 10px;
-        }
-
-        .stats {
-            display: flex;
-            justify-content: space-around;
-            margin-bottom: 15px;
-        }
-
-        .stat-box {
-            background-color: rgba(255, 255, 255, 0.8);
             padding: 15px;
-            border-radius: 8px;
-            min-width: 120px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
 
-        .stat-box div:first-child {
-            font-weight: bold;
-            margin-bottom: 5px;
-            font-size: 1em;
-        }
-
-        .stat-box div:last-child {
-            font-size: 1.3em;
-            font-weight: bold;
+        .tracking-box h2 {
+            margin-top: 0;
+            font-size: 1.2rem;
             color: var(--primary-purple);
         }
 
-        .reset-tracking-btn {
-            background-color: var(--primary-orange);
-            color: white;
-            margin: 10px auto;
-            display: block;
-        }
-
-        .projects-container {
-            margin-top: 20px;
-            background-color: rgba(255, 255, 255, 0.7);
-            padding: 15px;
-            border-radius: 10px;
-        }
-
-        .project-input {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-
-        .project-input input {
-            flex: 1;
-            padding: 8px;
-            border-radius: 5px;
-            border: 1px solid #ddd;
-        }
-
         .project-list {
-            max-height: 200px;
+            max-height: 300px;
             overflow-y: auto;
         }
 
         .project-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 8px;
-            margin-bottom: 5px;
-            background-color: white;
-            border-radius: 5px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .project-item:hover {
+            background-color: #f5f5f5;
         }
 
         .project-item.selected {
             background-color: #e1bee7;
         }
 
+        .project-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .project-name {
+            font-weight: bold;
+        }
+
         .project-stats {
             display: flex;
-            gap: 10px;
+            gap: 15px;
+            font-size: 0.9rem;
+            color: #666;
         }
 
-        .project-stat {
-            display: flex;
-            align-items: center;
-            gap: 3px;
-            font-size: 0.9em;
-        }
-
-        .project-actions {
-            display: flex;
-            gap: 5px;
-        }
-
-        .project-action-btn {
-            padding: 3px 6px;
-            background-color: #f5f5f5;
-            border: 1px solid #ddd;
-            border-radius: 3px;
-            cursor: pointer;
-        }
-
-        .project-action-btn:hover {
-            background-color: #e0e0e0;
-        }
-
-        .notes-container {
-            margin-top: 20px;
-        }
-
-        .notes-column {
-            background-color: rgba(255, 255, 255, 0.7);
-            padding: 15px;
-            border-radius: 10px;
-            min-height: 200px;
-        }
-
-        .notes-column h3 {
-            margin-top: 0;
-            color: white;
-            padding: 8px;
+        .project-notes {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #f9f9f9;
             border-radius: 5px;
-            background-color: var(--primary-purple);
+            display: none;
         }
 
-        .save-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-bottom: 10px;
-        }
-
-        textarea {
-            width: 100%;
-            height: 80px;
-            padding: 10px;
-            border-radius: 8px;
-            border: 2px solid var(--primary-purple);
-            resize: vertical;
-            font-family: inherit;
-            margin-bottom: 10px;
-        }
-
-        .note-list {
-            text-align: left;
-            max-height: 300px;
-            overflow-y: auto;
-            padding: 10px;
-            background-color: rgba(255, 255, 255, 0.8);
-            border-radius: 8px;
+        .project-item.expanded .project-notes {
+            display: block;
         }
 
         .note-item {
-            padding: 10px;
-            margin-bottom: 10px;
-            border-radius: 8px;
+            padding: 8px;
+            margin-bottom: 5px;
             background-color: white;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            position: relative;
+            border-left: 3px solid var(--primary-blue);
+            font-size: 0.9rem;
         }
 
-        .work-note { border-left: 4px solid var(--primary-pink); }
-        .break-note { border-left: 4px solid var(--primary-green); }
-
         .note-time {
-            font-weight: bold;
-            font-size: 0.9em;
+            font-size: 0.8rem;
             color: #666;
             margin-bottom: 5px;
         }
 
-        .note-text { margin: 5px 0; }
-
-        .note-actions {
-            display: flex;
-            justify-content: flex-end;
-            gap: 5px;
-            margin-top: 5px;
+        .note-text {
+            margin: 5px 0;
         }
 
-        .note-action-btn {
-            padding: 3px 8px;
-            font-size: 0.8em;
-            border-radius: 4px;
-            background-color: #f5f5f5;
-            border: 1px solid #ddd;
-        }
-
-        .note-action-btn:hover { background-color: #e0e0e0; }
-
-        .notes-actions {
+        .add-note {
             display: flex;
-            justify-content: space-between;
+            gap: 10px;
             margin-top: 10px;
         }
 
-        .copy-notes-btn {
+        .add-note input {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .add-note button {
+            padding: 8px 15px;
+        }
+
+        .calendar-container {
+            background-color: white;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .calendar-nav {
+            display: flex;
+            gap: 10px;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 5px;
+        }
+
+        .calendar-day-header {
+            text-align: center;
+            font-weight: bold;
+            padding: 5px;
+            color: var(--primary-purple);
+        }
+
+        .calendar-day {
+            text-align: center;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .calendar-day:hover {
+            background-color: #f5f5f5;
+        }
+
+        .calendar-day.today {
+            background-color: var(--primary-blue);
+            color: white;
+        }
+
+        .calendar-day.has-sessions {
+            position: relative;
+        }
+
+        .calendar-day.has-sessions::after {
+            content: '';
+            position: absolute;
+            bottom: 2px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 6px;
+            height: 6px;
+            background-color: var(--primary-pink);
+            border-radius: 50%;
+        }
+
+        .calendar-day.selected {
             background-color: var(--primary-purple);
             color: white;
         }
 
-        .delete-all-notes-btn {
-            background-color: #f44336;
-            color: white;
-        }
-
-        .mode-indicator {
-            font-size: 1.5em;
-            margin-bottom: 10px;
-            font-weight: bold;
-            padding: 8px 15px;
-            border-radius: 50px;
-            display: inline-block;
-        }
-
-        .work-mode { background-color: var(--work-bg); color: var(--work-text); }
-        .break-mode { background-color: var(--break-bg); color: var(--break-text); }
-
-        /* Top right dropdown menu */
-        .dropdown-menu {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 100;
-        }
-
-        .dropdown-btn {
-            background-color: var(--accent-purple);
-            color: white;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            cursor: pointer;
-            transition: all 0.3s;
-            font-size: 1.5em;
-        }
-
-        .dropdown-btn:hover { 
-            transform: scale(1.1); 
-        }
-
-        .dropdown-content {
+        .calendar-sessions {
+            margin-top: 20px;
             display: none;
-            position: absolute;
-            right: 0;
-            background-color: white;
-            min-width: 200px;
-            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
-            border-radius: 10px;
-            z-index: 101;
         }
 
-        .dropdown-content.show {
+        .calendar-sessions.visible {
             display: block;
         }
 
-        .dropdown-item {
-            padding: 12px 16px;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            color: #333;
-            cursor: pointer;
-            transition: background-color 0.2s;
-        }
-
-        .dropdown-item:hover {
-            background-color: #f1f1f1;
-        }
-
-        .dropdown-item i {
-            margin-right: 10px;
-            font-size: 1.2em;
-        }
-
-        .panel {
-            position: fixed;
-            background-color: white;
-            border-radius: 15px;
-            padding: 15px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-            display: none;
-            max-height: 80vh;
-            overflow-y: auto;
-            z-index: 101;
-            right: 20px;
-            width: 350px;
-        }
-
-        .panel.show { 
-            display: block;
-            max-height: 80vh;
-            height: auto;
-        }
-
-        .info-panel {
-            top: 90px;
-            left: 20px;
-            width: 350px;
-            max-height: 80vh;
-            right: auto;
-            bottom: auto;
-        }
-
-        .info-panel h3 {
-            color: var(--accent-purple);
-            margin-top: 0;
-        }
-
-        .info-panel p {
-            text-align: left;
+        .session-item {
+            padding: 10px;
             margin-bottom: 10px;
-            font-size: 0.9em;
+            background-color: #f9f9f9;
+            border-radius: 5px;
         }
 
-        .info-panel ul {
-            text-align: left;
-            padding-left: 20px;
-            margin-bottom: 15px;
-        }
-
-        .productivity-panel {
-            top: 90px;
-            left: 20px;
-            width: 350px;
-            max-height: 80vh;
-            display: none;
-            right: auto;
-            bottom: auto;
-        }
-
-        .productivity-panel h3 {
-            color: var(--accent-purple);
-            margin-top: 0;
-        }
-
-        .productivity-panel p {
-            text-align: left;
-            margin-bottom: 10px;
-            font-size: 0.9em;
-        }
-
-        .productivity-panel ul {
-            text-align: left;
-            padding-left: 20px;
-            margin-bottom: 15px;
-        }
-
-        .close-panel-btn {
-            position: absolute;
-            top: 5px;
-            right: 5px;
-            background: none;
-            border: none;
-            font-size: 1.2em;
-            cursor: pointer;
+        .session-time {
+            font-size: 0.9rem;
             color: #666;
         }
 
-        .noise-controls {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 10px;
-        }
-
-        .noise-play-btn {
-            background-color: var(--accent-purple);
-            color: white;
-            border: none;
-            border-radius: 5px;
-            padding: 5px 10px;
-            cursor: pointer;
-        }
-
-        .noise-option {
-            display: flex;
-            align-items: center;
-            padding: 10px;
-            border-radius: 8px;
-            margin-bottom: 8px;
-            cursor: pointer;
-            transition: background-color 0.2s;
-        }
-
-        .noise-option:hover { background-color: #f5f5f5; }
-        .noise-option.active { background-color: #e1bee7; }
-
-        .noise-option input {
-            margin-right: 10px;
-            width: auto;
-        }
-
-        .noise-option label { flex: 1; cursor: pointer; }
-
-        .volume-control { width: 100%; margin-top: 10px; }
-
-        .lofi-channel {
-            display: block;
-            padding: 10px;
-            margin-bottom: 8px;
-            border-radius: 8px;
-            background-color: #f5f5f5;
-            color: #333;
-            text-decoration: none;
-            transition: background-color 0.2s;
-        }
-
-        .lofi-channel:hover { background-color: #e0e0e0; }
-
-        .lofi-channel img {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            margin-right: 10px;
-            vertical-align: middle;
-        }
-
-        .donate-btn {
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            background-color: #ff5722;
-            color: white;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 50px;
-            cursor: pointer;
+        .session-duration {
             font-weight: bold;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            z-index: 100;
-            transition: all 0.3s;
-            text-decoration: none;
-            font-size: 1em;
-            font-family: inherit;
-            display: flex;
-            align-items: center;
-            gap: 8px;
         }
 
-        .donate-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
-            background-color: #ff7043;
+        .session-project {
+            color: var(--primary-purple);
+            font-size: 0.9rem;
+        }
+
+        .session-notes {
+            margin-top: 5px;
+            font-size: 0.9rem;
+        }
+
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 15px;
+        }
+
+        .tab {
+            padding: 10px 15px;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+        }
+
+        .tab.active {
+            border-bottom: 2px solid var(--primary-purple);
+            color: var(--primary-purple);
+            font-weight: bold;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
         }
 
         .history-item {
             padding: 10px;
             margin-bottom: 10px;
-            border-radius: 8px;
-            background-color: #f9f9f9;
-            border-left: 4px solid var(--primary-purple);
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
 
         .history-header {
             display: flex;
             justify-content: space-between;
-            align-items: center;
             margin-bottom: 5px;
         }
 
@@ -699,14 +355,14 @@
             font-weight: bold;
             padding: 3px 8px;
             border-radius: 4px;
-            font-size: 0.9em;
+            font-size: 0.9rem;
         }
 
         .work-history { background-color: var(--work-bg); color: var(--work-text); }
         .break-history { background-color: var(--break-bg); color: var(--break-text); }
 
         .history-time {
-            font-size: 0.9em;
+            font-size: 0.9rem;
             color: #666;
         }
 
@@ -714,2548 +370,1024 @@
             font-weight: bold;
         }
 
+        .history-project {
+            color: var(--primary-purple);
+            font-size: 0.9rem;
+        }
+
         .history-notes {
             margin-top: 5px;
-            padding: 5px;
-            background-color: white;
-            border-radius: 4px;
-        }
-
-        .history-actions {
-            display: flex;
-            justify-content: flex-end;
-            gap: 5px;
-            margin-top: 5px;
-        }
-
-        .history-action-btn {
-            padding: 3px 8px;
-            font-size: 0.8em;
-            border-radius: 4px;
-            background-color: #f5f5f5;
-            border: 1px solid #ddd;
-        }
-
-        .history-action-btn:hover { background-color: #e0e0e0; }
-
-        .history-controls {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 10px;
-        }
-
-        .clear-history-btn {
-            background-color: #f44336;
-            color: white;
-            padding: 8px 15px;
-            margin-top: 10px;
+            font-size: 0.9rem;
         }
 
         .export-btn {
-            background-color: var(--primary-blue);
-            color: white;
-            padding: 8px 15px;
+            background-color: var(--primary-green);
             margin-top: 10px;
         }
 
-        .editable {
-            border: 1px dashed #ccc;
-            padding: 2px;
-            min-height: 1em;
-        }
-
-        .editable:focus {
-            outline: none;
-            border: 1px solid var(--primary-blue);
-            background-color: #f5f9ff;
-        }
-
-        .reward-item {
-            display: flex;
-            align-items: center;
-            padding: 10px;
-            margin-bottom: 10px;
-            border-radius: 8px;
-            background-color: #f9f9f9;
-        }
-
-        .reward-icon {
-            font-size: 1.5em;
-            margin-right: 10px;
-            width: 40px;
-            text-align: center;
-        }
-
-        .reward-details {
-            flex: 1;
-        }
-
-        .reward-title {
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-
-        .reward-progress {
-            height: 10px;
-            background-color: #e0e0e0;
-            border-radius: 5px;
-            margin-top: 5px;
-            overflow: hidden;
-        }
-
-        .progress-bar {
-            height: 100%;
-            background-color: var(--primary-green);
-            width: 0%;
-            transition: width 0.5s ease;
-        }
-
-        .reward-status {
-            font-size: 0.8em;
-            color: #666;
-            margin-top: 3px;
-        }
-
-        .reward-earned {
-            background-color: #e8f5e9;
-            border-left: 4px solid var(--primary-green);
-        }
-
-        .reward-emoji {
-            font-size: 1.2em;
-            margin-left: 10px;
-        }
-
-        .confetti-container {
+        .modal {
+            display: none;
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            pointer-events: none;
+            background-color: rgba(0,0,0,0.5);
             z-index: 1000;
+            justify-content: center;
+            align-items: center;
         }
 
-        .confetti {
-            position: absolute;
-            width: 10px;
-            height: 10px;
-            opacity: 0;
+        .modal-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
         }
 
-        .reward-tabs {
-            display: flex;
-            margin-bottom: 10px;
-            border-bottom: 1px solid #ddd;
-        }
-
-        .reward-tab {
-            padding: 8px 15px;
-            cursor: pointer;
-            border-bottom: 2px solid transparent;
-            transition: all 0.2s;
-        }
-
-        .reward-tab.active {
-            border-bottom: 2px solid var(--accent-purple);
-            color: var(--accent-purple);
-            font-weight: bold;
-        }
-
-        .reward-tab-content {
-            display: none;
-        }
-
-        .reward-tab-content.active {
-            display: block;
-        }
-
-        .reward-controls {
+        .modal-header {
             display: flex;
             justify-content: space-between;
-            margin-top: 10px;
+            align-items: center;
+            margin-bottom: 15px;
         }
 
-        .reset-rewards-btn {
-            background-color: var(--primary-orange);
-            color: white;
+        .modal-close {
+            font-size: 1.5rem;
+            cursor: pointer;
         }
 
-        .delete-history-btn {
-            background-color: #f44336;
-            color: white;
-        }
-
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb { background: #c1c1c1; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #a8a8a8; }
-
-        @keyframes bigCelebration {
-            0% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.5); opacity: 0.8; }
-            100% { transform: scale(1); opacity: 0; }
-        }
-
-        .big-reward {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 10em;
-            z-index: 2000;
-            animation: bigCelebration 2s ease-out forwards;
-            pointer-events: none;
-        }
-
-        /* Fullscreen calendar */
-        .calendar-fullscreen {
+        .full-calendar {
+            display: none;
             position: fixed;
             top: 0;
             left: 0;
-            right: 0;
-            bottom: 0;
+            width: 100%;
+            height: 100%;
             background-color: white;
             z-index: 1000;
             padding: 20px;
             overflow-y: auto;
         }
 
-        .calendar-fullscreen .calendar-header {
-            justify-content: center;
+        .full-calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             margin-bottom: 20px;
         }
 
-        .calendar-fullscreen .calendar-grid {
+        .full-calendar-grid {
+            display: grid;
             grid-template-columns: repeat(7, 1fr);
             gap: 10px;
         }
 
-        .calendar-fullscreen .calendar-day {
-            padding: 15px;
+        .full-calendar-day {
             min-height: 80px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: space-between;
+            padding: 10px;
+            border: 1px solid #eee;
+            border-radius: 5px;
         }
 
-        .calendar-fullscreen .calendar-day.has-sessions::after {
-            content: '•';
-            color: var(--accent-purple);
-            font-size: 1.5em;
-            margin-top: 5px;
+        .full-calendar-day.has-sessions {
+            background-color: #f9f9f9;
         }
 
-        .calendar-fullscreen .calendar-sessions {
-            max-height: none;
+        .full-calendar-day-number {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .full-calendar-sessions {
             margin-top: 30px;
         }
 
-        .calendar-fullscreen .calendar-session-item {
+        .full-session-item {
             padding: 15px;
             margin-bottom: 10px;
-        }
-
-        .back-to-main {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            background-color: var(--accent-purple);
-            color: white;
-            border: none;
-            padding: 10px 20px;
+            background-color: #f9f9f9;
             border-radius: 5px;
-            cursor: pointer;
-            z-index: 1001;
         }
 
-        /* Mobile responsiveness */
         @media (max-width: 768px) {
-            .dropdown-btn {
-                width: 40px;
-                height: 40px;
-                font-size: 1.2em;
-            }
-            
-            .panel {
-                width: 90%;
-                max-width: 350px;
-                right: auto;
-                left: 50%;
-                transform: translateX(-50%);
-                top: 50px;
-            }
-            
-            .info-panel, .productivity-panel {
-                left: 50%;
-                transform: translateX(-50%);
-                width: 90%;
-                max-width: 350px;
-            }
-            
-            .timer-container {
-                width: 250px;
-                height: 250px;
+            .tracking-container {
+                grid-template-columns: 1fr;
             }
             
             .timer-display {
-                font-size: 4em;
+                font-size: 3rem;
             }
             
-            .quick-buttons {
+            .timer-controls, .mode-buttons, .quick-buttons {
                 flex-wrap: wrap;
             }
-            
-            .quick-btn {
-                padding: 8px 12px;
-                font-size: 0.9em;
-            }
-            
-            /* Center tab bubbles on mobile */
-            .reward-tabs {
-                justify-content: center;
-                flex-wrap: wrap;
-            }
-            
-            .reward-tab {
-                padding: 8px 10px;
-                font-size: 0.9em;
-            }
-            
-            /* Make rewards panel taller on desktop */
-            @media (min-width: 769px) {
-                #rewardsPanel {
-                    height: 500px;
-                }
-            }
-            
-            /* Show rewards on mobile */
-            @media (max-width: 768px) {
-                #rewardsPanel {
-                    max-height: 70vh;
-                    height: auto;
-                }
-            }
-        }
-
-        /* Desktop specific styles */
-        @media (min-width: 769px) {
-            .panel {
-                top: 90px;
-                right: 20px;
-                left: auto;
-                transform: none;
-            }
-        }
-
-        /* Negative timer styling */
-        .negative-timer {
-            color: #f44336 !important;
         }
     </style>
 </head>
 <body>
-    <div class="animal-side animal-left">
-        <img class="animal-gif" id="leftAnimalGif" src="assets/working-dog-animation.gif" alt="Working animal">
-    </div>
-
-    <!-- Top right dropdown menu -->
-    <div class="dropdown-menu">
-        <div class="dropdown-btn" id="dropdownBtn">☰</div>
-        <div class="dropdown-content" id="dropdownContent">
-            <div class="dropdown-item" id="infoMenuItem">
-                <i>ℹ️</i> Info
-            </div>
-            <div class="dropdown-item" id="productivityMenuItem">
-                <i>📈</i> Productivity
-            </div>
-            <div class="dropdown-item" id="noiseMenuItem">
-                <i>🎵</i> Background Sounds
-            </div>
-            <div class="dropdown-item" id="lofiMenuItem">
-                <i>🎧</i> LoFi Channels
-            </div>
-            <div class="dropdown-item" id="historyMenuItem">
-                <i>📊</i> Session History
-            </div>
-            <div class="dropdown-item" id="rewardsMenuItem">
-                <i>🏆</i> Rewards
-            </div>
-            <div class="dropdown-item" id="calendarMenuItem">
-                <i>📅</i> Calendar
-            </div>
-            <div class="dropdown-item" id="donateMenuItem">
-                <i>☕</i> Buy Creator a Coffee
-            </div>
-        </div>
-    </div>
-
     <div class="container">
-        <h1>Pomodoro Timer</h1>
-        
-        <div class="header-buttons">
-            <button class="mode-btn" id="setWorkMode">Set Work Mode</button>
-            <button class="mode-btn" id="setBreakMode">Set Break Mode</button>
+        <div class="header">
+            <h1>Pomodoro Timer</h1>
+            <button id="viewCalendar">View Calendar</button>
         </div>
-        
-        <div class="mode-indicator" id="modeIndicator">Work Time</div>
-        
+
         <div class="timer-container">
-            <div class="timer-progress" id="timerProgress"></div>
-            <div class="timer-circle"></div>
             <div class="timer-display" id="timer" contenteditable="true">25:00</div>
-        </div>
-        
-        <div class="buttons">
-            <button id="start">Start</button>
-            <button id="stop">Stop</button>
-            <button id="reset">Reset</button>
-        </div>
-        
-        <div class="quick-buttons">
-            <button class="quick-btn" id="work25">Work (25:00)</button>
-            <button class="quick-btn" id="break5">Break (5:00)</button>
-            <button class="quick-btn" id="break30">Long Break (30:00)</button>
-        </div>
-        
-        <div class="tracking">
-            <h2>Tracking</h2>
             
-            <div class="stats">
-                <div class="stat-box">
-                    <div>Work Time:</div>
-                    <div id="totalWork">00:00:00</div>
-                </div>
-                <div class="stat-box">
-                    <div>Break Time:</div>
-                    <div id="totalBreak">00:00:00</div>
-                </div>
+            <div class="timer-controls">
+                <button id="start">Start</button>
+                <button id="stop">Stop</button>
+                <button id="reset">Reset</button>
             </div>
             
-            <button id="resetTracking" class="reset-tracking-btn">Reset Tracking Time</button>
+            <div class="mode-buttons">
+                <button id="setWorkMode">Work Mode</button>
+                <button id="setBreakMode">Break Mode</button>
+            </div>
             
-            <!-- Projects Section -->
-            <div class="projects-container">
-                <h3>Project Tracking</h3>
+            <div class="quick-buttons">
+                <button id="work25">25:00</button>
+                <button id="break5">5:00</button>
+                <button id="break30">30:00</button>
+            </div>
+        </div>
+
+        <div class="tracking-container">
+            <div class="tracking-box">
+                <h2>Project Tracking</h2>
                 <div class="project-input">
-                    <input type="text" id="projectInput" placeholder="Enter project name">
-                    <button id="addProjectBtn">Add Project</button>
+                    <input type="text" id="projectInput" placeholder="New project name">
+                    <button id="addProject">Add Project</button>
                 </div>
-                <div class="project-list" id="projectList"></div>
-            </div>
-            
-            <div class="notes-container">
-                <div class="notes-column">
-                    <h3>Session Notes</h3>
-                    <textarea id="noteInput" placeholder="Add notes about your session..."></textarea>
-                    <div class="save-buttons">
-                        <button id="saveWorkNote" class="quick-btn" style="background-color: var(--primary-pink);">Save Work Note</button>
-                        <button id="saveBreakNote" class="quick-btn" style="background-color: var(--primary-green);">Save Break Note</button>
-                    </div>
-                    <div class="notes-actions">
-                        <button id="copyNotes" class="copy-notes-btn">Copy All Notes</button>
-                        <button id="deleteAllNotes" class="delete-all-notes-btn">Delete All Notes</button>
-                    </div>
-                    <div class="note-list" id="noteList"></div>
+                <div class="project-list" id="projectList">
+                    <!-- Projects will be added here -->
                 </div>
             </div>
-        </div>
-    </div>
-
-    <div class="animal-side animal-right">
-        <img class="animal-gif" id="rightAnimalGif" src="assets/working-dog-animation.gif" alt="Working animal">
-    </div>
-
-    <!-- Productivity Info Panel -->
-    <div class="panel productivity-panel" id="productivityPanel">
-        <button class="close-panel-btn" id="closeProductivityPanel">×</button>
-        <h3>Why Track Productivity?</h3>
-        <p>Tracking your work time and accomplishments provides concrete data to demonstrate your value to your organization.</p>
-        
-        <h4>Benefits for Performance Reviews:</h4>
-        <ul>
-            <li><strong>Quantify your contributions</strong> with exact hours worked and tasks completed</li>
-            <li><strong>Show efficiency improvements</strong> over time with historical data</li>
-            <li><strong>Document your focus</strong> - time tracking shows dedication to important tasks</li>
-            <li><strong>Identify productivity patterns</strong> to optimize your work habits</li>
-        </ul>
-        
-        <h4>How to Present for Raises:</h4>
-        <ul>
-            <li><strong>Show consistent productivity</strong> with your tracked work hours</li>
-            <li><strong>Highlight completed projects</strong> from your notes with time invested</li>
-            <li><strong>Demonstrate work-life balance</strong> with proper break tracking</li>
-            <li><strong>Show initiative</strong> by presenting your self-tracking system</li>
-            <li><strong>Connect to business outcomes</strong> - link your time to measurable results</li>
-        </ul>
-        
-        <p>This data provides objective evidence to support your case for career advancement.</p>
-    </div>
-
-    <!-- Info Panel -->
-    <div class="panel info-panel" id="infoPanel">
-        <button class="close-panel-btn" id="closeInfoPanel">×</button>
-        <h3>About Pomodoro Technique</h3>
-        <p>The Pomodoro Technique is a time management method developed by Francesco Cirillo in the late 1980s.</p>
-        
-        <h4>How to Use This Timer:</h4>
-        <ol>
-            <li><strong>Choose a task</strong> to focus on</li>
-            <li><strong>Start the 25-minute timer</strong> (work session)</li>
-            <li>Work focused until the timer rings</li>
-            <li>Take a <strong>5-minute break</strong></li>
-            <li>After 4 work sessions, take a <strong>30-minute break</strong></li>
-            <li><strong>Change tasks periodically</strong> to ensure too much time isn't spent on one task</li>
-        </ol>
-        
-        <h4>Key Productivity Tips:</h4>
-        <ul>
-            <li>Switch tasks periodically to maintain fresh focus</li>
-            <li>Use work notes to track different tasks</li>
-            <li>During breaks, completely disengage from work</li>
-            <li>Adjust timer lengths based on task complexity</li>
-            <li>Use the 5-minute breaks to stretch and refresh</li>
-        </ul>
-    </div>
-
-    <!-- Noise Panel -->
-    <div class="panel" id="noisePanel">
-        <button class="close-panel-btn" id="closeNoisePanel">×</button>
-        <h3 style="margin-top: 0; color: var(--accent-purple);">Background Sounds</h3>
-        <div class="noise-controls">
-            <button class="noise-play-btn" id="noisePlayBtn">⏸️</button>
-            <span id="nowPlaying">No sound selected</span>
-        </div>
-        <div class="noise-option">
-            <input type="radio" id="noise1" name="backgroundNoise" value="rain">
-            <label for="noise1">Rainfall</label>
-        </div>
-        <div class="noise-option">
-            <input type="radio" id="noise2" name="backgroundNoise" value="forest">
-            <label for="noise2">Forest Sounds</label>
-        </div>
-        <div class="noise-option">
-            <input type="radio" id="noise3" name="backgroundNoise" value="waves">
-            <label for="noise3">Ocean Waves</label>
-        </div>
-        <div class="noise-option">
-            <input type="radio" id="noise4" name="backgroundNoise" value="birds">
-            <label for="noise4">Bird Songs</label>
-        </div>
-        <div class="noise-option">
-            <input type="radio" id="noise5" name="backgroundNoise" value="whitenoise">
-            <label for="noise5">White Noise</label>
-        </div>
-        <div class="noise-option">
-            <input type="radio" id="noise6" name="backgroundNoise" value="coffee">
-            <label for="noise6">Coffee Shop</label>
-        </div>
-        <div class="noise-option">
-            <input type="radio" id="noise7" name="backgroundNoise" value="none" checked>
-            <label for="noise7">None</label>
-        </div>
-        <input type="range" min="0" max="1" step="0.1" value="0.5" class="volume-control" id="volumeControl">
-        <div style="text-align: center; margin-top: 5px; font-size: 0.8em;">Volume</div>
-    </div>
-
-    <!-- LoFi Panel -->
-    <div class="panel" id="lofiPanel">
-        <button class="close-panel-btn" id="closeLofiPanel">×</button>
-        <h3 style="margin-top: 0; color: var(--accent-purple);">LoFi Channels</h3>
-        <a href="https://www.youtube.com/watch?v=jfKfPfyJRdk" target="_blank" class="lofi-channel">
-            <img src="https://i.ytimg.com/vi/jfKfPfyJRdk/hqdefault.jpg" alt="LoFi Girl">
-            LoFi Girl
-        </a>
-        <a href="https://www.youtube.com/watch?v=rUxyKA_-grg" target="_blank" class="lofi-channel">
-            <img src="https://i.ytimg.com/vi/rUxyKA_-grg/hqdefault.jpg" alt="Chillhop">
-            Chillhop Music
-        </a>
-        <a href="https://www.youtube.com/watch?v=4xDzrJKXOOY" target="_blank" class="lofi-channel">
-            <img src="https://i.ytimg.com/vi/4xDzrJKXOOY/hqdefault.jpg" alt="Ambient Worlds">
-            Ambient Worlds
-        </a>
-        <a href="https://www.youtube.com/watch?v=7NOSDKb0HlU" target="_blank" class="lofi-channel">
-            <img src="https://i.ytimg.com/vi/7NOSDKb0HlU/hqdefault.jpg" alt="Chill Cow">
-            Chill Cow
-        </a>
-    </div>
-
-    <!-- History Panel -->
-    <div class="panel" id="historyPanel">
-        <button class="close-panel-btn" id="closeHistoryPanel">×</button>
-        <h3 style="margin-top: 0; color: var(--accent-purple);">Session History</h3>
-        
-        <div class="history-tabs">
-            <div class="history-tab active" data-tab="sessions">Sessions</div>
-            <div class="history-tab" data-tab="projects">Projects</div>
-        </div>
-        
-        <div class="history-tab-content active" id="sessionsHistory">
-            <div class="history-controls">
-                <button id="exportHistory" class="export-btn">Export History</button>
-                <button id="clearHistory" class="clear-history-btn">Clear History</button>
-            </div>
-            <div id="historyList"></div>
-        </div>
-        
-        <div class="history-tab-content" id="projectsHistory">
-            <div id="projectsHistoryList"></div>
-        </div>
-    </div>
-
-    <!-- Rewards Panel -->
-    <div class="panel" id="rewardsPanel">
-        <button class="close-panel-btn" id="closeRewardsPanel">×</button>
-        <h3 style="margin-top: 0; color: var(--accent-purple);">Your Rewards</h3>
-        
-        <div class="reward-tabs">
-            <div class="reward-tab active" data-tab="daily">Daily</div>
-            <div class="reward-tab" data-tab="weekly">Weekly</div>
-            <div class="reward-tab" data-tab="monthly">Monthly</div>
-            <div class="reward-tab" data-tab="history">History</div>
-        </div>
-        
-        <div class="reward-tab-content active" id="dailyRewards">
-            <div id="dailyRewardsList"></div>
-        </div>
-        
-        <div class="reward-tab-content" id="weeklyRewards">
-            <div id="weeklyRewardsList"></div>
-        </div>
-        
-        <div class="reward-tab-content" id="monthlyRewards">
-            <div id="monthlyRewardsList"></div>
-        </div>
-        
-        <div class="reward-tab-content" id="historyRewards">
-            <div id="historyRewardsList"></div>
-        </div>
-        
-        <div class="reward-controls">
-            <button id="resetRewards" class="reset-rewards-btn">Reset Rewards</button>
-        </div>
-    </div>
-
-    <!-- Fullscreen Calendar -->
-    <div class="calendar-fullscreen" id="fullscreenCalendar" style="display: none;">
-        <button class="back-to-main" id="backToMainBtn">← Back to Timer</button>
-        <div class="calendar-header">
-            <div class="calendar-title" id="fullscreenCalendarTitle">March 2023</div>
-            <div class="calendar-nav">
-                <button id="fullscreenPrevMonthBtn">&lt;</button>
-                <button id="fullscreenNextMonthBtn">&gt;</button>
-            </div>
-        </div>
-        
-        <div class="calendar-grid" id="fullscreenCalendarGrid">
-            <!-- Calendar headers -->
-            <div class="calendar-day-header">Sun</div>
-            <div class="calendar-day-header">Mon</div>
-            <div class="calendar-day-header">Tue</div>
-            <div class="calendar-day-header">Wed</div>
-            <div class="calendar-day-header">Thu</div>
-            <div class="calendar-day-header">Fri</div>
-            <div class="calendar-day-header">Sat</div>
             
-            <!-- Calendar days will be inserted here by JavaScript -->
+            <div class="tracking-box">
+                <h2>Calendar</h2>
+                <div class="calendar-container">
+                    <div class="calendar-header">
+                        <div id="currentMonthYear">Month Year</div>
+                        <div class="calendar-nav">
+                            <button id="prevMonth">&lt;</button>
+                            <button id="nextMonth">&gt;</button>
+                        </div>
+                    </div>
+                    <div class="calendar-grid" id="calendarGrid">
+                        <!-- Calendar will be generated here -->
+                    </div>
+                    <div class="calendar-sessions" id="calendarSessions">
+                        <!-- Sessions for selected day will appear here -->
+                    </div>
+                </div>
+            </div>
         </div>
-        
-        <div class="calendar-sessions" id="fullscreenCalendarSessions">
-            <p style="text-align: center; padding: 20px; color: #666;">Select a date to view sessions</p>
+
+        <div class="tracking-box">
+            <h2>Session History</h2>
+            <div class="tabs">
+                <div class="tab active" data-tab="sessions">Sessions</div>
+                <div class="tab" data-tab="projects">Projects</div>
+            </div>
+            
+            <div class="tab-content active" id="sessionsTab">
+                <div id="sessionHistory">
+                    <!-- Session history will be added here -->
+                </div>
+                <button id="exportSessions" class="export-btn">Export Session History</button>
+            </div>
+            
+            <div class="tab-content" id="projectsTab">
+                <div id="projectHistory">
+                    <!-- Project history will be added here -->
+                </div>
+                <button id="exportProjects" class="export-btn">Export Project History</button>
+            </div>
         </div>
     </div>
 
-    <!-- Confetti Container -->
-    <div class="confetti-container" id="confettiContainer"></div>
+    <div class="modal" id="noteModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Add Session Note</h3>
+                <span class="modal-close" id="closeModal">&times;</span>
+            </div>
+            <textarea id="noteText" placeholder="Enter notes about this session..." rows="5"></textarea>
+            <button id="saveNote">Save Note</button>
+        </div>
+    </div>
 
-    <audio id="alarmSound" src="https://assets.mixkit.co/sfx/preview/mixkit-alarm-digital-clock-beep-989.mp3" preload="auto"></audio>
-    <audio id="applauseSound" src="https://assets.mixkit.co/sfx/preview/mixkit-achievement-bell-600.mp3" preload="auto"></audio>
-    <audio id="rainSound" loop src="https://assets.mixkit.co/sfx/preview/mixkit-rain-ambience-1193.mp3" preload="auto"></audio>
-    <audio id="forestSound" loop src="https://assets.mixkit.co/sfx/preview/mixkit-forest-ambience-1683.mp3" preload="auto"></audio>
-    <audio id="wavesSound" loop src="https://assets.mixkit.co/sfx/preview/mixkit-waves-coming-to-shore-1934.mp3" preload="auto"></audio>
-    <audio id="birdsSound" loop src="https://assets.mixkit.co/sfx/preview/mixkit-birds-chirping-near-the-river-2466.mp3" preload="auto"></audio>
-    <audio id="whiteNoiseSound" loop src="https://assets.mixkit.co/sfx/preview/mixkit-wind-ambience-594.mp3" preload="auto"></audio>
-    <audio id="coffeeSound" loop src="https://assets.mixkit.co/sfx/preview/mixkit-busy-coffee-shop-1655.mp3" preload="auto"></audio>
+    <div class="full-calendar" id="fullCalendar">
+        <div class="full-calendar-header">
+            <h2 id="fullCalendarTitle">Month Year</h2>
+            <div>
+                <button id="fullPrevMonth">&lt;</button>
+                <button id="fullNextMonth">&gt;</button>
+                <button id="closeFullCalendar">Close</button>
+            </div>
+        </div>
+        
+        <div class="full-calendar-grid" id="fullCalendarGrid">
+            <!-- Full calendar will be generated here -->
+        </div>
+        
+        <div class="full-calendar-sessions" id="fullCalendarSessions">
+            <!-- Full calendar sessions will appear here -->
+        </div>
+    </div>
+
     <script>
-        // ========== DOM Elements ==========
-        const DOM = {
-            timer: document.getElementById('timer'),
-            timerProgress: document.getElementById('timerProgress'),
-            startButton: document.getElementById('start'),
-            stopButton: document.getElementById('stop'),
-            resetButton: document.getElementById('reset'),
-            work25Button: document.getElementById('work25'),
-            break5Button: document.getElementById('break5'),
-            break30Button: document.getElementById('break30'),
-            setWorkModeButton: document.getElementById('setWorkMode'),
-            setBreakModeButton: document.getElementById('setBreakMode'),
-            totalWorkDisplay: document.getElementById('totalWork'),
-            totalBreakDisplay: document.getElementById('totalBreak'),
-            resetTracking: document.getElementById('resetTracking'),
-            noteInput: document.getElementById('noteInput'),
-            saveWorkNoteButton: document.getElementById('saveWorkNote'),
-            saveBreakNoteButton: document.getElementById('saveBreakNote'),
-            copyNotesButton: document.getElementById('copyNotes'),
-            deleteAllNotes: document.getElementById('deleteAllNotes'),
-            noteList: document.getElementById('noteList'),
-            alarmSound: document.getElementById('alarmSound'),
-            applauseSound: document.getElementById('applauseSound'),
-            modeIndicator: document.getElementById('modeIndicator'),
-            nowPlaying: document.getElementById('nowPlaying'),
-            volumeControl: document.getElementById('volumeControl'),
-            rainSound: document.getElementById('rainSound'),
-            forestSound: document.getElementById('forestSound'),
-            wavesSound: document.getElementById('wavesSound'),
-            birdsSound: document.getElementById('birdsSound'),
-            whiteNoiseSound: document.getElementById('whiteNoiseSound'),
-            coffeeSound: document.getElementById('coffeeSound'),
-            noiseOptions: document.querySelectorAll('.noise-option input'),
-            infoPanel: document.getElementById('infoPanel'),
-            historyList: document.getElementById('historyList'),
-            clearHistory: document.getElementById('clearHistory'),
-            exportHistory: document.getElementById('exportHistory'),
-            dailyRewardsList: document.getElementById('dailyRewardsList'),
-            weeklyRewardsList: document.getElementById('weeklyRewardsList'),
-            monthlyRewardsList: document.getElementById('monthlyRewardsList'),
-            historyRewardsList: document.getElementById('historyRewardsList'),
-            resetRewards: document.getElementById('resetRewards'),
-            confettiContainer: document.getElementById('confettiContainer'),
-            leftAnimalGif: document.getElementById('leftAnimalGif'),
-            rightAnimalGif: document.getElementById('rightAnimalGif'),
-            productivityPanel: document.getElementById('productivityPanel'),
-            closeProductivityPanel: document.getElementById('closeProductivityPanel'),
-            closeInfoPanel: document.getElementById('closeInfoPanel'),
-            closeNoisePanel: document.getElementById('closeNoisePanel'),
-            closeLofiPanel: document.getElementById('closeLofiPanel'),
-            closeHistoryPanel: document.getElementById('closeHistoryPanel'),
-            closeRewardsPanel: document.getElementById('closeRewardsPanel'),
-            body: document.body,
-            dropdownBtn: document.getElementById('dropdownBtn'),
-            dropdownContent: document.getElementById('dropdownContent'),
-            infoMenuItem: document.getElementById('infoMenuItem'),
-            productivityMenuItem: document.getElementById('productivityMenuItem'),
-            noiseMenuItem: document.getElementById('noiseMenuItem'),
-            lofiMenuItem: document.getElementById('lofiMenuItem'),
-            historyMenuItem: document.getElementById('historyMenuItem'),
-            rewardsMenuItem: document.getElementById('rewardsMenuItem'),
-            calendarMenuItem: document.getElementById('calendarMenuItem'),
-            donateMenuItem: document.getElementById('donateMenuItem'),
-            noisePlayBtn: document.getElementById('noisePlayBtn'),
-            noisePanel: document.getElementById('noisePanel'),
-            lofiPanel: document.getElementById('lofiPanel'),
-            historyPanel: document.getElementById('historyPanel'),
-            rewardsPanel: document.getElementById('rewardsPanel'),
-            fullscreenCalendar: document.getElementById('fullscreenCalendar'),
-            fullscreenCalendarTitle: document.getElementById('fullscreenCalendarTitle'),
-            fullscreenCalendarGrid: document.getElementById('fullscreenCalendarGrid'),
-            fullscreenCalendarSessions: document.getElementById('fullscreenCalendarSessions'),
-            fullscreenPrevMonthBtn: document.getElementById('fullscreenPrevMonthBtn'),
-            fullscreenNextMonthBtn: document.getElementById('fullscreenNextMonthBtn'),
-            backToMainBtn: document.getElementById('backToMainBtn'),
-            projectInput: document.getElementById('projectInput'),
-            addProjectBtn: document.getElementById('addProjectBtn'),
-            projectList: document.getElementById('projectList'),
-            projectsHistoryList: document.getElementById('projectsHistoryList'),
-            historyTabs: document.querySelectorAll('.history-tab')
-        };
-
-        // ========== State Management ==========
-        const STATE = {
+        // State management
+        const state = {
             timer: null,
             isRunning: false,
             isWorkMode: true,
             totalSeconds: 25 * 60,
             initialSeconds: 25 * 60,
-            totalWorkSeconds: 0,
-            totalBreakSeconds: 0,
             sessionStartTime: null,
-            currentNoise: null,
-            currentVolume: 0.5,
-            isNoisePlaying: false,
-            currentNoiseType: 'none',
-            noiseNames: {
-                'rain': 'Rainfall',
-                'forest': 'Forest Sounds',
-                'waves': 'Ocean Waves',
-                'birds': 'Bird Songs',
-                'whitenoise': 'White Noise',
-                'coffee': 'Coffee Shop',
-                'none': 'No sound selected'
-            },
-            sessionHistory: [],
-            notes: [],
             projects: [],
-            rewards: {
-                daily: [
-                    {
-                        id: 'daily_1',
-                        title: 'Morning Starter',
-                        description: 'Complete 1 work session before noon',
-                        icon: '🌅',
-                        goal: 1,
-                        current: 0,
-                        reward: '☕',
-                        earned: false
-                    },
-                    {
-                        id: 'daily_2',
-                        title: 'Daily Goal',
-                        description: 'Complete 4 work sessions in a day',
-                        icon: '✅',
-                        goal: 4,
-                        current: 0,
-                        reward: '🏅',
-                        earned: false
-                    },
-                    {
-                        id: 'daily_3',
-                        title: 'Productivity Master',
-                        description: 'Complete 8 work sessions in a day',
-                        icon: '🚀',
-                        goal: 8,
-                        current: 0,
-                        reward: '🌟',
-                        earned: false
-                    },
-                    {
-                        id: 'daily_4',
-                        title: 'Early Bird',
-                        description: 'Complete a work session before 8 AM',
-                        icon: '🐦',
-                        goal: 1,
-                        current: 0,
-                        reward: '🌞',
-                        earned: false
-                    },
-                    {
-                        id: 'daily_5',
-                        title: 'Night Owl',
-                        description: 'Complete a work session after 8 PM',
-                        icon: '🦉',
-                        goal: 1,
-                        current: 0,
-                        reward: '🌙',
-                        earned: false
-                    }
-                ],
-                weekly: [
-                    {
-                        id: 'weekly_1',
-                        title: 'Week Starter',
-                        description: 'Complete 5 work sessions by Wednesday',
-                        icon: '📅',
-                        goal: 5,
-                        current: 0,
-                        reward: '🌱',
-                        earned: false
-                    },
-                    {
-                        id: 'weekly_2',
-                        title: 'Weekly Goal',
-                        description: 'Complete 20 work sessions this week',
-                        icon: '🎯',
-                        goal: 20,
-                        current: 0,
-                        reward: '🏆',
-                        earned: false
-                    },
-                    {
-                        id: 'weekly_3',
-                        title: 'Ultimate Focus',
-                        description: 'Complete 35 work sessions this week',
-                        icon: '🧠',
-                        goal: 35,
-                        current: 0,
-                        reward: '💎',
-                        earned: false
-                    },
-                    {
-                        id: 'weekly_4',
-                        title: 'Consistency King',
-                        description: 'Complete at least 3 sessions every day for a week',
-                        icon: '👑',
-                        goal: 7,
-                        current: 0,
-                        reward: '🏅',
-                        earned: false
-                    },
-                    {
-                        id: 'weekly_5',
-                        title: 'Weekend Warrior',
-                        description: 'Complete 5 work sessions on weekend days',
-                        icon: '⚔️',
-                        goal: 5,
-                        current: 0,
-                        reward: '🛡️',
-                        earned: false
-                    }
-                ],
-                monthly: [
-                    {
-                        id: 'monthly_1',
-                        title: 'Month Starter',
-                        description: 'Complete 20 work sessions in first 10 days',
-                        icon: '📆',
-                        goal: 20,
-                        current: 0,
-                        reward: '🌞',
-                        earned: false
-                    },
-                    {
-                        id: 'monthly_2',
-                        title: 'Monthly Goal',
-                        description: 'Complete 80 work sessions this month',
-                        icon: '🏁',
-                        goal: 80,
-                        current: 0,
-                        reward: '🚀',
-                        earned: false
-                    },
-                    {
-                        id: 'monthly_3',
-                        title: 'Legendary Month',
-                        description: 'Complete 120 work sessions this month',
-                        icon: '🏆',
-                        goal: 120,
-                        current: 0,
-                        reward: '💎',
-                        earned: false
-                    },
-                    {
-                        id: 'monthly_4',
-                        title: 'Perfect Attendance',
-                        description: 'Complete at least 1 session every day for a month',
-                        icon: '📅',
-                        goal: 30,
-                        current: 0,
-                        reward: '✨',
-                        earned: false
-                    },
-                    {
-                        id: 'monthly_5',
-                        title: 'Balance Master',
-                        description: 'Maintain at least 20% break time ratio for the month',
-                        icon: '⚖️',
-                        goal: 1,
-                        current: 0,
-                        reward: '🧘',
-                        earned: false
-                    }
-                ]
-            },
-            completedSessions: 0,
-            breakGif: 'assets/break-animation.gif',
-            lastTrackingUpdate: 0,
-            dailyCompletedSessions: 0,
-            weeklyCompletedSessions: 0,
-            monthlyCompletedSessions: 0,
-            lastSessionDate: null,
-            rewardHistory: {
-                daily: [],
-                weekly: [],
-                monthly: []
-            },
+            currentProject: null,
+            sessionHistory: [],
             calendar: {
                 currentMonth: new Date().getMonth(),
                 currentYear: new Date().getFullYear(),
                 selectedDate: null
             },
-            fullscreenCalendarOpen: false
-        };
-
-        // ========== Timer Functions ==========
-        const timerActions = {
-            start() {
-                // Parse time from the editable timer display
-                const timeParts = DOM.timer.textContent.split(':');
-                let minutes = parseInt(timeParts[0]) || 0;
-                let seconds = parseInt(timeParts[1]) || 0;
-                
-                STATE.totalSeconds = minutes * 60 + seconds;
-                
-                // Only set initialSeconds if we're starting fresh (not resuming)
-                if (!STATE.isRunning) {
-                    STATE.initialSeconds = STATE.totalSeconds;
-                }
-                
-                STATE.isRunning = true;
-                if (!STATE.sessionStartTime) {
-                    STATE.sessionStartTime = new Date();
-                }
-                STATE.lastTrackingUpdate = Date.now();
-                
-                DOM.startButton.style.display = 'none';
-                DOM.stopButton.style.display = 'inline-block';
-                
-                DOM.body.classList.remove('work-mode', 'break-mode');
-                DOM.body.classList.add(STATE.isWorkMode ? 'work-mode' : 'break-mode');
-                
-                // Update animal GIFs based on mode
-                if (STATE.isWorkMode) {
-                    DOM.leftAnimalGif.src = 'assets/working-dog-animation.gif';
-                    DOM.rightAnimalGif.src = 'assets/working-dog-animation.gif';
-                } else {
-                    DOM.leftAnimalGif.src = STATE.breakGif;
-                    DOM.rightAnimalGif.src = STATE.breakGif;
-                }
-                
-                STATE.timer = setInterval(() => {
-                    STATE.totalSeconds--;
-                    timerActions.updateDisplay();
-                    
-                    // Update progress circle
-                    const progressPercent = 100 - (STATE.totalSeconds / STATE.initialSeconds * 100);
-                    DOM.timerProgress.style.background = `conic-gradient(var(--primary-blue) ${progressPercent}%, transparent ${progressPercent}%)`;
-                    
-                    // Update tracking time in real-time
-                    const now = Date.now();
-                    const elapsedSeconds = Math.floor((now - STATE.lastTrackingUpdate) / 1000);
-                    
-                    if (elapsedSeconds >= 1) {
-                        if (STATE.isWorkMode) {
-                            STATE.totalWorkSeconds += elapsedSeconds;
-                        } else {
-                            STATE.totalBreakSeconds += elapsedSeconds;
-                        }
-                        STATE.lastTrackingUpdate = now;
-                        trackingActions.updateDisplay();
-                    }
-                    
-                    if (STATE.totalSeconds === 0) {
-                        // Celebration at 0
-                        DOM.alarmSound.play();
-                        celebrationActions.triggerCelebration();
-                    }
-                    
-                    if (STATE.totalSeconds <= 0) {
-                        // Keep counting negative
-                        if (Math.abs(STATE.totalSeconds) % 60 === 0) {
-                            // Every minute after 0, add to tracking
-                            const now = Date.now();
-                            const elapsedSeconds = Math.floor((now - STATE.lastTrackingUpdate) / 1000);
-                            
-                            if (elapsedSeconds >= 1) {
-                                if (STATE.isWorkMode) {
-                                    STATE.totalWorkSeconds += elapsedSeconds;
-                                } else {
-                                    STATE.totalBreakSeconds += elapsedSeconds;
-                                }
-                                STATE.lastTrackingUpdate = now;
-                                trackingActions.updateDisplay();
-                            }
-                        }
-                    }
-                    
-                    // Check if we should end the session (only when coming from positive to negative)
-                    if (STATE.totalSeconds === -1) {
-                        const sessionEndTime = new Date();
-                        const sessionDuration = Math.floor((sessionEndTime - STATE.sessionStartTime) / 1000);
-                        
-                        if (STATE.isWorkMode) {
-                            STATE.totalWorkSeconds += sessionDuration;
-                            STATE.completedSessions++;
-                            projectActions.incrementPomodoroCount();
-                            rewardActions.updateSessionCounters();
-                            historyActions.addSession({
-                                type: 'work',
-                                duration: sessionDuration,
-                                notes: DOM.noteInput.value.trim() || 'Enter work/project here',
-                                timestamp: STATE.sessionStartTime,
-                                project: projectActions.getCurrentProject()
-                            });
-                            rewardActions.updateRewards('work', sessionDuration);
-                        } else {
-                            STATE.totalBreakSeconds += sessionDuration;
-                            projectActions.incrementBreakCount();
-                            historyActions.addSession({
-                                type: 'break',
-                                duration: sessionDuration,
-                                notes: DOM.noteInput.value.trim() || 'Enter work/project here',
-                                timestamp: STATE.sessionStartTime,
-                                project: projectActions.getCurrentProject()
-                            });
-                        }
-                        
-                        trackingActions.updateDisplay();
-                        
-                        STATE.isWorkMode = !STATE.isWorkMode;
-                        timerActions.updateModeIndicator();
-                        
-                        DOM.body.classList.remove('work-mode', 'break-mode');
-                        DOM.body.classList.add(STATE.isWorkMode ? 'work-mode' : 'break-mode');
-                        
-                        // Update animal GIFs based on new mode
-                        if (STATE.isWorkMode) {
-                            DOM.leftAnimalGif.src = 'assets/working-dog-animation.gif';
-                            DOM.rightAnimalGif.src = 'assets/working-dog-animation.gif';
-                        } else {
-                            DOM.leftAnimalGif.src = STATE.breakGif;
-                            DOM.rightAnimalGif.src = STATE.breakGif;
-                        }
-                        
-                        if (STATE.isWorkMode) {
-                            timerActions.setQuickTime(25, 0, true);
-                        } else {
-                            const lastBreakWasShort = localStorage.getItem('lastBreakWasShort') === 'true';
-                            if (lastBreakWasShort) {
-                                timerActions.setQuickTime(30, 0, false);
-                                localStorage.setItem('lastBreakWasShort', 'false');
-                            } else {
-                                timerActions.setQuickTime(5, 0, false);
-                                localStorage.setItem('lastBreakWasShort', 'true');
-                            }
-                        }
-                        
-                        // Reset the start/stop button
-                        DOM.startButton.style.display = 'inline-block';
-                        DOM.stopButton.style.display = 'none';
-                        STATE.sessionStartTime = null;
-                    }
-                }, 1000);
-            },
-
-            stop() {
-                if (STATE.isRunning) {
-                    clearInterval(STATE.timer);
-                    STATE.isRunning = false;
-                    DOM.startButton.style.display = 'inline-block';
-                    DOM.stopButton.style.display = 'none';
-                    
-                    const sessionEndTime = new Date();
-                    const sessionDuration = Math.floor((sessionEndTime - STATE.sessionStartTime) / 1000);
-                    
-                    if (STATE.isWorkMode) {
-                        STATE.totalWorkSeconds += sessionDuration;
-                        STATE.completedSessions++;
-                        projectActions.incrementPomodoroCount();
-                        rewardActions.updateSessionCounters();
-                        historyActions.addSession({
-                            type: 'work',
-                            duration: sessionDuration,
-                            notes: DOM.noteInput.value.trim() || 'Enter work/project here',
-                            timestamp: STATE.sessionStartTime,
-                            project: projectActions.getCurrentProject()
-                        });
-                        rewardActions.updateRewards('work', sessionDuration);
-                    } else {
-                        STATE.totalBreakSeconds += sessionDuration;
-                        projectActions.incrementBreakCount();
-                        historyActions.addSession({
-                            type: 'break',
-                            duration: sessionDuration,
-                            notes: DOM.noteInput.value.trim() || 'Enter work/project here',
-                            timestamp: STATE.sessionStartTime,
-                            project: projectActions.getCurrentProject()
-                        });
-                    }
-                    trackingActions.updateDisplay();
-                    STATE.sessionStartTime = null;
-                }
-            },
-
-            reset() {
-                timerActions.stop();
-                const timeParts = DOM.timer.textContent.split(':');
-                let minutes = parseInt(timeParts[0]) || 0;
-                let seconds = parseInt(timeParts[1]) || 0;
-                STATE.totalSeconds = minutes * 60 + seconds;
-                STATE.initialSeconds = STATE.totalSeconds;
-                DOM.timerProgress.style.background = `conic-gradient(var(--primary-blue) 0%, transparent 0%)`;
-                timerActions.updateDisplay();
-            },
-
-            updateDisplay() {
-                const minutes = Math.floor(Math.abs(STATE.totalSeconds) / 60);
-                const seconds = Math.abs(STATE.totalSeconds) % 60;
-                const sign = STATE.totalSeconds < 0 ? '-' : '';
-                DOM.timer.textContent = `${sign}${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-                
-                if (STATE.totalSeconds < 0) {
-                    DOM.timer.classList.add('negative-timer');
-                } else {
-                    DOM.timer.classList.remove('negative-timer');
-                    if (STATE.totalSeconds <= 60) {
-                        DOM.timer.style.color = '#f44336';
-                        DOM.timer.style.animation = 'pulse 1s infinite';
-                    } else if (STATE.totalSeconds <= 300) {
-                        DOM.timer.style.color = '#ff9800';
-                        DOM.timer.style.animation = 'none';
-                    } else {
-                        DOM.timer.style.color = STATE.isWorkMode ? 'var(--work-text)' : 'var(--break-text)';
-                        DOM.timer.style.animation = 'none';
-                    }
-                }
-            },
-
-            setQuickTime(minutes, seconds, workMode) {
-                timerActions.stop();
-                DOM.timer.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-                STATE.totalSeconds = minutes * 60 + seconds;
-                STATE.initialSeconds = STATE.totalSeconds;
-                STATE.isWorkMode = workMode;
-                DOM.timerProgress.style.background = `conic-gradient(var(--primary-blue) 0%, transparent 0%)`;
-                timerActions.updateDisplay();
-                timerActions.updateModeIndicator();
-                
-                DOM.body.classList.remove('work-mode', 'break-mode');
-                DOM.body.classList.add(STATE.isWorkMode ? 'work-mode' : 'break-mode');
-                
-                // Update animal GIFs based on mode
-                if (STATE.isWorkMode) {
-                    DOM.leftAnimalGif.src = 'assets/working-dog-animation.gif';
-                    DOM.rightAnimalGif.src = 'assets/working-dog-animation.gif';
-                } else {
-                    DOM.leftAnimalGif.src = STATE.breakGif;
-                    DOM.rightAnimalGif.src = STATE.breakGif;
-                }
-            },
-
-            setMode(workMode) {
-                STATE.isWorkMode = workMode;
-                timerActions.updateModeIndicator();
-                
-                DOM.body.classList.remove('work-mode', 'break-mode');
-                DOM.body.classList.add(STATE.isWorkMode ? 'work-mode' : 'break-mode');
-                
-                // Update animal GIFs based on mode
-                if (STATE.isWorkMode) {
-                    DOM.leftAnimalGif.src = 'assets/working-dog-animation.gif';
-                    DOM.rightAnimalGif.src = 'assets/working-dog-animation.gif';
-                } else {
-                    DOM.leftAnimalGif.src = STATE.breakGif;
-                    DOM.rightAnimalGif.src = STATE.breakGif;
-                }
-            },
-
-            updateModeIndicator() {
-                if (STATE.isWorkMode) {
-                    DOM.modeIndicator.textContent = "Work Time";
-                    DOM.modeIndicator.className = "mode-indicator work-mode";
-                } else {
-                    DOM.modeIndicator.textContent = "Break Time";
-                    DOM.modeIndicator.className = "mode-indicator break-mode";
-                }
+            fullCalendar: {
+                currentMonth: new Date().getMonth(),
+                currentYear: new Date().getFullYear(),
+                selectedDate: null
             }
         };
 
-        // ========== Project Tracking Functions ==========
-        const projectActions = {
-            currentProject: null,
+        // DOM elements
+        const dom = {
+            timer: document.getElementById('timer'),
+            startBtn: document.getElementById('start'),
+            stopBtn: document.getElementById('stop'),
+            resetBtn: document.getElementById('reset'),
+            workModeBtn: document.getElementById('setWorkMode'),
+            breakModeBtn: document.getElementById('setBreakMode'),
+            work25Btn: document.getElementById('work25'),
+            break5Btn: document.getElementById('break5'),
+            break30Btn: document.getElementById('break30'),
+            projectInput: document.getElementById('projectInput'),
+            addProjectBtn: document.getElementById('addProject'),
+            projectList: document.getElementById('projectList'),
+            currentMonthYear: document.getElementById('currentMonthYear'),
+            calendarGrid: document.getElementById('calendarGrid'),
+            calendarSessions: document.getElementById('calendarSessions'),
+            prevMonthBtn: document.getElementById('prevMonth'),
+            nextMonthBtn: document.getElementById('nextMonth'),
+            sessionHistoryContainer: document.getElementById('sessionHistory'),
+            projectHistoryContainer: document.getElementById('projectHistory'),
+            exportSessionsBtn: document.getElementById('exportSessions'),
+            exportProjectsBtn: document.getElementById('exportProjects'),
+            noteModal: document.getElementById('noteModal'),
+            noteText: document.getElementById('noteText'),
+            saveNoteBtn: document.getElementById('saveNote'),
+            closeModalBtn: document.getElementById('closeModal'),
+            viewCalendarBtn: document.getElementById('viewCalendar'),
+            fullCalendar: document.getElementById('fullCalendar'),
+            fullCalendarTitle: document.getElementById('fullCalendarTitle'),
+            fullCalendarGrid: document.getElementById('fullCalendarGrid'),
+            fullCalendarSessions: document.getElementById('fullCalendarSessions'),
+            fullPrevMonthBtn: document.getElementById('fullPrevMonth'),
+            fullNextMonthBtn: document.getElementById('fullNextMonth'),
+            closeFullCalendarBtn: document.getElementById('closeFullCalendar'),
+            tabs: document.querySelectorAll('.tab'),
+            tabContents: document.querySelectorAll('.tab-content')
+        };
+
+        // Timer functions
+        function startTimer() {
+            if (state.isRunning) return;
             
-            addProject() {
-                const projectName = DOM.projectInput.value.trim();
-                if (projectName) {
-                    const project = {
-                        id: Date.now().toString(),
-                        name: projectName,
-                        pomodoros: 0,
-                        breaks: 0
+            // Parse time from display
+            const timeParts = dom.timer.textContent.split(':');
+            let minutes = parseInt(timeParts[0]) || 0;
+            let seconds = parseInt(timeParts[1]) || 0;
+            
+            state.totalSeconds = minutes * 60 + seconds;
+            state.initialSeconds = state.totalSeconds;
+            
+            state.isRunning = true;
+            state.sessionStartTime = new Date();
+            
+            dom.startBtn.style.display = 'none';
+            dom.stopBtn.style.display = 'inline-block';
+            
+            state.timer = setInterval(() => {
+                state.totalSeconds--;
+                updateTimerDisplay();
+                
+                if (state.totalSeconds <= 0) {
+                    // Timer completed
+                    clearInterval(state.timer);
+                    dom.startBtn.style.display = 'inline-block';
+                    dom.stopBtn.style.display = 'none';
+                    
+                    // Record the session
+                    const sessionEndTime = new Date();
+                    const duration = Math.floor((sessionEndTime - state.sessionStartTime) / 1000);
+                    
+                    const session = {
+                        type: state.isWorkMode ? 'work' : 'break',
+                        duration: duration,
+                        timestamp: state.sessionStartTime,
+                        project: state.currentProject ? getProjectById(state.currentProject).name : null,
+                        notes: ''
                     };
                     
-                    STATE.projects.push(project);
-                    this.saveProjects();
-                    this.renderProjects();
-                    DOM.projectInput.value = '';
-                }
-            },
-            
-            deleteProject(id) {
-                STATE.projects = STATE.projects.filter(project => project.id !== id);
-                this.saveProjects();
-                this.renderProjects();
-            },
-            
-            setCurrentProject(id) {
-                this.currentProject = id;
-                this.renderProjects();
-            },
-            
-            getCurrentProject() {
-                if (!this.currentProject) return null;
-                return STATE.projects.find(p => p.id === this.currentProject)?.name || null;
-            },
-            
-            incrementPomodoroCount() {
-                if (this.currentProject) {
-                    const project = STATE.projects.find(p => p.id === this.currentProject);
-                    if (project) {
-                        project.pomodoros++;
-                        this.saveProjects();
-                        this.renderProjects();
-                    }
-                }
-            },
-            
-            incrementBreakCount() {
-                if (this.currentProject) {
-                    const project = STATE.projects.find(p => p.id === this.currentProject);
-                    if (project) {
-                        project.breaks++;
-                        this.saveProjects();
-                        this.renderProjects();
-                    }
-                }
-            },
-            
-            saveProjects() {
-                localStorage.setItem('projects', JSON.stringify(STATE.projects));
-            },
-            
-            loadProjects() {
-                const savedProjects = localStorage.getItem('projects');
-                if (savedProjects) {
-                    STATE.projects = JSON.parse(savedProjects);
-                    this.renderProjects();
-                }
-            },
-            
-            renderProjects() {
-                DOM.projectList.innerHTML = '';
-                
-                STATE.projects.forEach(project => {
-                    const projectItem = document.createElement('div');
-                    projectItem.className = `project-item ${project.id === this.currentProject ? 'selected' : ''}`;
-                    projectItem.dataset.id = project.id;
+                    // Show modal to add notes
+                    showNoteModal(session);
                     
-                    projectItem.innerHTML = `
+                    // Switch mode
+                    state.isWorkMode = !state.isWorkMode;
+                    updateModeDisplay();
+                    
+                    // Set next timer
+                    if (state.isWorkMode) {
+                        setTimer(25, 0);
+                    } else {
+                        // Alternate between short and long breaks
+                        const lastBreakWasShort = localStorage.getItem('lastBreakWasShort') === 'true';
+                        if (lastBreakWasShort) {
+                            setTimer(30, 0);
+                            localStorage.setItem('lastBreakWasShort', 'false');
+                        } else {
+                            setTimer(5, 0);
+                            localStorage.setItem('lastBreakWasShort', 'true');
+                        }
+                    }
+                    
+                    state.isRunning = false;
+                }
+            }, 1000);
+        }
+
+        function stopTimer() {
+            if (!state.isRunning) return;
+            
+            clearInterval(state.timer);
+            state.isRunning = false;
+            
+            dom.startBtn.style.display = 'inline-block';
+            dom.stopBtn.style.display = 'none';
+            
+            // Record the session
+            const sessionEndTime = new Date();
+            const duration = Math.floor((sessionEndTime - state.sessionStartTime) / 1000);
+            
+            const session = {
+                type: state.isWorkMode ? 'work' : 'break',
+                duration: duration,
+                timestamp: state.sessionStartTime,
+                project: state.currentProject ? getProjectById(state.currentProject).name : null,
+                notes: ''
+            };
+            
+            // Show modal to add notes
+            showNoteModal(session);
+        }
+
+        function resetTimer() {
+            clearInterval(state.timer);
+            state.isRunning = false;
+            state.totalSeconds = state.initialSeconds;
+            updateTimerDisplay();
+            
+            dom.startBtn.style.display = 'inline-block';
+            dom.stopBtn.style.display = 'none';
+        }
+
+        function updateTimerDisplay() {
+            const minutes = Math.floor(Math.abs(state.totalSeconds) / 60);
+            const seconds = Math.abs(state.totalSeconds) % 60;
+            const sign = state.totalSeconds < 0 ? '-' : '';
+            dom.timer.textContent = `${sign}${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        function setTimer(minutes, seconds) {
+            state.totalSeconds = minutes * 60 + seconds;
+            state.initialSeconds = state.totalSeconds;
+            updateTimerDisplay();
+        }
+
+        function setMode(isWorkMode) {
+            state.isWorkMode = isWorkMode;
+            updateModeDisplay();
+        }
+
+        function updateModeDisplay() {
+            if (state.isWorkMode) {
+                dom.workModeBtn.style.backgroundColor = var(--primary-pink);
+                dom.breakModeBtn.style.backgroundColor = '#ccc';
+            } else {
+                dom.workModeBtn.style.backgroundColor = '#ccc';
+                dom.breakModeBtn.style.backgroundColor = var(--primary-green);
+            }
+        }
+
+        // Project functions
+        function addProject() {
+            const projectName = dom.projectInput.value.trim();
+            if (!projectName) return;
+            
+            const project = {
+                id: Date.now().toString(),
+                name: projectName,
+                sessions: [],
+                totalWorkTime: 0,
+                totalBreakTime: 0,
+                pomodoros: 0
+            };
+            
+            state.projects.push(project);
+            saveProjects();
+            renderProjects();
+            dom.projectInput.value = '';
+        }
+
+        function selectProject(projectId) {
+            state.currentProject = projectId;
+            renderProjects();
+        }
+
+        function getProjectById(projectId) {
+            return state.projects.find(p => p.id === projectId);
+        }
+
+        function saveProjects() {
+            localStorage.setItem('projects', JSON.stringify(state.projects));
+        }
+
+        function loadProjects() {
+            const savedProjects = localStorage.getItem('projects');
+            if (savedProjects) {
+                state.projects = JSON.parse(savedProjects);
+                renderProjects();
+            }
+        }
+
+        function renderProjects() {
+            dom.projectList.innerHTML = '';
+            
+            state.projects.forEach(project => {
+                const projectEl = document.createElement('div');
+                projectEl.className = `project-item ${project.id === state.currentProject ? 'selected' : ''}`;
+                projectEl.dataset.id = project.id;
+                
+                projectEl.innerHTML = `
+                    <div class="project-header">
                         <div class="project-name">${project.name}</div>
                         <div class="project-stats">
-                            <div class="project-stat">
-                                <span>🍅</span>
-                                <span>${project.pomodoros}</span>
+                            <span>🍅 ${project.pomodoros}</span>
+                            <span>⏱ ${formatTime(project.totalWorkTime)}</span>
+                        </div>
+                    </div>
+                    <div class="project-notes">
+                        ${project.sessions.map(session => `
+                            <div class="note-item">
+                                <div class="note-time">${new Date(session.timestamp).toLocaleString()}</div>
+                                <div class="note-text">${session.notes}</div>
                             </div>
-                            <div class="project-stat">
-                                <span>☕</span>
-                                <span>${project.breaks}</span>
-                            </div>
-                        </div>
-                        <div class="project-actions">
-                            <button class="project-action-btn" onclick="projectActions.setCurrentProject('${project.id}')">Track</button>
-                            <button class="project-action-btn" onclick="projectActions.deleteProject('${project.id}')">Delete</button>
-                        </div>
-                    `;
-                    
-                    DOM.projectList.appendChild(projectItem);
-                });
-            },
-            
-            renderProjectsHistory() {
-                DOM.projectsHistoryList.innerHTML = '';
-                
-                if (STATE.projects.length === 0) {
-                    DOM.projectsHistoryList.innerHTML = '<p style="text-align: center; padding: 20px; color: #666;">No projects yet</p>';
-                    return;
-                }
-                
-                STATE.projects.forEach(project => {
-                    const projectItem = document.createElement('div');
-                    projectItem.className = 'history-item';
-                    
-                    // Calculate total time spent on this project
-                    const projectSessions = STATE.sessionHistory.filter(s => s.project === project.name);
-                    const workSeconds = projectSessions
-                        .filter(s => s.type === 'work')
-                        .reduce((sum, s) => sum + s.duration, 0);
-                    const breakSeconds = projectSessions
-                        .filter(s => s.type === 'break')
-                        .reduce((sum, s) => sum + s.duration, 0);
-                    
-                    projectItem.innerHTML = `
-                        <div class="history-header">
-                            <span class="history-type">${project.name}</span>
-                        </div>
-                        <div>Pomodoros: ${project.pomodoros}</div>
-                        <div>Breaks: ${project.breaks}</div>
-                        <div>Work Time: ${trackingActions.formatTime(workSeconds)}</div>
-                        <div>Break Time: ${trackingActions.formatTime(breakSeconds)}</div>
-                    `;
-                    
-                    DOM.projectsHistoryList.appendChild(projectItem);
-                });
-            }
-        };
-
-        // ========== Celebration Functions ==========
-        const celebrationActions = {
-            triggerCelebration() {
-                DOM.applauseSound.play();
-                this.createConfetti();
-                
-                DOM.container.style.animation = 'pulse 0.5s 3';
-                setTimeout(() => {
-                    DOM.container.style.animation = '';
-                }, 1500);
-            },
-            
-            createConfetti() {
-                DOM.confettiContainer.innerHTML = '';
-                
-                for (let i = 0; i < 100; i++) {
-                    const confetti = document.createElement('div');
-                    confetti.className = 'confetti';
-                    
-                    const colors = ['#e91e63', '#4caf50', '#2196f3', '#ff9800', '#9c27b0'];
-                    const shapes = ['circle', 'square', 'triangle'];
-                    
-                    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-                    confetti.style.left = Math.random() * 100 + 'vw';
-                    confetti.style.width = (Math.random() * 10 + 5) + 'px';
-                    confetti.style.height = (Math.random() * 10 + 5) + 'px';
-                    confetti.style.opacity = '1';
-                    confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
-                    
-                    const animationDuration = Math.random() * 3 + 2;
-                    confetti.style.animation = `fall ${animationDuration}s linear forwards`;
-                    
-                    const keyframes = `
-                        @keyframes fall {
-                            to {
-                                transform: translateY(100vh) rotate(${Math.random() * 360}deg);
-                                opacity: 0;
-                            }
-                        }
-                    `;
-                    
-                    if (!document.getElementById('confetti-keyframes')) {
-                        const style = document.createElement('style');
-                        style.id = 'confetti-keyframes';
-                        style.innerHTML = keyframes;
-                        document.head.appendChild(style);
-                    }
-                    
-                    DOM.confettiContainer.appendChild(confetti);
-                    
-                    setTimeout(() => {
-                        confetti.remove();
-                    }, animationDuration * 1000);
-                }
-            },
-            
-            showBigReward(reward) {
-                const bigReward = document.createElement('div');
-                bigReward.className = 'big-reward';
-                bigReward.textContent = reward.reward;
-                document.body.appendChild(bigReward);
-                
-                setTimeout(() => {
-                    bigReward.remove();
-                }, 2000);
-            }
-        };
-
-        // ========== Tracking Functions ==========
-        const trackingActions = {
-            updateDisplay() {
-                DOM.totalWorkDisplay.textContent = trackingActions.formatTime(STATE.totalWorkSeconds);
-                DOM.totalBreakDisplay.textContent = trackingActions.formatTime(STATE.totalBreakSeconds);
-            },
-
-            formatTime(totalSeconds) {
-                const hours = Math.floor(totalSeconds / 3600);
-                const minutes = Math.floor((totalSeconds % 3600) / 60);
-                const seconds = totalSeconds % 60;
-                return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-            },
-
-            resetTracking() {
-                if (confirm('Are you sure you want to reset all tracking time?')) {
-                    STATE.totalWorkSeconds = 0;
-                    STATE.totalBreakSeconds = 0;
-                    this.updateDisplay();
-                    localStorage.setItem('totalWorkSeconds', '0');
-                    localStorage.setItem('totalBreakSeconds', '0');
-                }
-            }
-        };
-
-        // ========== Reward Functions ==========
-        const rewardActions = {
-            updateSessionCounters() {
-                const now = new Date();
-                const today = now.toDateString();
-                const currentDay = now.getDay(); // 0 (Sunday) to 6 (Saturday)
-                const currentDate = now.getDate();
-                const currentMonth = now.getMonth();
-                const currentYear = now.getFullYear();
-                
-                // Check if we need to reset counters
-                if (!STATE.lastSessionDate || STATE.lastSessionDate.toDateString() !== today) {
-                    // New day, check if we need to archive yesterday's daily progress
-                    if (STATE.dailyCompletedSessions > 0) {
-                        rewardActions.archiveRewardProgress('daily', STATE.dailyCompletedSessions);
-                    }
-                    STATE.dailyCompletedSessions = 0;
-                    
-                    // Check if new week (Monday)
-                    if (currentDay === 1 || !STATE.lastSessionDate) {
-                        if (STATE.weeklyCompletedSessions > 0) {
-                            rewardActions.archiveRewardProgress('weekly', STATE.weeklyCompletedSessions);
-                        }
-                        STATE.weeklyCompletedSessions = 0;
-                    }
-                    
-                    // Check if new month
-                    if (currentDate === 1 || !STATE.lastSessionDate) {
-                        if (STATE.monthlyCompletedSessions > 0) {
-                            rewardActions.archiveRewardProgress('monthly', STATE.monthlyCompletedSessions);
-                        }
-                        STATE.monthlyCompletedSessions = 0;
-                    }
-                }
-                
-                STATE.lastSessionDate = now;
-                STATE.dailyCompletedSessions++;
-                STATE.weeklyCompletedSessions++;
-                STATE.monthlyCompletedSessions++;
-                
-                this.saveRewards();
-            },
-            
-            archiveRewardProgress(type, count) {
-                const now = new Date();
-                let periodName = '';
-                
-                if (type === 'daily') {
-                    periodName = now.toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' });
-                } else if (type === 'weekly') {
-                    const startOfWeek = new Date(now);
-                    startOfWeek.setDate(now.getDate() - now.getDay() + 1); // Get Monday of this week
-                    periodName = `Week of ${startOfWeek.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`;
-                } else if (type === 'monthly') {
-                    periodName = now.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
-                }
-                
-                STATE.rewardHistory[type].push({
-                    date: now,
-                    periodName: periodName,
-                    completedSessions: count,
-                    archivedAt: new Date()
-                });
-                
-                this.saveRewards();
-                this.renderRewardHistory();
-            },
-            
-            updateRewards(type, duration) {
-                if (type === 'work') {
-                    // Update daily rewards
-                    STATE.rewards.daily.forEach(reward => {
-                        if (!reward.earned) {
-                            reward.current = STATE.dailyCompletedSessions;
-                            if (reward.current >= reward.goal) {
-                                reward.earned = true;
-                                this.showRewardNotification(reward);
-                                celebrationActions.showBigReward(reward);
-                            }
-                        }
-                    });
-                    
-                    // Update weekly rewards
-                    STATE.rewards.weekly.forEach(reward => {
-                        if (!reward.earned) {
-                            reward.current = STATE.weeklyCompletedSessions;
-                            if (reward.current >= reward.goal) {
-                                reward.earned = true;
-                                this.showRewardNotification(reward);
-                                celebrationActions.showBigReward(reward);
-                            }
-                        }
-                    });
-                    
-                    // Update monthly rewards
-                    STATE.rewards.monthly.forEach(reward => {
-                        if (!reward.earned) {
-                            reward.current = STATE.monthlyCompletedSessions;
-                            if (reward.current >= reward.goal) {
-                                reward.earned = true;
-                                this.showRewardNotification(reward);
-                                celebrationActions.showBigReward(reward);
-                            }
-                        }
-                    });
-                }
-                
-                this.saveRewards();
-                this.renderRewards();
-            },
-            
-            showRewardNotification(reward) {
-                const notification = document.createElement('div');
-                notification.className = 'reward-notification';
-                notification.innerHTML = `
-                    <div style="background-color: #e8f5e9; padding: 15px; border-radius: 10px; 
-                        box-shadow: 0 4px 8px rgba(0,0,0,0.2); position: fixed; top: 20px; 
-                        left: 50%; transform: translateX(-50%); z-index: 1000; display: flex; 
-                        align-items: center; animation: slideIn 0.5s forwards;">
-                        <span style="font-size: 2em; margin-right: 10px;">${reward.reward}</span>
-                        <div>
-                            <div style="font-weight: bold;">Reward Unlocked!</div>
-                            <div>${reward.title}</div>
+                        `).join('')}
+                        <div class="add-note">
+                            <input type="text" placeholder="Add note to project...">
+                            <button class="add-project-note">Add</button>
                         </div>
                     </div>
                 `;
                 
-                document.body.appendChild(notification);
-                
-                setTimeout(() => {
-                    notification.style.animation = 'slideOut 0.5s forwards';
-                    setTimeout(() => {
-                        notification.remove();
-                    }, 500);
-                }, 3000);
-                
-                if (!document.getElementById('reward-keyframes')) {
-                    const style = document.createElement('style');
-                    style.id = 'reward-keyframes';
-                    style.innerHTML = `
-                        @keyframes slideIn {
-                            from { top: -100px; opacity: 0; }
-                            to { top: 20px; opacity: 1; }
-                        }
-                        @keyframes slideOut {
-                            from { top: 20px; opacity: 1; }
-                            to { top: -100px; opacity: 0; }
-                        }
-                    `;
-                    document.head.appendChild(style);
-                }
-            },
-            
-            saveRewards() {
-                localStorage.setItem('rewards', JSON.stringify(STATE.rewards));
-                localStorage.setItem('completedSessions', STATE.completedSessions.toString());
-                localStorage.setItem('totalWorkSeconds', STATE.totalWorkSeconds.toString());
-                localStorage.setItem('dailyCompletedSessions', STATE.dailyCompletedSessions.toString());
-                localStorage.setItem('weeklyCompletedSessions', STATE.weeklyCompletedSessions.toString());
-                localStorage.setItem('monthlyCompletedSessions', STATE.monthlyCompletedSessions.toString());
-                localStorage.setItem('lastSessionDate', STATE.lastSessionDate ? STATE.lastSessionDate.getTime() : '');
-                localStorage.setItem('rewardHistory', JSON.stringify(STATE.rewardHistory));
-            },
-            
-            loadRewards() {
-                const savedRewards = localStorage.getItem('rewards');
-                if (savedRewards) {
-                    STATE.rewards = JSON.parse(savedRewards);
-                }
-                
-                STATE.completedSessions = parseInt(localStorage.getItem('completedSessions')) || 0;
-                STATE.totalWorkSeconds = parseInt(localStorage.getItem('totalWorkSeconds')) || 0;
-                STATE.dailyCompletedSessions = parseInt(localStorage.getItem('dailyCompletedSessions')) || 0;
-                STATE.weeklyCompletedSessions = parseInt(localStorage.getItem('weeklyCompletedSessions')) || 0;
-                STATE.monthlyCompletedSessions = parseInt(localStorage.getItem('monthlyCompletedSessions')) || 0;
-                
-                const lastSessionDate = localStorage.getItem('lastSessionDate');
-                if (lastSessionDate) {
-                    STATE.lastSessionDate = new Date(parseInt(lastSessionDate));
-                }
-                
-                const savedRewardHistory = localStorage.getItem('rewardHistory');
-                if (savedRewardHistory) {
-                    STATE.rewardHistory = JSON.parse(savedRewardHistory);
-                    // Convert string dates back to Date objects
-                    STATE.rewardHistory.daily = STATE.rewardHistory.daily.map(item => ({
-                        ...item,
-                        date: new Date(item.date),
-                        archivedAt: new Date(item.archivedAt)
-                    }));
-                    STATE.rewardHistory.weekly = STATE.rewardHistory.weekly.map(item => ({
-                        ...item,
-                        date: new Date(item.date),
-                        archivedAt: new Date(item.archivedAt)
-                    }));
-                    STATE.rewardHistory.monthly = STATE.rewardHistory.monthly.map(item => ({
-                        ...item,
-                        date: new Date(item.date),
-                        archivedAt: new Date(item.archivedAt)
-                    }));
-                }
-                
-                // Update earned status for all rewards
-                Object.keys(STATE.rewards).forEach(type => {
-                    STATE.rewards[type].forEach(reward => {
-                        if (type === 'daily') {
-                            reward.current = STATE.dailyCompletedSessions;
-                            reward.earned = reward.current >= reward.goal;
-                        } else if (type === 'weekly') {
-                            reward.current = STATE.weeklyCompletedSessions;
-                            reward.earned = reward.current >= reward.goal;
-                        } else if (type === 'monthly') {
-                            reward.current = STATE.monthlyCompletedSessions;
-                            reward.earned = reward.current >= reward.goal;
-                        }
-                    });
+                projectEl.addEventListener('click', () => {
+                    projectEl.classList.toggle('expanded');
                 });
                 
-                this.renderRewards();
-                this.renderRewardHistory();
-            },
-            
-            renderRewards() {
-                DOM.dailyRewardsList.innerHTML = '';
-                DOM.weeklyRewardsList.innerHTML = '';
-                DOM.monthlyRewardsList.innerHTML = '';
+                dom.projectList.appendChild(projectEl);
                 
-                // Render daily rewards
-                STATE.rewards.daily.forEach(reward => {
-                    const rewardItem = document.createElement('div');
-                    rewardItem.className = `reward-item ${reward.earned ? 'reward-earned' : ''}`;
-                    
-                    const progressPercent = Math.min(100, (reward.current / reward.goal) * 100);
-                    
-                    rewardItem.innerHTML = `
-                        <div class="reward-icon">${reward.icon}</div>
-                        <div class="reward-details">
-                            <div class="reward-title">${reward.title}</div>
-                            <div class="reward-description">${reward.description}</div>
-                            ${!reward.earned ? `
-                                <div class="reward-progress">
-                                    <div class="progress-bar" style="width: ${progressPercent}%"></div>
-                                </div>
-                                <div class="reward-status">${reward.current}/${reward.goal} sessions</div>
-                            ` : ''}
-                        </div>
-                        ${reward.earned ? `<div class="reward-emoji">${reward.reward}</div>` : ''}
-                    `;
-                    
-                    DOM.dailyRewardsList.appendChild(rewardItem);
-                });
+                // Add event listener for the add note button
+                const addNoteBtn = projectEl.querySelector('.add-project-note');
+                const noteInput = projectEl.querySelector('.add-note input');
                 
-                // Render weekly rewards
-                STATE.rewards.weekly.forEach(reward => {
-                    const rewardItem = document.createElement('div');
-                    rewardItem.className = `reward-item ${reward.earned ? 'reward-earned' : ''}`;
-                    
-                    const progressPercent = Math.min(100, (reward.current / reward.goal) * 100);
-                    
-                    rewardItem.innerHTML = `
-                        <div class="reward-icon">${reward.icon}</div>
-                        <div class="reward-details">
-                            <div class="reward-title">${reward.title}</div>
-                            <div class="reward-description">${reward.description}</div>
-                            ${!reward.earned ? `
-                                <div class="reward-progress">
-                                    <div class="progress-bar" style="width: ${progressPercent}%"></div>
-                                </div>
-                                <div class="reward-status">${reward.current}/${reward.goal} sessions</div>
-                            ` : ''}
-                        </div>
-                        ${reward.earned ? `<div class="reward-emoji">${reward.reward}</div>` : ''}
-                    `;
-                    
-                    DOM.weeklyRewardsList.appendChild(rewardItem);
-                });
-                
-                // Render monthly rewards
-                STATE.rewards.monthly.forEach(reward => {
-                    const rewardItem = document.createElement('div');
-                    rewardItem.className = `reward-item ${reward.earned ? 'reward-earned' : ''}`;
-                    
-                    const progressPercent = Math.min(100, (reward.current / reward.goal) * 100);
-                    
-                    rewardItem.innerHTML = `
-                        <div class="reward-icon">${reward.icon}</div>
-                        <div class="reward-details">
-                            <div class="reward-title">${reward.title}</div>
-                            <div class="reward-description">${reward.description}</div>
-                            ${!reward.earned ? `
-                                <div class="reward-progress">
-                                    <div class="progress-bar" style="width: ${progressPercent}%"></div>
-                                </div>
-                                <div class="reward-status">${reward.current}/${reward.goal} sessions</div>
-                            ` : ''}
-                        </div>
-                        ${reward.earned ? `<div class="reward-emoji">${reward.reward}</div>` : ''}
-                    `;
-                    
-                    DOM.monthlyRewardsList.appendChild(rewardItem);
-                });
-            },
-            
-            renderRewardHistory() {
-                DOM.historyRewardsList.innerHTML = '';
-                
-                // Render daily history
-                if (STATE.rewardHistory.daily.length > 0) {
-                    const dailyHeader = document.createElement('h4');
-                    dailyHeader.textContent = 'Daily Progress History';
-                    DOM.historyRewardsList.appendChild(dailyHeader);
-                    
-                    STATE.rewardHistory.daily.forEach(item => {
-                        const historyItem = document.createElement('div');
-                        historyItem.className = 'history-item';
-                        historyItem.innerHTML = `
-                            <div><strong>${item.periodName}</strong></div>
-                            <div>Completed: ${item.completedSessions} sessions</div>
-                            <div style="font-size: 0.8em; color: #666;">${item.archivedAt.toLocaleDateString()}</div>
-                        `;
-                        DOM.historyRewardsList.appendChild(historyItem);
-                    });
-                }
-                
-                // Render weekly history
-                if (STATE.rewardHistory.weekly.length > 0) {
-                    const weeklyHeader = document.createElement('h4');
-                    weeklyHeader.textContent = 'Weekly Progress History';
-                    weeklyHeader.style.marginTop = '20px';
-                    DOM.historyRewardsList.appendChild(weeklyHeader);
-                    
-                    STATE.rewardHistory.weekly.forEach(item => {
-                        const historyItem = document.createElement('div');
-                        historyItem.className = 'history-item';
-                        historyItem.innerHTML = `
-                            <div><strong>${item.periodName}</strong></div>
-                            <div>Completed: ${item.completedSessions} sessions</div>
-                            <div style="font-size: 0.8em; color: #666;">${item.archivedAt.toLocaleDateString()}</div>
-                        `;
-                        DOM.historyRewardsList.appendChild(historyItem);
-                    });
-                }
-                
-                // Render monthly history
-                if (STATE.rewardHistory.monthly.length > 0) {
-                    const monthlyHeader = document.createElement('h4');
-                    monthlyHeader.textContent = 'Monthly Progress History';
-                    monthlyHeader.style.marginTop = '20px';
-                    DOM.historyRewardsList.appendChild(monthlyHeader);
-                    
-                    STATE.rewardHistory.monthly.forEach(item => {
-                        const historyItem = document.createElement('div');
-                        historyItem.className = 'history-item';
-                        historyItem.innerHTML = `
-                            <div><strong>${item.periodName}</strong></div>
-                            <div>Completed: ${item.completedSessions} sessions</div>
-                            <div style="font-size: 0.8em; color: #666;">${item.archivedAt.toLocaleDateString()}</div>
-                        `;
-                        DOM.historyRewardsList.appendChild(historyItem);
-                    });
-                }
-                
-                if (STATE.rewardHistory.daily.length === 0 && 
-                    STATE.rewardHistory.weekly.length === 0 && 
-                    STATE.rewardHistory.monthly.length === 0) {
-                    const emptyMessage = document.createElement('p');
-                    emptyMessage.textContent = 'No reward history yet';
-                    emptyMessage.style.textAlign = 'center';
-                    emptyMessage.style.padding = '20px';
-                    emptyMessage.style.color = '#666';
-                    DOM.historyRewardsList.appendChild(emptyMessage);
-                }
-            },
-            
-            resetRewards() {
-                if (confirm('Are you sure you want to reset all rewards progress? This will not delete your history.')) {
-                    STATE.rewards.daily.forEach(reward => {
-                        reward.current = 0;
-                        reward.earned = false;
-                    });
-                    STATE.rewards.weekly.forEach(reward => {
-                        reward.current = 0;
-                        reward.earned = false;
-                    });
-                    STATE.rewards.monthly.forEach(reward => {
-                        reward.current = 0;
-                        reward.earned = false;
-                    });
-                    
-                    STATE.dailyCompletedSessions = 0;
-                    STATE.weeklyCompletedSessions = 0;
-                    STATE.monthlyCompletedSessions = 0;
-                    
-                    this.saveRewards();
-                    this.renderRewards();
-                }
-            }
-        };
-
-        // ========== Notes Functions ==========
-        const noteActions = {
-            saveNote(isWorkNote) {
-                const noteText = DOM.noteInput.value.trim();
-                
-                if (noteText) {
-                    const now = new Date();
-                    const timeString = now.toLocaleTimeString();
-                    const dateString = now.toLocaleDateString();
-                    
-                    const noteItem = document.createElement('div');
-                    noteItem.className = `note-item ${isWorkNote ? 'work-note' : 'break-note'}`;
-                    
-                    noteItem.innerHTML = `
-                        <div class="note-time" contenteditable="true" data-type="time">${dateString} ${timeString}</div>
-                        <div class="note-text" contenteditable="true" data-type="text">${noteText}</div>
-                        <div class="note-actions">
-                            <button class="note-action-btn" onclick="noteActions.deleteNote(this)">Delete</button>
-                        </div>
-                    `;
-                    
-                    DOM.noteList.insertBefore(noteItem, DOM.noteList.firstChild);
-                    DOM.noteInput.value = '';
-                    
-                    // Save to state
-                    STATE.notes.unshift({
-                        type: isWorkNote ? 'work' : 'break',
-                        text: noteText,
-                        time: `${dateString} ${timeString}`,
-                        timestamp: now.getTime()
-                    });
-                    
-                    // Also add to session history if not during a timer
-                    if (!STATE.isRunning) {
-                        historyActions.addSession({
-                            type: isWorkNote ? 'work' : 'break',
-                            duration: 0,
-                            notes: noteText,
-                            timestamp: now,
-                            project: projectActions.getCurrentProject()
+                addNoteBtn.addEventListener('click', () => {
+                    const noteText = noteInput.value.trim();
+                    if (noteText) {
+                        project.sessions.push({
+                            timestamp: new Date(),
+                            notes: noteText
                         });
+                        saveProjects();
+                        renderProjects();
+                        noteInput.value = '';
                     }
-                    
-                    noteActions.saveToStorage();
-                }
-            },
-
-            deleteNote(button) {
-                const noteItem = button.closest('.note-item');
-                const index = Array.from(DOM.noteList.children).indexOf(noteItem);
-                
-                if (index !== -1) {
-                    STATE.notes.splice(index, 1);
-                    noteItem.remove();
-                    noteActions.saveToStorage();
-                }
-            },
-
-            deleteAllNotes() {
-                if (confirm('Are you sure you want to delete all notes? This cannot be undone.')) {
-                    STATE.notes = [];
-                    DOM.noteList.innerHTML = '';
-                    noteActions.saveToStorage();
-                }
-            },
-
-            saveToStorage() {
-                localStorage.setItem('notes', JSON.stringify(STATE.notes));
-            },
-
-            loadFromStorage() {
-                const savedNotes = localStorage.getItem('notes');
-                if (savedNotes) {
-                    STATE.notes = JSON.parse(savedNotes);
-                    
-                    // Sort notes by timestamp (newest first)
-                    STATE.notes.sort((a, b) => b.timestamp - a.timestamp);
-                    
-                    // Render notes
-                    STATE.notes.forEach(note => {
-                        const noteItem = document.createElement('div');
-                        noteItem.className = `note-item ${note.type === 'work' ? 'work-note' : 'break-note'}`;
-                        
-                        noteItem.innerHTML = `
-                            <div class="note-time" contenteditable="true" data-type="time">${note.time}</div>
-                            <div class="note-text" contenteditable="true" data-type="text">${note.text}</div>
-                            <div class="note-actions">
-                                <button class="note-action-btn" onclick="noteActions.deleteNote(this)">Delete</button>
-                            </div>
-                        `;
-                        
-                        DOM.noteList.appendChild(noteItem);
-                    });
-                }
-                
-                // Add event listeners for editable fields
-                document.querySelectorAll('.note-time, .note-text').forEach(element => {
-                    element.addEventListener('blur', function() {
-                        const noteItem = this.closest('.note-item');
-                        const index = Array.from(DOM.noteList.children).indexOf(noteItem);
-                        
-                        if (index !== -1 && STATE.notes[index]) {
-                            const type = this.getAttribute('data-type');
-                            if (type === 'time') {
-                                STATE.notes[index].time = this.textContent;
-                            } else if (type === 'text') {
-                                STATE.notes[index].text = this.textContent;
-                            }
-                            noteActions.saveToStorage();
-                        }
-                    });
                 });
-                
-                STATE.totalWorkSeconds = parseInt(localStorage.getItem('totalWorkSeconds')) || 0;
-                STATE.totalBreakSeconds = parseInt(localStorage.getItem('totalBreakSeconds')) || 0;
-                trackingActions.updateDisplay();
-            },
+            });
+        }
 
-            copyToClipboard() {
-                let notesText = '';
-                
-                DOM.noteList.querySelectorAll('.note-item').forEach(item => {
-                    const time = item.querySelector('.note-time').textContent;
-                    const text = item.querySelector('.note-text').textContent;
-                    const type = item.classList.contains('work-note') ? 'WORK' : 'BREAK';
-                    notesText += `${type} - ${time}\n${text}\n\n`;
-                });
-                
-                navigator.clipboard.writeText(notesText.trim()).then(() => {
-                    alert('All notes copied to clipboard!');
-                }).catch(err => {
-                    console.error('Failed to copy notes: ', err);
-                });
-            }
-        };
-
-        // ========== History Functions ==========
-        const historyActions = {
-            addSession(session) {
-                STATE.sessionHistory.push(session);
-                this.saveHistory();
-                this.renderHistory();
-                projectActions.renderProjectsHistory();
-            },
-
-            saveHistory() {
-                localStorage.setItem('sessionHistory', JSON.stringify(STATE.sessionHistory));
-            },
-
-            loadHistory() {
-                const savedHistory = localStorage.getItem('sessionHistory');
-                if (savedHistory) {
-                    STATE.sessionHistory = JSON.parse(savedHistory);
-                    this.renderHistory();
-                    projectActions.renderProjectsHistory();
-                }
-            },
-
-            clearHistory() {
-                if (confirm('Are you sure you want to clear all session history? This cannot be undone.')) {
-                    STATE.sessionHistory = [];
-                    this.saveHistory();
-                    DOM.historyList.innerHTML = '';
-                    projectActions.renderProjectsHistory();
-                }
-            },
-
-            exportHistory() {
-                let historyText = 'Pomodoro Session History\n\n';
-                
-                STATE.sessionHistory.forEach(session => {
-                    const date = new Date(session.timestamp);
-                    const dateString = date.toLocaleDateString();
-                    const timeString = date.toLocaleTimeString();
-                    const durationString = trackingActions.formatTime(session.duration);
-                    
-                    historyText += `Type: ${session.type.toUpperCase()}\n`;
-                    historyText += `Date: ${dateString} ${timeString}\n`;
-                    historyText += `Duration: ${durationString}\n`;
-                    historyText += `Project: ${session.project || 'None'}\n`;
-                    historyText += `Notes: ${session.notes || 'Enter work/project here'}\n\n`;
-                });
-                
-                // Create a blob and download it
-                const blob = new Blob([historyText], { type: 'text/plain' });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = 'pomodoro-session-history.txt';
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                URL.revokeObjectURL(url);
-            },
-
-            renderHistory() {
-                DOM.historyList.innerHTML = '';
-                
-                if (STATE.sessionHistory.length === 0) {
-                    DOM.historyList.innerHTML = '<p style="text-align: center; padding: 20px; color: #666;">No session history yet</p>';
-                    return;
-                }
-                
-                // Sort by timestamp (newest first)
-                STATE.sessionHistory.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
-                
-                STATE.sessionHistory.forEach((session, index) => {
-                    const historyItem = document.createElement('div');
-                    historyItem.className = 'history-item';
-                    
-                    const date = new Date(session.timestamp);
-                    const dateString = date.toLocaleDateString();
-                    const timeString = date.toLocaleTimeString();
-                    const durationString = trackingActions.formatTime(session.duration);
-                    
-                    historyItem.innerHTML = `
-                        <div class="history-header">
-                            <span class="history-type ${session.type}-history">${session.type.charAt(0).toUpperCase() + session.type.slice(1)}</span>
-                            <span class="history-time" contenteditable="true" data-type="time" data-index="${index}">${dateString} ${timeString}</span>
-                        </div>
-                        <div class="history-duration editable" contenteditable="true" data-type="duration" data-index="${index}">Duration: ${durationString}</div>
-                        ${session.project ? `<div class="editable" contenteditable="true" data-type="project" data-index="${index}">Project: ${session.project}</div>` : ''}
-                        <div class="history-notes editable" contenteditable="true" data-type="notes" data-index="${index}">${session.notes || 'Enter work/project here'}</div>
-                        <div class="history-actions">
-                            <button class="history-action-btn" onclick="historyActions.deleteSession(${index})">Delete</button>
-                        </div>
-                    `;
-                    
-                    DOM.historyList.appendChild(historyItem);
-                });
-                
-                // Add event listeners for editable fields
-                document.querySelectorAll('.history-time, .history-duration, .history-notes, [data-type="project"]').forEach(element => {
-                    element.addEventListener('blur', function() {
-                        const index = parseInt(this.getAttribute('data-index'));
-                        const type = this.getAttribute('data-type');
-                        
-                        if (type === 'time') {
-                            // Parse the edited time string and update the timestamp
-                            const timeString = this.textContent;
-                            const [datePart, timePart] = timeString.split(' ');
-                            const [month, day, year] = datePart.split('/');
-                            const [hours, minutes, seconds] = timePart.split(':');
-                            
-                            const newDate = new Date(year, month - 1, day, hours, minutes, seconds);
-                            STATE.sessionHistory[index].timestamp = newDate;
-                        } else if (type === 'duration') {
-                            // Parse duration from text like "Duration: 00:05:00"
-                            const durationText = this.textContent.replace('Duration: ', '');
-                            const [hours, minutes, seconds] = durationText.split(':').map(Number);
-                            STATE.sessionHistory[index].duration = hours * 3600 + minutes * 60 + seconds;
-                        } else if (type === 'project') {
-                            STATE.sessionHistory[index].project = this.textContent.replace('Project: ', '');
-                        } else if (type === 'notes') {
-                            STATE.sessionHistory[index].notes = this.textContent;
-                        }
-                        
-                        historyActions.saveHistory();
-                        projectActions.renderProjectsHistory();
-                    });
-                });
-            },
-
-            deleteSession(index) {
-                STATE.sessionHistory.splice(index, 1);
-                this.saveHistory();
-                this.renderHistory();
-                projectActions.renderProjectsHistory();
-            }
-        };
-
-        // ========== Calendar Functions ==========
-        const calendarActions = {
-            renderCalendar(container = DOM.fullscreenCalendarGrid, sessionsContainer = DOM.fullscreenCalendarSessions, titleElement = DOM.fullscreenCalendarTitle) {
-                const month = STATE.calendar.currentMonth;
-                const year = STATE.calendar.currentYear;
-                
-                // Set calendar title
-                const monthNames = ["January", "February", "March", "April", "May", "June",
-                    "July", "August", "September", "October", "November", "December"];
-                titleElement.textContent = `${monthNames[month]} ${year}`;
-                
-                // Clear previous calendar days
-                while (container.children.length > 7) {
-                    container.removeChild(container.lastChild);
-                }
-                
-                // Get first day of month and total days in month
-                const firstDay = new Date(year, month, 1).getDay();
-                const daysInMonth = new Date(year, month + 1, 0).getDate();
-                
-                // Add empty cells for days before the first day of the month
-                for (let i = 0; i < firstDay; i++) {
-                    const emptyCell = document.createElement('div');
-                    emptyCell.className = 'calendar-day empty';
-                    container.appendChild(emptyCell);
-                }
-                
-                // Add cells for each day of the month
-                const today = new Date();
-                const currentDate = today.getDate();
-                const currentMonth = today.getMonth();
-                const currentYear = today.getFullYear();
-                
-                for (let day = 1; day <= daysInMonth; day++) {
-                    const dayCell = document.createElement('div');
-                    dayCell.className = 'calendar-day';
-                    dayCell.textContent = day;
-                    
-                    // Check if this day has any sessions
-                    const hasSessions = STATE.sessionHistory.some(session => {
-                        const sessionDate = new Date(session.timestamp);
-                        return sessionDate.getDate() === day && 
-                               sessionDate.getMonth() === month && 
-                               sessionDate.getFullYear() === year;
-                    });
-                    
-                    if (hasSessions) {
-                        dayCell.classList.add('has-sessions');
-                    }
-                    
-                    // Highlight today
-                    if (day === currentDate && month === currentMonth && year === currentYear) {
-                        dayCell.classList.add('today');
-                    }
-                    
-                    // Highlight selected date
-                    if (STATE.calendar.selectedDate && 
-                        day === STATE.calendar.selectedDate.getDate() && 
-                        month === STATE.calendar.selectedDate.getMonth() && 
-                        year === STATE.calendar.selectedDate.getFullYear()) {
-                        dayCell.classList.add('selected');
-                    }
-                    
-                    dayCell.addEventListener('click', () => {
-                        const selectedDate = new Date(year, month, day);
-                        STATE.calendar.selectedDate = selectedDate;
-                        calendarActions.renderCalendar(container, sessionsContainer, titleElement);
-                        calendarActions.showSessionsForDate(selectedDate, sessionsContainer);
-                    });
-                    
-                    container.appendChild(dayCell);
-                }
-            },
+        // Session history functions
+        function addSession(session) {
+            state.sessionHistory.push(session);
             
-            showSessionsForDate(date, sessionsContainer = DOM.fullscreenCalendarSessions) {
-                sessionsContainer.innerHTML = '';
+            // Update project stats if this is a work session with a project
+            if (session.type === 'work' && session.project) {
+                const project = state.projects.find(p => p.name === session.project);
+                if (project) {
+                    project.pomodoros++;
+                    project.totalWorkTime += session.duration;
+                    project.sessions.push({
+                        timestamp: session.timestamp,
+                        notes: session.notes,
+                        duration: session.duration
+                    });
+                    saveProjects();
+                }
+            }
+            
+            saveSessionHistory();
+            renderSessionHistory();
+            renderProjectHistory();
+            renderCalendar();
+            renderFullCalendar();
+        }
+
+        function saveSessionHistory() {
+            localStorage.setItem('sessionHistory', JSON.stringify(state.sessionHistory));
+        }
+
+        function loadSessionHistory() {
+            const savedHistory = localStorage.getItem('sessionHistory');
+            if (savedHistory) {
+                state.sessionHistory = JSON.parse(savedHistory);
+                renderSessionHistory();
+                renderProjectHistory();
+            }
+        }
+
+        function renderSessionHistory() {
+            dom.sessionHistoryContainer.innerHTML = '';
+            
+            if (state.sessionHistory.length === 0) {
+                dom.sessionHistoryContainer.innerHTML = '<p>No session history yet</p>';
+                return;
+            }
+            
+            // Sort by most recent first
+            const sortedHistory = [...state.sessionHistory].sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+            
+            sortedHistory.forEach(session => {
+                const sessionEl = document.createElement('div');
+                sessionEl.className = 'history-item';
                 
-                const sessionsForDate = STATE.sessionHistory.filter(session => {
+                sessionEl.innerHTML = `
+                    <div class="history-header">
+                        <span class="history-type ${session.type}-history">${session.type.charAt(0).toUpperCase() + session.type.slice(1)}</span>
+                        <span class="history-time">${new Date(session.timestamp).toLocaleString()}</span>
+                    </div>
+                    <div class="history-duration">Duration: ${formatTime(session.duration)}</div>
+                    ${session.project ? `<div class="history-project">Project: ${session.project}</div>` : ''}
+                    ${session.notes ? `<div class="history-notes">${session.notes}</div>` : ''}
+                `;
+                
+                dom.sessionHistoryContainer.appendChild(sessionEl);
+            });
+        }
+
+        function renderProjectHistory() {
+            dom.projectHistoryContainer.innerHTML = '';
+            
+            if (state.projects.length === 0) {
+                dom.projectHistoryContainer.innerHTML = '<p>No projects yet</p>';
+                return;
+            }
+            
+            state.projects.forEach(project => {
+                const projectEl = document.createElement('div');
+                projectEl.className = 'history-item';
+                
+                // Calculate stats for this project
+                const projectSessions = state.sessionHistory.filter(s => s.project === project.name);
+                const workSessions = projectSessions.filter(s => s.type === 'work');
+                const breakSessions = projectSessions.filter(s => s.type === 'break');
+                
+                const totalWorkTime = workSessions.reduce((sum, s) => sum + s.duration, 0);
+                const totalBreakTime = breakSessions.reduce((sum, s) => sum + s.duration, 0);
+                
+                projectEl.innerHTML = `
+                    <div class="project-name">${project.name}</div>
+                    <div>Pomodoros: ${workSessions.length}</div>
+                    <div>Work Time: ${formatTime(totalWorkTime)}</div>
+                    <div>Break Time: ${formatTime(totalBreakTime)}</div>
+                    <div>Last Session: ${project.sessions.length > 0 ? 
+                        new Date(project.sessions[project.sessions.length - 1].timestamp).toLocaleString() : 'Never'}</div>
+                `;
+                
+                dom.projectHistoryContainer.appendChild(projectEl);
+            });
+        }
+
+        function exportSessionHistory() {
+            let csvContent = "data:text/csv;charset=utf-8,";
+            
+            // Add header
+            csvContent += "Type,Date,Duration,Project,Notes\n";
+            
+            // Add data
+            state.sessionHistory.forEach(session => {
+                const row = [
+                    session.type,
+                    new Date(session.timestamp).toLocaleString(),
+                    formatTime(session.duration),
+                    session.project || '',
+                    session.notes || ''
+                ].join(',');
+                
+                csvContent += row + "\n";
+            });
+            
+            // Create download link
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "pomodoro_sessions.csv");
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        function exportProjectHistory() {
+            let csvContent = "data:text/csv;charset=utf-8,";
+            
+            // Add header
+            csvContent += "Project,Pomodoros,Work Time,Break Time,Last Session\n";
+            
+            // Add data
+            state.projects.forEach(project => {
+                const projectSessions = state.sessionHistory.filter(s => s.project === project.name);
+                const workSessions = projectSessions.filter(s => s.type === 'work');
+                const breakSessions = projectSessions.filter(s => s.type === 'break');
+                
+                const totalWorkTime = workSessions.reduce((sum, s) => sum + s.duration, 0);
+                const totalBreakTime = breakSessions.reduce((sum, s) => sum + s.duration, 0);
+                const lastSession = project.sessions.length > 0 ? 
+                    new Date(project.sessions[project.sessions.length - 1].timestamp).toLocaleString() : 'Never';
+                
+                const row = [
+                    project.name,
+                    workSessions.length,
+                    formatTime(totalWorkTime),
+                    formatTime(totalBreakTime),
+                    lastSession
+                ].join(',');
+                
+                csvContent += row + "\n";
+            });
+            
+            // Create download link
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "pomodoro_projects.csv");
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        // Calendar functions
+        function renderCalendar(container = dom.calendarGrid, titleElement = dom.currentMonthYear) {
+            const month = state.calendar.currentMonth;
+            const year = state.calendar.currentYear;
+            
+            // Set month/year display
+            const monthNames = ["January", "February", "March", "April", "May", "June",
+                "July", "August", "September", "October", "November", "December"];
+            titleElement.textContent = `${monthNames[month]} ${year}`;
+            
+            // Clear previous calendar days
+            while (container.children.length > 7) {
+                container.removeChild(container.lastChild);
+            }
+            
+            // Get first day of month and total days in month
+            const firstDay = new Date(year, month, 1).getDay();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            
+            // Add empty cells for days before the first day of the month
+            for (let i = 0; i < firstDay; i++) {
+                const emptyCell = document.createElement('div');
+                emptyCell.className = 'calendar-day empty';
+                container.appendChild(emptyCell);
+            }
+            
+            // Add cells for each day of the month
+            const today = new Date();
+            const currentDate = today.getDate();
+            const currentMonth = today.getMonth();
+            const currentYear = today.getFullYear();
+            
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dayCell = document.createElement('div');
+                dayCell.className = 'calendar-day';
+                dayCell.textContent = day;
+                
+                // Check if this day has any sessions
+                const hasSessions = state.sessionHistory.some(session => {
                     const sessionDate = new Date(session.timestamp);
-                    return sessionDate.getDate() === date.getDate() && 
-                           sessionDate.getMonth() === date.getMonth() && 
-                           sessionDate.getFullYear() === date.getFullYear();
+                    return sessionDate.getDate() === day && 
+                           sessionDate.getMonth() === month && 
+                           sessionDate.getFullYear() === year;
                 });
                 
-                if (sessionsForDate.length === 0) {
-                    sessionsContainer.innerHTML = '<p style="text-align: center; padding: 20px; color: #666;">No sessions for this date</p>';
-                    return;
+                if (hasSessions) {
+                    dayCell.classList.add('has-sessions');
                 }
                 
-                sessionsForDate.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+                // Highlight today
+                if (day === currentDate && month === currentMonth && year === currentYear) {
+                    dayCell.classList.add('today');
+                }
                 
-                sessionsForDate.forEach((session, index) => {
-                    const sessionItem = document.createElement('div');
-                    sessionItem.className = `calendar-session-item ${session.type}`;
-                    
-                    const sessionDate = new Date(session.timestamp);
-                    const timeString = sessionDate.toLocaleTimeString();
-                    const durationString = trackingActions.formatTime(session.duration);
-                    
-                    sessionItem.innerHTML = `
-                        <div class="calendar-session-time">${timeString}</div>
-                        <div class="calendar-session-duration">${durationString}</div>
-                        ${session.project ? `<div>Project: ${session.project}</div>` : ''}
-                        <div class="calendar-session-notes" contenteditable="true" data-index="${index}">${session.notes || 'Enter work/project here'}</div>
-                    `;
-                    
-                    // Add event listener for editable notes
-                    sessionItem.querySelector('.calendar-session-notes').addEventListener('blur', function() {
-                        const sessionIndex = STATE.sessionHistory.findIndex(s => {
-                            const sDate = new Date(s.timestamp);
-                            return sDate.getDate() === date.getDate() && 
-                                   sDate.getMonth() === date.getMonth() && 
-                                   sDate.getFullYear() === date.getFullYear() &&
-                                   sDate.toLocaleTimeString() === timeString;
-                        });
-                        
-                        if (sessionIndex !== -1) {
-                            STATE.sessionHistory[sessionIndex].notes = this.textContent;
-                            historyActions.saveHistory();
-                        }
-                    });
-                    
-                    sessionsContainer.appendChild(sessionItem);
+                // Highlight selected date
+                if (state.calendar.selectedDate && 
+                    day === state.calendar.selectedDate.getDate() && 
+                    month === state.calendar.selectedDate.getMonth() && 
+                    year === state.calendar.selectedDate.getFullYear()) {
+                    dayCell.classList.add('selected');
+                }
+                
+                dayCell.addEventListener('click', () => {
+                    const selectedDate = new Date(year, month, day);
+                    state.calendar.selectedDate = selectedDate;
+                    renderCalendar();
+                    showSessionsForDate(selectedDate, dom.calendarSessions);
                 });
-            },
+                
+                container.appendChild(dayCell);
+            }
             
-            changeMonth(offset) {
-                STATE.calendar.currentMonth += offset;
+            // Show sessions for selected date if any
+            if (state.calendar.selectedDate) {
+                showSessionsForDate(state.calendar.selectedDate, dom.calendarSessions);
+            }
+        }
+
+        function renderFullCalendar() {
+            const month = state.fullCalendar.currentMonth;
+            const year = state.fullCalendar.currentYear;
+            
+            // Set month/year display
+            const monthNames = ["January", "February", "March", "April", "May", "June",
+                "July", "August", "September", "October", "November", "December"];
+            dom.fullCalendarTitle.textContent = `${monthNames[month]} ${year}`;
+            
+            // Clear previous calendar days
+            dom.fullCalendarGrid.innerHTML = '';
+            
+            // Add day headers
+            const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+            dayNames.forEach(day => {
+                const dayHeader = document.createElement('div');
+                dayHeader.className = 'calendar-day-header';
+                dayHeader.textContent = day;
+                dom.fullCalendarGrid.appendChild(dayHeader);
+            });
+            
+            // Get first day of month and total days in month
+            const firstDay = new Date(year, month, 1).getDay();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            
+            // Add empty cells for days before the first day of the month
+            for (let i = 0; i < firstDay; i++) {
+                const emptyCell = document.createElement('div');
+                emptyCell.className = 'full-calendar-day empty';
+                dom.fullCalendarGrid.appendChild(emptyCell);
+            }
+            
+            // Add cells for each day of the month
+            const today = new Date();
+            const currentDate = today.getDate();
+            const currentMonth = today.getMonth();
+            const currentYear = today.getFullYear();
+            
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dayCell = document.createElement('div');
+                dayCell.className = 'full-calendar-day';
+                
+                const dayNumber = document.createElement('div');
+                dayNumber.className = 'full-calendar-day-number';
+                dayNumber.textContent = day;
+                dayCell.appendChild(dayNumber);
+                
+                // Check if this day has any sessions
+                const daySessions = state.sessionHistory.filter(session => {
+                    const sessionDate = new Date(session.timestamp);
+                    return sessionDate.getDate() === day && 
+                           sessionDate.getMonth() === month && 
+                           sessionDate.getFullYear() === year;
+                });
+                
+                if (daySessions.length > 0) {
+                    dayCell.classList.add('has-sessions');
+                    
+                    // Add session count
+                    const sessionCount = document.createElement('div');
+                    sessionCount.className = 'full-calendar-session-count';
+                    sessionCount.textContent = `${daySessions.length} session${daySessions.length > 1 ? 's' : ''}`;
+                    dayCell.appendChild(sessionCount);
+                }
+                
+                // Highlight today
+                if (day === currentDate && month === currentMonth && year === currentYear) {
+                    dayCell.classList.add('today');
+                }
+                
+                // Highlight selected date
+                if (state.fullCalendar.selectedDate && 
+                    day === state.fullCalendar.selectedDate.getDate() && 
+                    month === state.fullCalendar.selectedDate.getMonth() && 
+                    year === state.fullCalendar.selectedDate.getFullYear()) {
+                    dayCell.classList.add('selected');
+                }
+                
+                dayCell.addEventListener('click', () => {
+                    const selectedDate = new Date(year, month, day);
+                    state.fullCalendar.selectedDate = selectedDate;
+                    renderFullCalendar();
+                    showSessionsForDate(selectedDate, dom.fullCalendarSessions);
+                });
+                
+                dom.fullCalendarGrid.appendChild(dayCell);
+            }
+            
+            // Show sessions for selected date if any
+            if (state.fullCalendar.selectedDate) {
+                showSessionsForDate(state.fullCalendar.selectedDate, dom.fullCalendarSessions);
+            }
+        }
+
+        function showSessionsForDate(date, container) {
+            container.innerHTML = '';
+            
+            const sessionsForDate = state.sessionHistory.filter(session => {
+                const sessionDate = new Date(session.timestamp);
+                return sessionDate.getDate() === date.getDate() && 
+                       sessionDate.getMonth() === date.getMonth() && 
+                       sessionDate.getFullYear() === date.getFullYear();
+            });
+            
+            if (sessionsForDate.length === 0) {
+                container.innerHTML = '<p>No sessions for this date</p>';
+                return;
+            }
+            
+            // Sort by time
+            sessionsForDate.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+            
+            sessionsForDate.forEach(session => {
+                const sessionEl = document.createElement('div');
+                sessionEl.className = 'full-session-item';
+                
+                sessionEl.innerHTML = `
+                    <div class="session-time">${new Date(session.timestamp).toLocaleTimeString()}</div>
+                    <div class="session-duration">${formatTime(session.duration)} ${session.type}</div>
+                    ${session.project ? `<div class="session-project">Project: ${session.project}</div>` : ''}
+                    ${session.notes ? `<div class="session-notes">${session.notes}</div>` : ''}
+                `;
+                
+                container.appendChild(sessionEl);
+            });
+            
+            container.style.display = 'block';
+            container.classList.add('visible');
+        }
+
+        function changeMonth(offset, isFullCalendar = false) {
+            if (isFullCalendar) {
+                state.fullCalendar.currentMonth += offset;
                 
                 // Handle year wrap-around
-                if (STATE.calendar.currentMonth < 0) {
-                    STATE.calendar.currentMonth = 11;
-                    STATE.calendar.currentYear--;
-                } else if (STATE.calendar.currentMonth > 11) {
-                    STATE.calendar.currentMonth = 0;
-                    STATE.calendar.currentYear++;
+                if (state.fullCalendar.currentMonth < 0) {
+                    state.fullCalendar.currentMonth = 11;
+                    state.fullCalendar.currentYear--;
+                } else if (state.fullCalendar.currentMonth > 11) {
+                    state.fullCalendar.currentMonth = 0;
+                    state.fullCalendar.currentYear++;
                 }
                 
-                STATE.calendar.selectedDate = null;
-                calendarActions.renderCalendar();
-                DOM.fullscreenCalendarSessions.innerHTML = '<p style="text-align: center; padding: 20px; color: #666;">Select a date to view sessions</p>';
-            },
-            
-            toggleFullscreenCalendar() {
-                STATE.fullscreenCalendarOpen = !STATE.fullscreenCalendarOpen;
-                if (STATE.fullscreenCalendarOpen) {
-                    DOM.fullscreenCalendar.style.display = 'block';
-                    this.renderCalendar();
-                } else {
-                    DOM.fullscreenCalendar.style.display = 'none';
+                state.fullCalendar.selectedDate = null;
+                renderFullCalendar();
+                dom.fullCalendarSessions.innerHTML = '<p>Select a date to view sessions</p>';
+            } else {
+                state.calendar.currentMonth += offset;
+                
+                // Handle year wrap-around
+                if (state.calendar.currentMonth < 0) {
+                    state.calendar.currentMonth = 11;
+                    state.calendar.currentYear--;
+                } else if (state.calendar.currentMonth > 11) {
+                    state.calendar.currentMonth = 0;
+                    state.calendar.currentYear++;
                 }
+                
+                state.calendar.selectedDate = null;
+                renderCalendar();
+                dom.calendarSessions.innerHTML = '<p>Select a date to view sessions</p>';
             }
-        };
+        }
 
-        // ========== Sound Control Functions ==========
-        const soundActions = {
-            togglePanel(panel) {
-                const panels = [DOM.infoPanel, DOM.noisePanel, DOM.lofiPanel, DOM.historyPanel, DOM.rewardsPanel, DOM.productivityPanel];
-                panels.forEach(p => {
-                    if (p === panel) {
-                        p.classList.toggle('show');
-                    } else {
-                        p.classList.remove('show');
-                    }
-                });
-            },
+        // Utility functions
+        function formatTime(totalSeconds) {
+            const hours = Math.floor(totalSeconds / 3600);
+            const minutes = Math.floor((totalSeconds % 3600) / 60);
+            const seconds = totalSeconds % 60;
+            return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        function showNoteModal(session) {
+            dom.noteText.value = '';
+            dom.noteModal.style.display = 'flex';
             
-            toggleNoisePlayback() {
-                if (STATE.currentNoiseType === 'none') return;
-                
-                if (STATE.isNoisePlaying) {
-                    STATE.currentNoise.pause();
-                    DOM.noisePlayBtn.textContent = '▶️';
-                    STATE.isNoisePlaying = false;
-                } else {
-                    STATE.currentNoise.play();
-                    DOM.noisePlayBtn.textContent = '⏸️';
-                    STATE.isNoisePlaying = true;
+            dom.saveNoteBtn.onclick = () => {
+                const noteText = dom.noteText.value.trim();
+                if (noteText) {
+                    session.notes = noteText;
+                    addSession(session);
                 }
-            },
-            
-            changeBackgroundNoise(e) {
-                if (STATE.currentNoise) {
-                    STATE.currentNoise.pause();
-                    STATE.currentNoise.currentTime = 0;
-                }
-                
-                const selectedNoise = e.target.value;
-                STATE.currentNoiseType = selectedNoise;
-                
-                if (selectedNoise !== 'none') {
-                    STATE.currentNoise = document.getElementById(`${selectedNoise}Sound`);
-                    STATE.currentNoise.volume = STATE.currentVolume;
-                    STATE.currentNoise.play();
-                    STATE.isNoisePlaying = true;
-                    DOM.noisePlayBtn.textContent = '⏸️';
-                    DOM.nowPlaying.textContent = `Now playing: ${STATE.noiseNames[selectedNoise]}`;
-                } else {
-                    STATE.currentNoise = null;
-                    STATE.isNoisePlaying = false;
-                    DOM.noisePlayBtn.textContent = '▶️';
-                    DOM.nowPlaying.textContent = STATE.noiseNames['none'];
-                }
-                
-                document.querySelectorAll('.noise-option').forEach(option => {
-                    option.classList.remove('active');
-                });
-                e.target.closest('.noise-option').classList.add('active');
-            },
-            
-            updateVolume() {
-                STATE.currentVolume = parseFloat(DOM.volumeControl.value);
-                if (STATE.currentNoise) {
-                    STATE.currentNoise.volume = STATE.currentVolume;
-                }
-            }
-        };
+                dom.noteModal.style.display = 'none';
+            };
+        }
 
-        // ========== Reward Tab Functions ==========
-        const rewardTabActions = {
-            setupTabs() {
-                document.querySelectorAll('.reward-tab').forEach(tab => {
-                    tab.addEventListener('click', () => {
-                        // Set active tab
-                        document.querySelectorAll('.reward-tab').forEach(t => {
-                            t.classList.remove('active');
-                        });
-                        tab.classList.add('active');
-                        
-                        // Show corresponding content
-                        const tabType = tab.getAttribute('data-tab');
-                        document.querySelectorAll('.reward-tab-content').forEach(content => {
-                            content.classList.remove('active');
-                        });
-                        document.getElementById(`${tabType}Rewards`).classList.add('active');
-                    });
-                });
-            }
-        };
-
-        // ========== History Tab Functions ==========
-        const historyTabActions = {
-            setupTabs() {
-                DOM.historyTabs.forEach(tab => {
-                    tab.addEventListener('click', () => {
-                        // Set active tab
-                        DOM.historyTabs.forEach(t => {
-                            t.classList.remove('active');
-                        });
-                        tab.classList.add('active');
-                        
-                        // Show corresponding content
-                        const tabType = tab.getAttribute('data-tab');
-                        document.querySelectorAll('.history-tab-content').forEach(content => {
-                            content.classList.remove('active');
-                        });
-                        document.getElementById(`${tabType}History`).classList.add('active');
-                    });
-                });
-            }
-        };
-
-        // ========== Dropdown Menu Functions ==========
-        const dropdownActions = {
-            toggleDropdown() {
-                DOM.dropdownContent.classList.toggle('show');
-            },
-            
-            closeDropdown() {
-                DOM.dropdownContent.classList.remove('show');
-            },
-            
-            setupMenuItems() {
-                DOM.infoMenuItem.addEventListener('click', () => {
-                    soundActions.togglePanel(DOM.infoPanel);
-                    this.closeDropdown();
-                });
-                
-                DOM.productivityMenuItem.addEventListener('click', () => {
-                    soundActions.togglePanel(DOM.productivityPanel);
-                    this.closeDropdown();
-                });
-                
-                DOM.noiseMenuItem.addEventListener('click', () => {
-                    soundActions.togglePanel(DOM.noisePanel);
-                    this.closeDropdown();
-                });
-                
-                DOM.lofiMenuItem.addEventListener('click', () => {
-                    soundActions.togglePanel(DOM.lofiPanel);
-                    this.closeDropdown();
-                });
-                
-                DOM.historyMenuItem.addEventListener('click', () => {
-                    soundActions.togglePanel(DOM.historyPanel);
-                    this.closeDropdown();
-                });
-                
-                DOM.rewardsMenuItem.addEventListener('click', () => {
-                    soundActions.togglePanel(DOM.rewardsPanel);
-                    this.closeDropdown();
-                });
-                
-                DOM.calendarMenuItem.addEventListener('click', () => {
-                    calendarActions.toggleFullscreenCalendar();
-                    this.closeDropdown();
-                });
-                
-                DOM.donateMenuItem.addEventListener('click', () => {
-                    window.open('https://www.paypal.com/donate?business=YOUR_PAYPAL_EMAIL&item_name=Support+Pomodoro+Timer+Creator', '_blank');
-                    this.closeDropdown();
-                });
-            }
-        };
-
-        // ========== Event Listeners ==========
+        // Event listeners
         function setupEventListeners() {
-            DOM.startButton.addEventListener('click', timerActions.start);
-            DOM.stopButton.addEventListener('click', timerActions.stop);
-            DOM.resetButton.addEventListener('click', timerActions.reset);
-            DOM.work25Button.addEventListener('click', () => timerActions.setQuickTime(25, 0, true));
-            DOM.break5Button.addEventListener('click', () => timerActions.setQuickTime(5, 0, false));
-            DOM.break30Button.addEventListener('click', () => timerActions.setQuickTime(30, 0, false));
-            DOM.setWorkModeButton.addEventListener('click', () => timerActions.setMode(true));
-            DOM.setBreakModeButton.addEventListener('click', () => timerActions.setMode(false));
+            // Timer controls
+            dom.startBtn.addEventListener('click', startTimer);
+            dom.stopBtn.addEventListener('click', stopTimer);
+            dom.resetBtn.addEventListener('click', resetTimer);
             
-            DOM.saveWorkNoteButton.addEventListener('click', () => noteActions.saveNote(true));
-            DOM.saveBreakNoteButton.addEventListener('click', () => noteActions.saveNote(false));
-            DOM.copyNotesButton.addEventListener('click', noteActions.copyToClipboard);
-            DOM.deleteAllNotes.addEventListener('click', noteActions.deleteAllNotes);
-            DOM.resetTracking.addEventListener('click', trackingActions.resetTracking);
+            // Mode buttons
+            dom.workModeBtn.addEventListener('click', () => setMode(true));
+            dom.breakModeBtn.addEventListener('click', () => setMode(false));
             
-            DOM.noisePlayBtn.addEventListener('click', soundActions.toggleNoisePlayback);
-            DOM.volumeControl.addEventListener('input', soundActions.updateVolume);
-            DOM.noiseOptions.forEach(option => {
-                option.addEventListener('change', soundActions.changeBackgroundNoise);
-            });
-
-            DOM.clearHistory.addEventListener('click', historyActions.clearHistory);
-            DOM.exportHistory.addEventListener('click', historyActions.exportHistory);
-
-            DOM.closeProductivityPanel.addEventListener('click', () => {
-                DOM.productivityPanel.classList.remove('show');
+            // Quick timer buttons
+            dom.work25Btn.addEventListener('click', () => setTimer(25, 0));
+            dom.break5Btn.addEventListener('click', () => setTimer(5, 0));
+            dom.break30Btn.addEventListener('click', () => setTimer(30, 0));
+            
+            // Project controls
+            dom.addProjectBtn.addEventListener('click', addProject);
+            dom.projectInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') addProject();
             });
             
-            DOM.closeInfoPanel.addEventListener('click', () => {
-                DOM.infoPanel.classList.remove('show');
+            // Calendar controls
+            dom.prevMonthBtn.addEventListener('click', () => changeMonth(-1));
+            dom.nextMonthBtn.addEventListener('click', () => changeMonth(1));
+            
+            // Full calendar controls
+            dom.fullPrevMonthBtn.addEventListener('click', () => changeMonth(-1, true));
+            dom.fullNextMonthBtn.addEventListener('click', () => changeMonth(1, true));
+            dom.closeFullCalendarBtn.addEventListener('click', () => {
+                dom.fullCalendar.style.display = 'none';
+            });
+            dom.viewCalendarBtn.addEventListener('click', () => {
+                dom.fullCalendar.style.display = 'block';
+                renderFullCalendar();
             });
             
-            DOM.closeNoisePanel.addEventListener('click', () => {
-                DOM.noisePanel.classList.remove('show');
+            // History export
+            dom.exportSessionsBtn.addEventListener('click', exportSessionHistory);
+            dom.exportProjectsBtn.addEventListener('click', exportProjectHistory);
+            
+            // Modal controls
+            dom.closeModalBtn.addEventListener('click', () => {
+                dom.noteModal.style.display = 'none';
             });
             
-            DOM.closeLofiPanel.addEventListener('click', () => {
-                DOM.lofiPanel.classList.remove('show');
+            // Tab controls
+            dom.tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    // Set active tab
+                    dom.tabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    
+                    // Show corresponding content
+                    const tabType = tab.getAttribute('data-tab');
+                    dom.tabContents.forEach(content => {
+                        content.classList.remove('active');
+                        if (content.id === `${tabType}Tab`) {
+                            content.classList.add('active');
+                        }
+                    });
+                });
             });
-            
-            DOM.closeHistoryPanel.addEventListener('click', () => {
-                DOM.historyPanel.classList.remove('show');
-            });
-            
-            DOM.closeRewardsPanel.addEventListener('click', () => {
-                DOM.rewardsPanel.classList.remove('show');
-            });
-
-            DOM.resetRewards.addEventListener('click', rewardActions.resetRewards);
-
-            // Calendar navigation
-            DOM.fullscreenPrevMonthBtn.addEventListener('click', () => calendarActions.changeMonth(-1));
-            DOM.fullscreenNextMonthBtn.addEventListener('click', () => calendarActions.changeMonth(1));
-            DOM.backToMainBtn.addEventListener('click', () => {
-                DOM.fullscreenCalendar.style.display = 'none';
-                STATE.fullscreenCalendarOpen = false;
-            });
-
-            // Project tracking
-            DOM.addProjectBtn.addEventListener('click', projectActions.addProject.bind(projectActions));
-            DOM.projectInput.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') {
-                    projectActions.addProject();
-                }
-            });
-
-            // Dropdown menu events
-            DOM.dropdownBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                dropdownActions.toggleDropdown();
-            });
-            
-            dropdownActions.setupMenuItems();
-
-            document.addEventListener('click', (e) => {
-                const panels = [DOM.infoPanel, DOM.noisePanel, DOM.lofiPanel, DOM.historyPanel, 
-                               DOM.rewardsPanel, DOM.productivityPanel];
-                
-                if (!panels.some(panel => panel.contains(e.target)) && 
-                    !DOM.dropdownBtn.contains(e.target) && 
-                    !DOM.dropdownContent.contains(e.target)) {
-                    panels.forEach(panel => panel.classList.remove('show'));
-                    dropdownActions.closeDropdown();
-                }
-            });
-            
-            window.addEventListener('beforeunload', () => {
-                localStorage.setItem('totalWorkSeconds', STATE.totalWorkSeconds.toString());
-                localStorage.setItem('totalBreakSeconds', STATE.totalBreakSeconds.toString());
-                noteActions.saveToStorage();
-                historyActions.saveHistory();
-                rewardActions.saveRewards();
-                localStorage.setItem('projects', JSON.stringify(STATE.projects));
-            });
-
-            rewardTabActions.setupTabs();
-            historyTabActions.setupTabs();
             
             // Timer display edit handling
-            DOM.timer.addEventListener('blur', function() {
+            dom.timer.addEventListener('blur', function() {
                 const timeParts = this.textContent.split(':');
                 let minutes = parseInt(timeParts[0]) || 0;
                 let seconds = parseInt(timeParts[1]) || 0;
@@ -3271,38 +1403,26 @@
                 this.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
                 
                 // Update state
-                STATE.totalSeconds = minutes * 60 + seconds;
-                STATE.initialSeconds = STATE.totalSeconds;
-                
-                // Reset progress circle
-                DOM.timerProgress.style.background = `conic-gradient(var(--primary-blue) 0%, transparent 0%)`;
+                state.totalSeconds = minutes * 60 + seconds;
+                state.initialSeconds = state.totalSeconds;
             });
         }
 
-        // ========== Initialization ==========
+        // Initialize
         function init() {
+            loadProjects();
+            loadSessionHistory();
             setupEventListeners();
-            noteActions.loadFromStorage();
-            historyActions.loadHistory();
-            rewardActions.loadRewards();
-            projectActions.loadProjects();
-            timerActions.updateModeIndicator();
-            soundActions.updateVolume();
-            DOM.nowPlaying.textContent = STATE.noiseNames['none'];
+            updateModeDisplay();
+            renderCalendar();
             
-            // Set initial progress circle
-            DOM.timerProgress.style.background = `conic-gradient(var(--primary-blue) 0%, transparent 0%)`;
+            // Set today as selected date
+            const today = new Date();
+            state.calendar.selectedDate = today;
+            state.fullCalendar.selectedDate = today;
             
-            // Initialize rewards
-            rewardTabActions.setupTabs();
-            historyTabActions.setupTabs();
-            
-            // Set up scrollable rewards panel
-            const rewardsContents = document.querySelectorAll('.reward-tab-content');
-            rewardsContents.forEach(content => {
-                content.style.maxHeight = '400px';
-                content.style.overflowY = 'auto';
-            });
+            // Show today's sessions
+            showSessionsForDate(today, dom.calendarSessions);
         }
 
         init();
